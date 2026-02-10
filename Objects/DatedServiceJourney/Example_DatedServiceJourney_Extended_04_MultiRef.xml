@@ -1,0 +1,34 @@
+<!--
+  Example_DatedServiceJourney_Extended_04_MultiRef.xml
+  Scenario: Multiple references
+  Purpose:
+    - Demonstrates multiple DatedVehicleJourneyRef entries (0..*) inside replacedJourneys
+    - Shows reinforcement that targets more than one base instance
+    - Keeps identifier format (refers to ERP:DatedServiceJourney:*)
+  Diff vs minimal (Example_DatedServiceJourney.xml):
+    + replacedJourneys / DatedVehicleJourneyRef (new)
+    + Multiple references (0..*)
+    - DatedServiceJourneyRef (removed)
+-->
+<PublicationDelivery xmlns="http://www.netex.org.uk/netex" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0">
+  <PublicationTimestamp>2026-03-01T10:00:00Z</PublicationTimestamp>
+  <ParticipantRef>ERP</ParticipantRef>
+
+  <dataObjects>
+    <frames>
+      <TimetableFrame version="1" id="ERP:TimetableFrame:1">
+        <!-- DIFF: Reinforcing multiple base dated journeys -->
+        <DatedServiceJourney version="2" id="ERP:DatedServiceJourney:MultiRef04">
+          <ServiceAlteration>extraJourney</ServiceAlteration>
+          <ServiceJourneyRef ref="ERP:ServiceJourney:Core"/>
+          <OperatingDayRef ref="ERP:OperatingDay:2026-03-07"/>
+          <replacedJourneys>
+            <!-- DIFF: Multiple DatedVehicleJourneyRef entries allowed (0..*). -->
+            <DatedVehicleJourneyRef ref="ERP:DatedServiceJourney:Core"/>
+            <DatedVehicleJourneyRef ref="ERP:DatedServiceJourney:SpecialEvent"/>
+          </replacedJourneys>
+        </DatedServiceJourney>
+      </TimetableFrame>
+    </frames>
+  </dataObjects>
+</PublicationDelivery>

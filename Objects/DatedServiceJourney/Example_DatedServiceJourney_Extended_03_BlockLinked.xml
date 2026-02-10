@@ -1,0 +1,26 @@
+<!--
+  Example_DatedServiceJourney_Extended_03_BlockLinked.xml
+  Scenario: Block-linked operation
+  Purpose:
+    - Demonstrates linkage to an operational Block via BlockRef
+    - ServiceAlteration omitted (defaults to planned)
+  Diff vs minimal (Example_DatedServiceJourney.xml):
+    + BlockRef
+-->
+<PublicationDelivery xmlns="http://www.netex.org.uk/netex" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0">
+  <PublicationTimestamp>2026-03-01T10:00:00Z</PublicationTimestamp>
+  <ParticipantRef>ERP</ParticipantRef>
+
+  <dataObjects>
+    <frames>
+      <TimetableFrame version="1" id="ERP:TimetableFrame:1">
+        <!-- DIFF: Linking dated journey to an operational block for vehicle scheduling -->
+        <DatedServiceJourney version="2" id="ERP:DatedServiceJourney:BlockLinked03">
+          <ServiceJourneyRef ref="ERP:ServiceJourney:Core"/>
+          <BlockRef ref="ERP:Block:1001"/>
+          <OperatingDayRef ref="ERP:OperatingDay:2026-03-07"/>
+        </DatedServiceJourney>
+      </TimetableFrame>
+    </frames>
+  </dataObjects>
+</PublicationDelivery>
