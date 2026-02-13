@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PublicationDelivery xmlns="http://www.netex.org.uk/netex" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.19">
+  <!-- Codespace/namespace: Using 'ERP' as identifier prefix, consistent with ServiceJourney/DatedServiceJourney examples -->
+  <PublicationTimestamp>2026-02-13T00:00:00Z</PublicationTimestamp>
+  <ParticipantRef>ERP</ParticipantRef>
+  <DataObjects>
+    <ServiceFrame id="ERP:ServiceFrame:Line_10" version="1">
+      <routes>
+        <Route id="ERP:Route:10" version="1">
+          <Name>Line 10</Name>
+        </Route>
+      </routes>
+      <scheduledStopPoints>
+        <ScheduledStopPoint id="ERP:ScheduledStopPoint:10:001" version="1">
+          <Name>Stop A</Name>
+        </ScheduledStopPoint>
+        <ScheduledStopPoint id="ERP:ScheduledStopPoint:10:002" version="1">
+          <Name>Stop B</Name>
+        </ScheduledStopPoint>
+        <ScheduledStopPoint id="ERP:ScheduledStopPoint:10:003" version="1">
+          <Name>Stop C</Name>
+        </ScheduledStopPoint>
+      </scheduledStopPoints>
+      <journeyPatterns>
+        <JourneyPattern id="ERP:JourneyPattern:JP_10_out" version="1" name="Line 10 Outbound">
+          <RouteRef ref="ERP:Route:10"/>
+          <DirectionType>outbound</DirectionType>
+          <pointsInSequence>
+            <StopPointInJourneyPattern id="ERP:SPiJP:JP_10_out:1" version="1" order="1">
+              <ScheduledStopPointRef ref="ERP:ScheduledStopPoint:10:001"/>
+            </StopPointInJourneyPattern>
+            <StopPointInJourneyPattern id="ERP:SPiJP:JP_10_out:2" version="1" order="2">
+              <ScheduledStopPointRef ref="ERP:ScheduledStopPoint:10:002"/>
+            </StopPointInJourneyPattern>
+            <StopPointInJourneyPattern id="ERP:SPiJP:JP_10_out:3" version="1" order="3">
+              <ScheduledStopPointRef ref="ERP:ScheduledStopPoint:10:003"/>
+            </StopPointInJourneyPattern>
+          </pointsInSequence>
+        </JourneyPattern>
+      </journeyPatterns>
+    </ServiceFrame>
+  </DataObjects>
+</PublicationDelivery>
