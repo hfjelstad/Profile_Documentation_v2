@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Example: ServiceJourney wrapped in PublicationDelivery/TimetableFrame (English comments)
+     Purpose: Planned journey referencing Line, JourneyPattern and Operator, including passingTimes.
+     Notes:
+       - IDs/refs use codespace 'ERP'.
+       - ServiceJourney resides under TimetableFrame/vehicleJourneys.
+       - passingTimes is a list of TimetabledPassingTime elements, each pointing to a StopPointInJourneyPattern.
+-->
+<PublicationDelivery xmlns="http://www.netex.org.uk/netex" version="1.0">
+  <dataObjects>
+    <frames>
+      <TimetableFrame id="ERP:TimetableFrame:SJ_001" version="1">
+        <vehicleJourneys>
+          <ServiceJourney id="ERP:ServiceJourney:SJ_001" version="1">
+            <Name>Service Journey 001</Name>
+            <ShortName>SJ001</ShortName>
+            <PrivateCode>SJ-001</PrivateCode>
+            <PublicCode>1</PublicCode>
+
+            <!-- Relations -->
+            <LineRef ref="ERP:Line:1"/>
+            <JourneyPatternRef ref="ERP:JourneyPattern:JP_001"/>
+            <OperatorRef ref="ERP:Operator:OP_001"/>
+            <!-- Optional: block/roster if used -->
+            <BlockRef ref="ERP:Block:BLK_01"/>
+
+            <!-- Planned (non-dated). Days of operation via OperatingProfile. -->
+            <OperatingProfile>
+              <RegularDayType>
+                <DaysOfWeek>monday tuesday wednesday thursday friday</DaysOfWeek>
+              </RegularDayType>
+            </OperatingProfile>
+
+            <!-- Passing times: planned times at stops in the selected JourneyPattern (JP_001). -->
+            <passingTimes>
+              <TimetabledPassingTime id="ERP:TimetabledPassingTime:SJ_001:1" version="1">
+                <StopPointInJourneyPatternRef ref="ERP:StopPointInJourneyPattern:JP_001:1"/>
+                <DepartureTime>08:00:00</DepartureTime>
+              </TimetabledPassingTime>
+              <TimetabledPassingTime id="ERP:TimetabledPassingTime:SJ_001:2" version="1">
+                <StopPointInJourneyPatternRef ref="ERP:StopPointInJourneyPattern:JP_001:2"/>
+                <ArrivalTime>08:05:00</ArrivalTime>
+                <DepartureTime>08:06:00</DepartureTime>
+              </TimetabledPassingTime>
+              <TimetabledPassingTime id="ERP:TimetabledPassingTime:SJ_001:3" version="1">
+                <StopPointInJourneyPatternRef ref="ERP:StopPointInJourneyPattern:JP_001:3"/>
+                <ArrivalTime>08:12:00</ArrivalTime>
+              </TimetabledPassingTime>
+            </passingTimes>
+          </ServiceJourney>
+        </vehicleJourneys>
+      </TimetableFrame>
+    </frames>
+  </dataObjects>
+</PublicationDelivery>
