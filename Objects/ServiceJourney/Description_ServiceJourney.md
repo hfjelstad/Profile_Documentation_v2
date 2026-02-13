@@ -1,51 +1,53 @@
-# Beskrivelse: ServiceJourney
+# Description: ServiceJourney
 
-Denne siden beskriver objektet ServiceJourney (planlagt reise) slik det brukes i profilen. Dokumentet følger samme struktur og innholdsnivå som for DatedServiceJourney-beskrivelsen, men er tilpasset planlagte (ikke-daterte) turer.
+This page describes the ServiceJourney object (planned trip) as used in the profile. It mirrors the structure and level of detail from the DatedServiceJourney description, but adapts the content to planned (non-dated) trips.
 
-Formålet er å gi en kortfattet, operativt nyttig forklaring av hva ServiceJourney er, hvordan det henger sammen med øvrige objekter, og hvilke felter som er sentrale. Detaljerte feltbeskrivelser finnes i tabellen for ServiceJourney.
+Purpose: Provide a concise, operational overview of what a ServiceJourney is, how it connects to related objects, and which fields are central. Detailed field descriptions can be found in the ServiceJourney table.
 
-Relaterte dokumenter:
-- Tabell for ServiceJourney: Objects/ServiceJourney/Table_ServiceJourney.md
-- Dato-instans av tur: Objects/DatedServiceJourney/Description_DatedServiceJourney.md
+Related documents:
+- Table for ServiceJourney: Objects/ServiceJourney/Table_ServiceJourney.md
+- Dated instance of a trip: Objects/DatedServiceJourney/Description_DatedServiceJourney.md
 
-## Hva er ServiceJourney?
-ServiceJourney representerer en planlagt tur i ruteplanen. Den beskriver hvilken linje/trasé og mønster (JourneyPattern) som kjøres, hvilke stoppsekvenser som gjelder gjennom referanse til mønsteret, og metaopplysninger som operatør, koder og eventuelle lenker til blokker/omløp. Selve passeringstidene for ServiceJourney er normalt avledet fra mønster og tidtabellregler; den daterte varianten (DatedServiceJourney) uttrykker samme tur på en konkret driftsdato.
+## What is a ServiceJourney?
+A ServiceJourney represents a planned trip in the timetable. It references a JourneyPattern to define the stop sequence, and it contains metadata such as operator, codes, and optional linkage to a block/roster. Planned stop times are expressed using passingTimes (TimetabledPassingTime) associated to StopPointInJourneyPattern entries. The dated variant (DatedServiceJourney) expresses the same trip for a specific operating day.
 
-## Nøkkelrelasjoner
-- Line/Route: ServiceJourney er knyttet til en linje/trasé via relevante referanser.
-- JourneyPattern: Angir stoppsekvensen og struktur for kjøremønsteret som turen bruker.
-- Operator: Hvilken operatør som utfører turen.
-- Block/VehicleJourneyGroup (der det brukes): Kobling til omløp/blokk for å sikre sammenheng mellom påfølgende turer.
-- DayType/OperatingDays: Angir hvilke dager turen normalt kjøres (logikk for faktisk kjøring per dato ligger i daterte instanser og/eller produksjonsregler).
+## Key relationships
+- Line/Route: Associates the trip to a line/route via references.
+- JourneyPattern: Provides the stop sequence and structure used by the trip.
+- Operator: The operator performing the trip.
+- Block/VehicleJourneyGroup (if used): Optional linkage to a vehicle block/roster to ensure continuity between subsequent trips.
+- DayType/OperatingProfile: Specifies on which days the trip normally operates (per-date execution belongs to the dated instances and/or production rules).
 
-## Sentrale felter
-Se tabellen Objects/ServiceJourney/Table_ServiceJourney.md for komplette felt og kardinalitet. Typiske nøkler og identifikatorer omfatter:
+## Central fields
+See the table Objects/ServiceJourney/Table_ServiceJourney.md for a complete list and cardinalities. Typical identifiers and references include:
 - id, version
-- privateCode/publicCode (interne/viste koder)
-- journeyPatternRef (referanse til valgt mønster)
-- lineRef/routeRef (tilhørende linje/trasé)
+- privateCode/publicCode
+- journeyPatternRef (selected pattern)
+- lineRef/routeRef (owning line/route)
 - operatorRef
-- dayTypeRefs/operatingProfile (hvilke dager turen gjelder)
-- blockRef (omløp), gir kjedingen av turer der dette er i bruk
+- dayTypeRefs/operatingProfile (days of operation)
+- blockRef (optional roster linkage)
+- passingTimes (list of TimetabledPassingTime) with StopPointInJourneyPatternRef and ArrivalTime/DepartureTime
 
-## Forretningsregler (oversikt)
-- En ServiceJourney skal peke til ett gyldig JourneyPattern. Mønsterets stoppsekvens er autoritativ for turen.
-- En ServiceJourney bør tilhøre én linje/trasé; inkonsistente referanser (f.eks. mønster fra annen linje) er ikke tillatt.
-- Dersom block/omløp benyttes, skal turer i samme blokk være tidsmessig kompatible uten overlapp for samme kjøretøy.
-- DayType/OperatingProfile styrer planlagt kjøring; avvik per dato håndteres på DatedServiceJourney-nivå.
+## Business rules (overview)
+- A ServiceJourney must reference exactly one valid JourneyPattern. The pattern's stop sequence is authoritative for the trip.
+- A ServiceJourney should belong to a single line/route; inconsistent cross-line references are not allowed.
+- If block/roster is used, trips in the same block must be time-compatible without overlap for the same vehicle.
+- DayType/OperatingProfile governs planned operation; per-date deviations are handled at the DatedServiceJourney level.
 
-## Sammenligning med DatedServiceJourney
-- ServiceJourney = mal/plan for turen uten konkret dato.
-- DatedServiceJourney = konkret instans av en tur på en gitt dato, med eventuelle avvik (erstatning, forsterkning, m.m.).
-- Felt knyttet til ServiceAlteration og dato-spesifikke endringer tilhører DatedServiceJourney, ikke ServiceJourney.
+## Comparison with DatedServiceJourney
+- ServiceJourney = template/plan for a trip without a concrete date.
+- DatedServiceJourney = concrete instance of a trip on a given date, with potential alterations (replacement, reinforcement, etc.).
+- Date-specific fields (e.g., ServiceAlteration on a specific day) belong to DatedServiceJourney, not ServiceJourney.
 
-## Datakvalitet og validering (anbefaling)
-- Valider at journeyPatternRef, lineRef og operatorRef faktisk finnes og er konsistente.
-- Sikre at DayType/OperatingProfile dekker forventet ruteplan og ikke skaper kollisjoner med andre regler.
-- Bruk privateCode/publicCode konsekvent for sporbarhet og presentasjon.
+## Data quality and validation (recommendations)
+- Validate that journeyPatternRef, lineRef, and operatorRef exist and are consistent.
+- Ensure that DayType/OperatingProfile covers the expected timetable without conflicts.
+- Use privateCode/publicCode consistently for traceability and presentation.
+- Ensure passingTimes are present and aligned with the referenced StopPointInJourneyPattern sequence, using ArrivalTime and/or DepartureTime as appropriate.
 
-## Eksempel
-Eksempler for ServiceJourney kan legges til på tilsvarende måte som for DatedServiceJourney-eksemplene. Inntil de foreligger, benytt tabellen som referanse for feltnavn og strukturer.
+## Example
+See Objects/ServiceJourney/Example_ServiceJourney.xml for a minimal example including passingTimes.
 
-## Endringslogg
-- 2026-02-13: Første versjon av beskrivelsen, tilpasset fra DatedServiceJourney-malen.
+## Changelog
+- 2026-02-13: Initial version in English, adapted from the DatedServiceJourney template; added note on passingTimes.
