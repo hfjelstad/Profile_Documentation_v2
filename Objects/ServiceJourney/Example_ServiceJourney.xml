@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Eksempel på ServiceJourney, basert på strukturen i Example_DatedServiceJourney.xml,
+     men uten dato-spesifikke felter som brukes av DatedServiceJourney. -->
+<ServiceJourney id="ENT:ServiceJourney:SJ_001" version="1">
+  <Name>Service Journey 001</Name>
+  <ShortName>SJ001</ShortName>
+  <PrivateCode>SJ-001</PrivateCode>
+  <PublicCode>1</PublicCode>
+
+  <!-- Relasjoner -->
+  <LineRef ref="ENT:Line:1"/>
+  <JourneyPatternRef ref="ENT:JourneyPattern:JP_001"/>
+  <OperatorRef ref="ENT:Operator:OP_001"/>
+  <!-- Valgfritt: blokk/omløp dersom i bruk -->
+  <BlockRef ref="ENT:Block:BLK_01"/>
+
+  <!-- ServiceJourney er planlagt (ikke-datert). Kjøredager angis via OperatingProfile. -->
+  <OperatingProfile>
+    <RegularDayType>
+      <DaysOfWeek>monday tuesday wednesday thursday friday</DaysOfWeek>
+    </RegularDayType>
+  </OperatingProfile>
+</ServiceJourney>
