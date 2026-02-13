@@ -1,23 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Eksempel på ServiceJourney, basert på strukturen i Example_DatedServiceJourney.xml,
-     men uten dato-spesifikke felter som brukes av DatedServiceJourney. -->
+<!-- Example: ServiceJourney with passingTimes (English comments)
+     Purpose: Minimal planned journey referencing Line, JourneyPattern and Operator,
+              and including passingTimes (TimetabledPassingTime) per stop.
+     Notes:
+       - passingTimes is a list of TimetabledPassingTime elements.
+       - Each TimetabledPassingTime references a StopPointInJourneyPattern via StopPointInJourneyPatternRef,
+         and may include ArrivalTime and/or DepartureTime.
+       - This example is date-less (planned). Calendar is described by OperatingProfile.
+-->
 <ServiceJourney id="ENT:ServiceJourney:SJ_001" version="1">
   <Name>Service Journey 001</Name>
   <ShortName>SJ001</ShortName>
   <PrivateCode>SJ-001</PrivateCode>
   <PublicCode>1</PublicCode>
 
-  <!-- Relasjoner -->
+  <!-- Relations -->
   <LineRef ref="ENT:Line:1"/>
   <JourneyPatternRef ref="ENT:JourneyPattern:JP_001"/>
   <OperatorRef ref="ENT:Operator:OP_001"/>
-  <!-- Valgfritt: blokk/omløp dersom i bruk -->
+  <!-- Optional: block/roster if used -->
   <BlockRef ref="ENT:Block:BLK_01"/>
 
-  <!-- ServiceJourney er planlagt (ikke-datert). Kjøredager angis via OperatingProfile. -->
+  <!-- Planned (non-dated). Days of operation via OperatingProfile. -->
   <OperatingProfile>
     <RegularDayType>
       <DaysOfWeek>monday tuesday wednesday thursday friday</DaysOfWeek>
     </RegularDayType>
   </OperatingProfile>
+
+  <!-- Passing times: Planned times at stops in the selected JourneyPattern.
+       StopPointInJourneyPatternRef should point to stop points within JP_001. -->
+  <passingTimes>
+    <TimetabledPassingTime id="ENT:TimetabledPassingTime:SJ_001:1" version="1">
+      <StopPointInJourneyPatternRef ref="ENT:StopPointInJourneyPattern:JP_001:1"/>
+      <DepartureTime>08:00:00</DepartureTime>
+    </TimetabledPassingTime>
+    <TimetabledPassingTime id="ENT:TimetabledPassingTime:SJ_001:2" version="1">
+      <StopPointInJourneyPatternRef ref="ENT:StopPointInJourneyPattern:JP_001:2"/>
+      <ArrivalTime>08:05:00</ArrivalTime>
+      <DepartureTime>08:06:00</DepartureTime>
+    </TimetabledPassingTime>
+    <TimetabledPassingTime id="ENT:TimetabledPassingTime:SJ_001:3" version="1">
+      <StopPointInJourneyPatternRef ref="ENT:StopPointInJourneyPattern:JP_001:3"/>
+      <ArrivalTime>08:12:00</ArrivalTime>
+    </TimetabledPassingTime>
+  </passingTimes>
 </ServiceJourney>
