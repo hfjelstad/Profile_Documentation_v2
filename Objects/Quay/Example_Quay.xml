@@ -1,28 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<PublicationDelivery xmlns="http://www.netex.org.uk/netex" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.09">
-  <PublicationTimestamp>2026-02-15T15:07:00Z</PublicationTimestamp>
-  <ParticipantRef>ERP:Participant:Profile</ParticipantRef>
-  <codespaces>
-    <Codespace id="cs:ERP">
-      <Xmlns>ERP</Xmlns>
-      <XmlnsUrl>http://www.entur.org/netex/erp</XmlnsUrl>
-    </Codespace>
-  </codespaces>
+<PublicationDelivery xmlns="http://www.netex.org.uk/netex" xmlns:ERP="http://www.entur.org/ERP" version="1.0">
+  <PublicationTimestamp>2026-02-15T00:00:00Z</PublicationTimestamp>
+  <ParticipantRef>ERP:Participant:1</ParticipantRef>
   <dataObjects>
+    <GeneralFrame id="ERP:GeneralFrame:1" version="1">
+      <codespaces>
+        <Codespace id="ERP">
+          <Xmlns>ERP</Xmlns>
+          <XmlnsUrl>http://www.entur.org/ERP</XmlnsUrl>
+        </Codespace>
+      </codespaces>
+    </GeneralFrame>
     <SiteFrame id="ERP:SiteFrame:1" version="1">
-      <Quays>
-        <Quay id="ERP:Quay:Q1" version="1">
-          <Name>Plattform A</Name>
-          <PublicCode>A</PublicCode>
-          <ParentSiteRef ref="ERP:StopPlace:SP1" version="1"/>
-          <Centroid>
-            <Location>
-              <Longitude>10.74609</Longitude>
-              <Latitude>59.91273</Latitude>
-            </Location>
-          </Centroid>
-        </Quay>
-      </Quays>
+      <stopPlaces>
+        <StopPlace id="ERP:StopPlace:100" version="1">
+          <Name>Example StopPlace</Name>
+          <quays>
+            <Quay id="ERP:Quay:1001" version="1">
+              <Name>Platform A</Name>
+              <PublicCode>A</PublicCode>
+              <Centroid>
+                <Location>
+                  <Longitude>10.7461</Longitude>
+                  <Latitude>59.9127</Latitude>
+                </Location>
+              </Centroid>
+              <Description>Northbound boarding bay</Description>
+            </Quay>
+          </quays>
+        </StopPlace>
+      </stopPlaces>
     </SiteFrame>
   </dataObjects>
 </PublicationDelivery>
