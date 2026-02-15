@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PublicationDelivery xmlns="http://www.netex.org.uk/netex" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ERP="http://www.entur.org/netex/ERP" version="1.0">
+  <PublicationTimestamp>2026-02-15T00:00:00Z</PublicationTimestamp>
+  <ParticipantRef>ERP:Participant:ENTUR</ParticipantRef>
+  <DataObjects>
+    <CompositeFrame id="ERP:CompositeFrame:ScheduledStopPoint:1" version="1">
+      <codespaces>
+        <Codespace id="ERP">
+          <Xmlns>ERP</Xmlns>
+          <XmlnsUrl>http://www.entur.org/netex/ERP</XmlnsUrl>
+        </Codespace>
+      </codespaces>
+      <frames>
+        <SiteFrame id="ERP:SiteFrame:1" version="1">
+          <stopPlaces>
+            <StopPlace id="ERP:StopPlace:1001" version="1">
+              <Name>Main Bus Station</Name>
+              <quays>
+                <Quay id="ERP:Quay:1001" version="1">
+                  <Name>Platform A</Name>
+                </Quay>
+              </quays>
+            </StopPlace>
+          </stopPlaces>
+        </SiteFrame>
+        <ServiceFrame id="ERP:ServiceFrame:1" version="1">
+          <scheduledStopPoints>
+            <ScheduledStopPoint id="ERP:ScheduledStopPoint:1001" version="1">
+              <Name>SSP A</Name>
+              <TimingPointStatus>timingPoint</TimingPointStatus>
+            </ScheduledStopPoint>
+          </scheduledStopPoints>
+          <stopAssignments>
+            <PassengerStopAssignment id="ERP:PassengerStopAssignment:1001" version="1">
+              <ScheduledStopPointRef ref="ERP:ScheduledStopPoint:1001" version="1"/>
+              <QuayRef ref="ERP:Quay:1001" version="1"/>
+            </PassengerStopAssignment>
+          </stopAssignments>
+        </ServiceFrame>
+      </frames>
+    </CompositeFrame>
+  </DataObjects>
+</PublicationDelivery>
