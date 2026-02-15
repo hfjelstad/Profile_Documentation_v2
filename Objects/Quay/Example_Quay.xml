@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PublicationDelivery xmlns="http://www.netex.org.uk/netex" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.09">
+  <PublicationTimestamp>2026-02-15T15:07:00Z</PublicationTimestamp>
+  <ParticipantRef>ERP:Participant:Profile</ParticipantRef>
+  <codespaces>
+    <Codespace id="cs:ERP">
+      <Xmlns>ERP</Xmlns>
+      <XmlnsUrl>http://www.entur.org/netex/erp</XmlnsUrl>
+    </Codespace>
+  </codespaces>
+  <dataObjects>
+    <SiteFrame id="ERP:SiteFrame:1" version="1">
+      <Quays>
+        <Quay id="ERP:Quay:Q1" version="1">
+          <Name>Plattform A</Name>
+          <PublicCode>A</PublicCode>
+          <ParentSiteRef ref="ERP:StopPlace:SP1" version="1"/>
+          <Centroid>
+            <Location>
+              <Longitude>10.74609</Longitude>
+              <Latitude>59.91273</Latitude>
+            </Location>
+          </Centroid>
+        </Quay>
+      </Quays>
+    </SiteFrame>
+  </dataObjects>
+</PublicationDelivery>
