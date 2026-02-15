@@ -1,20 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<PublicationDelivery xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                     xmlns="http://www.netex.org.uk/netex"
-                     version="1.0">
-  <PublicationTimestamp>2026-02-15T18:06:00Z</PublicationTimestamp>
-  <ParticipantRef>ERP</ParticipantRef>
-  <dataObjects>
-    <GeneralFrame id="ERP:GeneralFrame:Line:1" version="1">
-      <members>
-        <Line id="ERP:Line:100" version="1">
-          <Name>Line 100</Name>
-          <PublicCode>100</PublicCode>
-          <TransportMode>bus</TransportMode>
-          <OperatorRef ref="ERP:Operator:OP1" version="1"/>
-          <Description>Example Line object using ERP codespace</Description>
-        </Line>
-      </members>
-    </GeneralFrame>
-  </dataObjects>
+<PublicationDelivery xmlns="http://www.netex.org.uk/netex" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ERP="http://www.entur.org/netex/ERP" version="1.0">
+  <PublicationTimestamp>2026-02-15T00:00:00Z</PublicationTimestamp>
+  <ParticipantRef>ERP:Participant:ENTUR</ParticipantRef>
+  <DataObjects>
+    <CompositeFrame id="ERP:CompositeFrame:Line:1" version="1">
+      <codespaces>
+        <Codespace id="ERP">
+          <Xmlns>ERP</Xmlns>
+          <XmlnsUrl>http://www.entur.org/netex/ERP</XmlnsUrl>
+        </Codespace>
+      </codespaces>
+      <frames>
+        <ResourceFrame id="ERP:ResourceFrame:1" version="1">
+          <organisations>
+            <Operator id="ERP:Operator:ENTUR" version="1">
+              <Name>Entur</Name>
+            </Operator>
+          </organisations>
+        </ResourceFrame>
+        <ServiceFrame id="ERP:ServiceFrame:1" version="1">
+          <lines>
+            <Line id="ERP:Line:1001" version="1">
+              <Name>Line 21</Name>
+              <PublicCode>21</PublicCode>
+              <TransportMode>bus</TransportMode>
+              <TransportSubmode>expressBus</TransportSubmode>
+              <OperatorRef ref="ERP:Operator:ENTUR" version="1"/>
+            </Line>
+          </lines>
+        </ServiceFrame>
+      </frames>
+    </CompositeFrame>
+  </DataObjects>
 </PublicationDelivery>
