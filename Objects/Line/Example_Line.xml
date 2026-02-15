@@ -1,22 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<PublicationDelivery xmlns="http://www.netex.org.uk/netex" version="1.1">
-  <PublicationTimestamp>2026-02-15T16:34:00Z</PublicationTimestamp>
-  <ParticipantRef>ERP:Participant:PROFILE</ParticipantRef>
-  <DataObjects>
-    <CompositeFrame id="ERP:CompositeFrame:LINE-EXAMPLE" version="1">
-      <frames>
-        <NetworkFrame id="ERP:NetworkFrame:LINE" version="1">
-          <lines>
-            <Line id="ERP:Line:10" version="1">
-              <Name>Linje 10</Name>
-              <PublicCode>10</PublicCode>
-              <ShortName>10</ShortName>
-              <TransportMode>bus</TransportMode>
-              <OperatorRef ref="ERP:Operator:ENTUR"/>
-            </Line>
-          </lines>
-        </NetworkFrame>
-      </frames>
-    </CompositeFrame>
-  </DataObjects>
+<PublicationDelivery xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                     xmlns="http://www.netex.org.uk/netex"
+                     version="1.0">
+  <PublicationTimestamp>2026-02-15T18:06:00Z</PublicationTimestamp>
+  <ParticipantRef>ERP</ParticipantRef>
+  <dataObjects>
+    <GeneralFrame id="ERP:GeneralFrame:Line:1" version="1">
+      <members>
+        <Line id="ERP:Line:100" version="1">
+          <Name>Line 100</Name>
+          <PublicCode>100</PublicCode>
+          <TransportMode>bus</TransportMode>
+          <OperatorRef ref="ERP:Operator:OP1" version="1"/>
+          <Description>Example Line object using ERP codespace</Description>
+        </Line>
+      </members>
+    </GeneralFrame>
+  </dataObjects>
 </PublicationDelivery>
