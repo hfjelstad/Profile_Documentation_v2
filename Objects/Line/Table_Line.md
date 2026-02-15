@@ -1,28 +1,32 @@
-# Line - Attribute Table
+# Line – Property specification table
 
-This table defines the attributes for the NetEx Line object as constrained by the Entur Profile (ERP codespace).
-
-- Name: Line
-- NetEx class: Line
-- Profile: Entur Profile
+This table defines the required and optional properties for a Line object in the profile. All identifiers MUST use the ERP codespace.
 
 Columns
-- Property | Cardinality | Type | Description | Constraints
+- Property: Logical name in the profile
+- XPath: Location in the NeTEx document
+- Card.: Cardinality
+- Type/Values: Datatype and allowed values or constraints
+- Example: Example value using ERP namespace
 
-Properties
-- id | 1..1 | xs:ID | Unique identifier of the Line. | MUST use ERP codespace, e.g. ERP:Line:<Code>
-- version | 0..1 | Version | Version of the Line. | Optional; default as per profile
-- Name | 1..1 | MultilingualString | Public name of the line shown to passengers. | SHOULD be present and meaningful
-- PublicCode | 0..1 | xs:string | Short public line code (e.g., 5, R10). | SHOULD be unique within Authority/Operator scope
-- TransportMode | 1..1 | TransportModeEnumeration | Main mode of transport (e.g., bus, rail). | MUST be provided
-- TransportSubmode | 0..1 | TransportSubmode | Submode refining the mode (e.g., regionalRail). | MAY be provided when applicable
-- OperatorRef | 0..1 | OperatorRef | Reference to operating company. | SHOULD be provided if applicable
-- AuthorityRef | 0..1 | AuthorityRef | Reference to authority owning the line. | SHOULD be provided if applicable
-- BrandingRef | 0..1 | BrandingRef | Reference to branding applied to the line. | Optional
-- Routes | 0..* | RouteRef | References to routes associated with the line. | At least one Route SHOULD exist in dataset
-- RepresentedByGroupRef | 0..1 | GroupOfLinesRef | Reference if line is part of a group. | Optional
-- KeyList/KeyValue | 0..* | KeyValue | Profile-specific extensions and flags. | Use ERP keys when needed
+| Property | XPath | Card. | Type/Values | Example |
+|---|---|---:|---|---|
+| id | ServiceFrame/lines/Line/@id | 1..1 | ERP-scoped identifier | ERP:Line:1001 |
+| version | ServiceFrame/lines/Line/@version | 1..1 | Positive integer or semantic version | 1 |
+| Name | ServiceFrame/lines/Line/Name | 0..1 | String; SHOULD be present if PublicCode is missing | Line 21 |
+| PublicCode | ServiceFrame/lines/Line/PublicCode | 0..1 | String; SHOULD be present if Name is missing | 21 |
+| TransportMode | ServiceFrame/lines/Line/TransportMode | 1..1 | NeTEx TransportMode enumeration | bus |
+| TransportSubmode | ServiceFrame/lines/Line/TransportSubmode | 0..1 | NeTEx BusSubmode/… enumeration; SHOULD when relevant | expressBus |
+| OperatorRef | ServiceFrame/lines/Line/OperatorRef/@ref | 1..1 | Ref to Operator in ResourceFrame | ERP:Operator:ENTUR |
+| Presentation/Colour | ServiceFrame/lines/Line/presentations/Presentation/Colour | 0..1 | RGB hex or named colour | #005EB8 |
+| Presentation/TextColour | ServiceFrame/lines/Line/presentations/Presentation/TextColour | 0..1 | RGB hex or named colour | #FFFFFF |
 
-Notes
-- IDs and references should resolve within the same data package/frame.
-- Keep line codes consistent with physical signage and journey planning outputs.
+Validation rules
+- The combination of id and version uniquely identifies a Line within the dataset.
+- Either Name or PublicCode MUST be present.
+- All references (e.g., OperatorRef) MUST resolve within this delivery or a referenced frame.
+- All IDs and references MUST be ERP-scoped (prefix ERP:...).
+
+Related documents
+- Objects/Line/Description_Line.md – narrative description and business rules.
+- Objects/Line/Example_Line.xml – minimal NeTEx example using ERP codespace.
