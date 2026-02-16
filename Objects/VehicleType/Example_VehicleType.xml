@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VehicleTypes xmlns="http://www.netex.org.uk/netex" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.09" xsi:schemaLocation="http://www.netex.org.uk/netex NeTEx_publication.xsd">
+    <VehicleType id="ERP:VehicleType:bus_12m" version="1">
+        <Name>Standard 12m Bus</Name>
+        <Length>12.0</Length>
+        <Width>2.55</Width>
+        <Height>3.2</Height>
+        <Capacity>
+            <SeatedCapacity>45</SeatedCapacity>
+            <StandingCapacity>30</StandingCapacity>
+            <WheelchairCapacity>2</WheelchairCapacity>
+        </Capacity>
+        <PropulsionType>diesel</PropulsionType>
+    </VehicleType>
+</VehicleTypes>
