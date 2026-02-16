@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Authority id="ERP:Authority:1" version="1.0" xmlns="http://www.netex.org.uk/netex">
+    <Name>City Transport Authority</Name>
+    <ShortName>CTA</ShortName>
+    <Description>Responsible for managing public transport in the city area.</Description>
+    <ContactDetails>
+        <Phone>+47 12345678</Phone>
+        <Email>contact@cta.example</Email>
+    </ContactDetails>
+    <ResponsibilitySetRef ref="ERP:ResponsibilitySet:1"/>
+</Authority>
