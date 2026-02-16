@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Example 1: Standard Vehicle Definition -->
+<Vehicle id="ERP:Vehicle:1001" version="1">
+    <VehicleTypeRef ref="ERP:VehicleType:BusStandard"/>
+    <RegistrationNumber>AB12345</RegistrationNumber>
+</Vehicle>
+
+<!-- Example 2: Vehicle with Operator Association -->
+<Vehicle id="ERP:Vehicle:2001" version="1">
+    <VehicleTypeRef ref="ERP:VehicleType:ElectricBus"/>
+    <RegistrationNumber>EV56789</RegistrationNumber>
+    <OperatorRef ref="ERP:Operator:OP100"/>
+</Vehicle>

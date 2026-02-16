@@ -1,0 +1,14 @@
+<!-- Example 1: Standard assignment -->
+<PassengerStopAssignment id="ERP:PassengerStopAssignment:1001" version="1" order="1">
+    <ScheduledStopPointRef ref="ERP:ScheduledStopPoint:1001"/>
+    <QuayRef ref="NSR:Quay:12345"/>
+    <StopPlaceRef ref="NSR:StopPlace:6789"/>
+</PassengerStopAssignment>
+
+<!-- Example 2: Override for a specific DatedServiceJourney -->
+<PassengerStopAssignment id="ERP:PassengerStopAssignment:2001" version="1" order="1">
+    <ScheduledStopPointRef ref="ERP:ScheduledStopPoint:1001"/>
+    <QuayRef ref="NSR:Quay:54321"/>
+    <StopPlaceRef ref="NSR:StopPlace:6789"/>
+    <ForDatedVehicleJourneyRef ref="ERP:DatedServiceJourney:3001"/>
+</PassengerStopAssignment>

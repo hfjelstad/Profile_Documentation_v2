@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Interchange id="ERP:Interchange:1" version="1.0" xmlns="http://www.netex.org.uk/netex">
+    <FromJourneyRef ref="ERP:ServiceJourney:1001"/>
+    <ToJourneyRef ref="ERP:ServiceJourney:2001"/>
+    <Guaranteed>true</Guaranteed>
+    <MinimumTransferTime>PT5M</MinimumTransferTime>
+    <MaximumWaitTime>PT10M</MaximumWaitTime>
+</Interchange>
+
+<ServiceJourney id="ERP:ServiceJourney:1001" version="1.0">
+    <Name>Route A - Departure 08:00</Name>
+</ServiceJourney>
+
+<ServiceJourney id="ERP:ServiceJourney:2001" version="1.0">
+    <Name>Route B - Departure 08:15</Name>
+</ServiceJourney>
