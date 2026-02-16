@@ -17,6 +17,3 @@ To ensure data quality, validate your NeTEx files against the official schema. T
 ## Useful Links
 - [CEN NeTEx Standard](https://www.cen.eu)
 - [ENTUR Developer Portal](https://developer.entur.org)
-
-## Relaterte rammer
-Denne guiden gir en introduksjon til NeTEx og peker til rammer som er vanlige i norske profiler. For detaljerte beskrivelser, se de respektive rammebeskrivelsene i dokumentasjonen.
