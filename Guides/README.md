@@ -1,10 +1,6 @@
-# NeTEx Guides
+# Guides Overview
 
-All guides in this folder are related to **NeTEx** modeling practices.
+This folder contains guides for NeTEx modeling.
 
-## Contents
-
-### InterchangeOnly
-- [TvungenOvergang_Guide.md](InterchangeOnly/TvungenOvergang_Guide.md)
-
-This section covers scenarios where `StopUse = interchangeOnly` combined with `Interchange` should be used to model mandatory transfers or restricted boarding/alighting situations.
+## Available Guides
+- [Mandatory Interchange Guide](InterchangeOnly/MandatoryInterchange_Guide.md)
