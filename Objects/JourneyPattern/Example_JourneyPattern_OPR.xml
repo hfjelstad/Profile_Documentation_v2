@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PublicationDelivery xmlns="http://www.netex.org.uk/netex" version="1.0">
+  <PublicationTimestamp>2026-02-23T14:46:00Z</PublicationTimestamp>
+  <ParticipantRef>OPR</ParticipantRef>
+  <DataObjects>
+    <CompositeFrame id="OPR:CompositeFrame:1" version="1">
+      <frames>
+        <ServiceFrame id="OPR:ServiceFrame:1" version="1">
+          <journeyPatterns>
+            <JourneyPattern id="OPR:JourneyPattern:10" version="1">
+              <Name>JP 10</Name>
+              <RouteRef ref="OPR:Route:1"/>
+            </JourneyPattern>
+          </journeyPatterns>
+        </ServiceFrame>
+      </frames>
+    </CompositeFrame>
+  </DataObjects>
+</PublicationDelivery>
