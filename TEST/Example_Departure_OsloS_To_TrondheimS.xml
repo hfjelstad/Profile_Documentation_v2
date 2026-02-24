@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<DatedServiceJourneyExample version="1.0">
+  <Description>Eksempel: Avgang fra Oslo S til Trondheim S</Description>
+  <DatedServiceJourney id="DSJ:OsloS-TrondheimS:1">
+    <OperatingDay>2026-03-01</OperatingDay>
+    <LineRef ref="LINE:RE10"/>
+    <OperatorRef ref="OP:VY"/>
+    <Calls>
+      <Call order="1" stopPlaceName="Oslo S">
+        <StopPlaceRef ref="NSR:StopPlace:OSLOS"/>
+        <DepartureTime>2026-03-01T08:02:00+01:00</DepartureTime>
+      </Call>
+      <Call order="2" stopPlaceName="Trondheim S">
+        <StopPlaceRef ref="NSR:StopPlace:TRONDHEIMS"/>
+        <ArrivalTime>2026-03-01T14:05:00+01:00</ArrivalTime>
+      </Call>
+    </Calls>
+  </DatedServiceJourney>
+</DatedServiceJourneyExample>
