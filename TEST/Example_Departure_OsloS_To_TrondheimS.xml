@@ -5,15 +5,16 @@
     <OperatingDay>2026-03-01</OperatingDay>
     <LineRef ref="LINE:RE10"/>
     <OperatorRef ref="OP:VY"/>
-    <Calls>
-      <Call order="1" stopPlaceName="Oslo S">
+    <PublicCode>RE10</PublicCode>
+    <DatedCalls>
+      <DatedCall order="1" stopPlaceName="Oslo S">
         <StopPlaceRef ref="NSR:StopPlace:OSLOS"/>
-        <DepartureTime>2026-03-01T08:02:00+01:00</DepartureTime>
-      </Call>
-      <Call order="2" stopPlaceName="Trondheim S">
+        <AimedDepartureTime>2026-03-01T08:02:00+01:00</AimedDepartureTime>
+      </DatedCall>
+      <DatedCall order="2" stopPlaceName="Trondheim S">
         <StopPlaceRef ref="NSR:StopPlace:TRONDHEIMS"/>
-        <ArrivalTime>2026-03-01T14:05:00+01:00</ArrivalTime>
-      </Call>
-    </Calls>
+        <AimedArrivalTime>2026-03-01T14:05:00+01:00</AimedArrivalTime>
+      </DatedCall>
+    </DatedCalls>
   </DatedServiceJourney>
 </DatedServiceJourneyExample>
