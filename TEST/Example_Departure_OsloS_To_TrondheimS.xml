@@ -6,14 +6,19 @@
     <LineRef ref="LINE:RE10"/>
     <OperatorRef ref="OP:VY"/>
     <PublicCode>RE10</PublicCode>
+    <PrivateCode>OSL-TRD-0802</PrivateCode>
     <DatedCalls>
       <DatedCall order="1" stopPlaceName="Oslo S">
         <StopPlaceRef ref="NSR:StopPlace:OSLOS"/>
+        <QuayRef ref="NSR:Quay:OSLOS-1"/>
         <AimedDepartureTime>2026-03-01T08:02:00+01:00</AimedDepartureTime>
+        <ExpectedDepartureTime>2026-03-01T08:02:00+01:00</ExpectedDepartureTime>
       </DatedCall>
       <DatedCall order="2" stopPlaceName="Trondheim S">
         <StopPlaceRef ref="NSR:StopPlace:TRONDHEIMS"/>
+        <QuayRef ref="NSR:Quay:TRONDHEIMS-3"/>
         <AimedArrivalTime>2026-03-01T14:05:00+01:00</AimedArrivalTime>
+        <ExpectedArrivalTime>2026-03-01T14:05:00+01:00</ExpectedArrivalTime>
       </DatedCall>
     </DatedCalls>
   </DatedServiceJourney>
