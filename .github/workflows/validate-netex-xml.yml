@@ -1,10 +1,10 @@
-name: Validate NeTEx XML
+name: Validate NeTEx XML (changed files only)
 
 on:
-  pull_request:
+  push:
     paths:
       - "**/*.xml"
-  push:
+  pull_request:
     paths:
       - "**/*.xml"
 
@@ -19,14 +19,26 @@ jobs:
       - name: Install xmllint
         run: sudo apt-get update && sudo apt-get install -y libxml2-utils
 
-      - name: Validate XML files against NeTEx XSD
+      - name: Validate only changed XML files
         run: |
           SCHEMA="XSD 2.0/xsd/NeTEx_publication.xsd"
 
           echo "Using schema: $SCHEMA"
-          echo "Searching for XML files…"
 
-          find . -name "*.xml" | while read xmlfile; do
-            echo "Validating $xmlfile"
-            xmllint --schema "$SCHEMA" --noout "$xmlfile"
+          # Get changed files depending on event type
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            CHANGED=$(git diff --name-only ${{ github.base_ref }} ${{ github.head_ref }})
+          else
+            CHANGED=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
+          fi
+
+          echo "Changed files:"
+          echo "$CHANGED"
+
+          # Filter only XML files
+          for xmlfile in $CHANGED; do
+            if [[ "$xmlfile" == *.xml ]]; then
+              echo "Validating $xmlfile"
+              xmllint --schema "$SCHEMA" --noout "$xmlfile"
+            fi
           done
