@@ -20,7 +20,7 @@
                         </OperatingDay>
                     </operatingDays>
                 </ServiceCalendarFrame>
-                <ServiceFrame id="SF:Example:1" version="1">
+                <ServiceFrame id="ERP:Example:1" version="1">
                     <lines>
                         <Line id="LINE:RE10" version="1">
                             <Name>RE10</Name>
