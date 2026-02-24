@@ -3,7 +3,7 @@
     <PublicationTimestamp>2026-03-01T00:00:00Z</PublicationTimestamp>
     <ParticipantRef>ENTUR</ParticipantRef>
     <Description>Eksempel: DatedServiceJourney avgang Oslo S til Trondheim S</Description>
-    <DataObjects>
+    <dataObjects>
         <CompositeFrame id="ERP:Example:1" version="1">
             <frames>
                 <ResourceFrame version="1" id="ERP:resources">
@@ -46,5 +46,5 @@
                 </TimetableFrame>
             </frames>
         </CompositeFrame>
-    </DataObjects>
+    </dataObjects>
 </PublicationDelivery>
