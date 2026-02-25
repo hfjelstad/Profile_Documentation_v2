@@ -24,6 +24,7 @@ How-to guides, conceptual overviews, and validation instructions.
 - Interchange Only
   - [README](../Guides/InterchangeOnly/README.md) — scope and intent of the Interchange-only profile.
   - [Mandatory Interchange Guide](../Guides/InterchangeOnly/MandatoryInterchange_Guide.md) — required elements and constraints.
+- [NeTEx Conventions](../Guides/NeTEx_Conventions.md) — casing rules (lowerCamelCase for lists) and a minimal example.
 
 ## Frames
 Model-specific frame directories used to organize data and documentation.
@@ -92,3 +93,4 @@ Automation for validating XML and ensuring quality.
 
 ## Examples
 - Prompt and response examples for LLM: [Table of Examples](TableOfExamples.md).
+- Best-practice PublicationDelivery XML: [Frames/Example_PublicationDelivery.xml](../Frames/Example_PublicationDelivery.xml).
