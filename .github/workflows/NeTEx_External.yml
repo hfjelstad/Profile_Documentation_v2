@@ -30,7 +30,12 @@ jobs:
 
       - name: Set output
         id: result
-        run: echo "errors=$(cat errors.txt)" >> $GITHUB_OUTPUT
+        run: |
+          {
+            echo "errors<<EOF"
+            cat errors.txt
+            echo "EOF"
+          } >> $GITHUB_OUTPUT
 
     outputs:
       errors: ${{ steps.result.outputs.errors }}
