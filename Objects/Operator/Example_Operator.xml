@@ -1,13 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<netex:Organisations xmlns:netex="http://www.netex.org.uk/netex" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.netex.org.uk/netex NeTEx_publication.xsd">
-    <netex:operators>
-        <netex:Operator id="ERP:Operator:OP1" version="1">
-            <netex:Name>Example Transport Operator</netex:Name>
-            <netex:ShortName>ETO</netex:ShortName>
-            <netex:ContactDetails>
-                <netex:Phone>+47 12345678</netex:Phone>
-                <netex:Email>contact@example.com</netex:Email>
-            </netex:ContactDetails>
-        </netex:Operator>
-    </netex:operators>
-</netex:Organisations>
+<PublicationDelivery xmlns="http://www.netex.org.uk/netex"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  version="2.0">
+  <PublicationTimestamp>2026-02-25T14:22:00Z</PublicationTimestamp>
+  <ParticipantRef>ENTUR</ParticipantRef>
+  <DataObjects>
+    <CompositeFrame id="ENT:CompositeFrame:OperatorExample:1" version="1">
+      <frames>
+        <ResourceFrame id="ENT:ResourceFrame:1" version="1">
+          <organisations>
+            <Operator id="ENT:Operator:OP_001:1" version="1">
+              <Name>Example Operator</Name>
+              <ShortName>OP</ShortName>
+              <ContactDetails>
+                <Email>operator@example.org</Email>
+              </ContactDetails>
+            </Operator>
+          </organisations>
+        </ResourceFrame>
+      </frames>
+    </CompositeFrame>
+  </DataObjects>
+</PublicationDelivery>
