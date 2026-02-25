@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PublicationDelivery xmlns="http://www.netex.org.uk/netex" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.0">
+  <PublicationTimestamp>2026-02-25T14:22:00Z</PublicationTimestamp>
+  <ParticipantRef>ENTUR</ParticipantRef>
+  <dataObjects>
+    <ResourceFrame version="1" id="ERP:ResourceFrame:Core">
+      <organisations>
+        <Authority version="1" id="ERP:Authority:1">
+          <Name>Example Authority</Name>
+        </Authority>
+        <Operator version="1" id="ERP:Operator:1">
+          <Name>Example Operator</Name>
+        </Operator>
+      </organisations>
+      <vehicleTypes>
+        <VehicleType version="1" id="ERP:VehicleType:1"/>
+      </vehicleTypes>
+      <vehicles>
+        <Vehicle version="1" id="ERP:Vehicle:1">
+          <VehicleTypeRef ref="ERP:VehicleType:1" version="1"/>
+        </Vehicle>
+      </vehicles>
+    </ResourceFrame>
+  </dataObjects>
+</PublicationDelivery>
