@@ -1,30 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<PublicationDelivery xmlns="http://www.netex.org.uk/netex" version="1.09">
-  <PublicationTimestamp>2026-02-23T13:52:00Z</PublicationTimestamp>
-  <ParticipantRef>ERP:publisher:1</ParticipantRef>
-  <DataObjects>
-    <CompositeFrame id="ERP:CompositeFrame:Timetable:1" version="1">
-      <Frames>
-        <TimetableFrame id="ERP:TimetableFrame:2026-03" version="1">
-          <VehicleJourneys>
-            <DatedServiceJourney id="ERP:DSJ:reinforcement-01" version="1">
-              <ServiceJourneyRef ref="ERP:SJ:1001"/>
-              <OperatingDayRef ref="ERP:OD:2026-03-01"/>
-              <ServiceAlteration>extraJourney</ServiceAlteration>
-            </DatedServiceJourney>
-          </VehicleJourneys>
-          <ServiceJourneys>
-            <ServiceJourney id="ERP:SJ:1001" version="1">
-              <JourneyPatternRef ref="ERP:JP:10"/>
-            </ServiceJourney>
-          </ServiceJourneys>
-          <OperatingDays>
-            <OperatingDay id="ERP:OD:2026-03-01" version="1">
-              <CalendarDate>2026-03-01</CalendarDate>
-            </OperatingDay>
-          </OperatingDays>
-        </TimetableFrame>
-      </Frames>
-    </CompositeFrame>
-  </DataObjects>
+<PublicationDelivery xmlns="http://www.netex.org.uk/netex" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:siri="http://www.siri.org.uk/siri" version="1.0">
+    <PublicationTimestamp>2026-02-23T13:52:00Z</PublicationTimestamp>
+    <ParticipantRef>ERP:publisher:1</ParticipantRef>
+    <dataObjects>
+        <CompositeFrame id="ERP:CompositeFrame:Timetable:1" version="1">
+            <frames>
+                <ServiceCalendarFrame version="1" id="ERP:ServiceCalendarFrame:Z">
+                    <operatingDays>
+                        <OperatingDay id="ERP:OD:2026-03-01" version="1">
+                            <CalendarDate>2026-03-01</CalendarDate>
+                        </OperatingDay>
+                    </operatingDays>
+                </ServiceCalendarFrame>
+                <TimetableFrame id="ERP:TimetableFrame:2026-03" version="1">
+                    <vehicleJourneys>
+                        <ServiceJourney id="ERP:SJ:1001" version="1">
+                            <JourneyPatternRef ref="ERP:JP:10"/>
+                        </ServiceJourney>
+                        <DatedServiceJourney id="ERP:DSJ:reinforcement-01" version="1">
+                            <ServiceAlteration>extraJourney</ServiceAlteration>
+                            <ServiceJourneyRef ref="ERP:SJ:1001"/>
+                            <OperatingDayRef ref="ERP:OD:2026-03-01"/>
+                        </DatedServiceJourney>
+                    </vehicleJourneys>
+                </TimetableFrame>
+            </frames>
+        </CompositeFrame>
+    </dataObjects>
 </PublicationDelivery>

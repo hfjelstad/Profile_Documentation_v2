@@ -10,25 +10,23 @@
     + Multiple references (0..*)
     - DatedServiceJourneyRef (removed)
 -->
-<PublicationDelivery xmlns="http://www.netex.org.uk/netex" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0">
-  <PublicationTimestamp>2026-03-01T10:00:00Z</PublicationTimestamp>
-  <ParticipantRef>ERP</ParticipantRef>
-
-  <dataObjects>
-    <frames>
-      <TimetableFrame version="1" id="ERP:TimetableFrame:1">
-        <!-- DIFF: Reinforcing multiple base dated journeys -->
-        <DatedServiceJourney version="2" id="ERP:DatedServiceJourney:MultiRef04">
-          <ServiceAlteration>extraJourney</ServiceAlteration>
-          <ServiceJourneyRef ref="ERP:ServiceJourney:Core"/>
-          <OperatingDayRef ref="ERP:OperatingDay:2026-03-07"/>
-          <replacedJourneys>
-            <!-- DIFF: Multiple DatedVehicleJourneyRef entries allowed (0..*). -->
-            <DatedVehicleJourneyRef ref="ERP:DatedServiceJourney:Core"/>
-            <DatedVehicleJourneyRef ref="ERP:DatedServiceJourney:SpecialEvent"/>
-          </replacedJourneys>
-        </DatedServiceJourney>
-      </TimetableFrame>
-    </frames>
-  </dataObjects>
+<?xml version="1.0" encoding="UTF-8"?>
+<PublicationDelivery xmlns="http://www.netex.org.uk/netex" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:siri="http://www.siri.org.uk/siri" version="1.0">
+    <PublicationTimestamp>2026-03-01T10:00:00Z</PublicationTimestamp>
+    <ParticipantRef>ERP</ParticipantRef>   
+    <dataObjects>
+        <TimetableFrame version="1" id="ERP:TimetableFrame:1">
+            <vehicleJourneys>
+                <DatedServiceJourney version="2" id="ERP:DatedServiceJourney:MultiRef04">
+                    <ServiceAlteration>extraJourney</ServiceAlteration>
+                    <ServiceJourneyRef ref="ERP:ServiceJourney:Core"/>
+                    <replacedJourneys>
+                        <DatedVehicleJourneyRef ref="ERP:DatedServiceJourney:Core"/>
+                        <DatedVehicleJourneyRef ref="ERP:DatedServiceJourney:SpecialEvent"/>
+                    </replacedJourneys>
+                    <OperatingDayRef ref="ERP:OperatingDay:2026-03-07"/>
+                </DatedServiceJourney>
+            </vehicleJourneys>
+        </TimetableFrame>
+    </dataObjects>
 </PublicationDelivery>
