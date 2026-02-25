@@ -1,11 +1,17 @@
 # Table of Examples
 
 ## Frames
-- **Example_PublicationDelivery.xml**: Komplett eksempel på PublicationDelivery med CompositeFrame, ResourceFrame og ServiceFrame.
+- CompositeFrame example
+- ResourceFrame example
+- ServiceFrame example
 
 ## Objects
 - **Operator**: Example_Operator.xml
 - **DayType**: Example_DayType.xml
 - **Interchange**: Example_Interchange.xml
 - **JourneyPattern**: Example_JourneyPattern.xml
-- ... (flere objekter)
+- **ServiceJourney**: Example_ServiceJourney.xml
+- **StopPlace**: Example_StopPlace.xml
+- **Vehicle**: Example_Vehicle.xml
+- **VehicleType**: Example_VehicleType.xml
+- **TrainBlock**: Example_TrainBlock.xml
