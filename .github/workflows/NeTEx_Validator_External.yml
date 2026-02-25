@@ -1,3 +1,5 @@
+name: External NeTEx validator
+
 on:
   workflow_dispatch:
     inputs:
