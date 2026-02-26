@@ -177,12 +177,12 @@ jobs:
             xmllint.err
             errors.txt
 
-      # Gate that turns the job red if validation failed (based on exit code)
+      # Gate that turns the job red if validation failed (robust)
       - name: Fail job if validation failed
-        if: ${{ steps.validate.outputs.exitCode != '0' }}
+        if: ${{ always() && (steps.validate.outcome == 'failure' || fromJson(steps.validate.outputs.exitCode || '1') != 0) }}
         shell: bash
         run: |
-          echo "Validation failed (exitCode=${{ steps.validate.outputs.exitCode }}); forcing job to fail."
+          echo "Validation failed (exitCode=${{ steps.validate.outputs.exitCode || 'unknown' }}); forcing job to fail."
           exit 1
 
     outputs:
