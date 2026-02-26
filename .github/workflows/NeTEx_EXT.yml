@@ -10,15 +10,13 @@ on:
 
 permissions:
   contents: read
-  # (Valgfritt) Om du bruker OIDC eller trenger mer granulerte tilganger,
-  # må du sikre at tokenet du bruker fra Power Automate har 'actions:read' i GitHub.
 
 jobs:
   NeTEx_External:
     runs-on: ubuntu-latest
 
+    # Outputs som Power Automate henter fra /jobs API
     outputs:
-      # Gjør disse tilgjengelig for API-kallet /runs/{run_id}/jobs
       errors: ${{ steps.result.outputs.errors }}
       exitCode: ${{ steps.validate.outputs.exitCode }}
 
@@ -27,7 +25,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      # Skriv XML-innhold trygt til fil (heredoc med ' for å unngå ekspansjon)
       - name: Write XML to file (heredoc-safe)
         shell: bash
         run: |
@@ -35,25 +32,20 @@ jobs:
           ${{ github.event.inputs.xmlContent }}
           EOF_XML
 
-      # (Valgfritt) Print de første linjene for enkel feilsøking
       - name: Output input.xml (for inspection)
         shell: bash
         run: |
           echo "===== BEGIN input.xml ====="
           nl -ba input.xml | sed -n '1,200p'
-          echo "------ Non-printable visualization (sed -nle \"l\") ------"
-          sed -nle '1,200{l;p;}' input.xml | sed -n '1,200p'
-          echo "===== END input.xml ====="
+          echo "==========================="
 
       - name: Install validator
         run: sudo apt-get update && sudo apt-get install -y libxml2-utils
 
-      # Normaliser CRLF -> LF for å unngå parsing-issues på Linux
       - name: Normalize line endings
         shell: bash
         run: sed -i 's/\r$//' input.xml
 
-      # (Valgfritt) Problem-matcher slik at xmllint-feil vises som annotasjoner
       - name: Register xmllint problem matcher
         shell: bash
         run: |
@@ -78,117 +70,80 @@ jobs:
           JSON
           echo "::add-matcher::.xmllint-matcher.json"
 
-      # ✅ Robust validering + garantert feilsamling ved feil
+      # 🔥 NY ROBUST VALIDATOR — garanterer riktig exitCode basert på stderr-innhold
       - name: Validate with NeTEx XSD
         id: validate
-        continue-on-error: true   # Vi samler alltid loggene først
+        continue-on-error: true
         shell: bash
         run: |
           set -o pipefail
           SCHEMA_PATH="XSD 2.0/xsd/NeTEx_publication.xsd"
 
+          # Sjekk at XSD finnes
           if [ ! -f "$SCHEMA_PATH" ]; then
-            echo "::error title=Schema not found::'$SCHEMA_PATH' does not exist in the workspace."
+            echo "::error::Schema file missing: $SCHEMA_PATH"
             echo "Schema file missing: $SCHEMA_PATH" > xmllint.err
-            echo "exitCode=2" >> "$GITHUB_OUTPUT"
-            # Lag en tom stdout for konsistens
             : > xmllint.out
-            exit 2
-          fi
+            EXIT_CODE=2
+          else
+            # Kjør xmllint – ikke stol på exitCode, bruk stderr for feil
+            xmllint --schema "$SCHEMA_PATH" input.xml \
+              1> xmllint.out \
+              2> xmllint.err
 
-          # Kjør validator: skill stdout/stderr og speil stderr til konsoll (for matcher)
-          xmllint --noout --schema "$SCHEMA_PATH" input.xml \
-            1> xmllint.out \
-            2> >(tee xmllint.err >&2)
-          EXIT_CODE=$?
-
-          # Garanter at vi har noe i stderr når det feiler
-          if [ $EXIT_CODE -ne 0 ]; then
-            if [ ! -s xmllint.err ]; then
-              echo "(xmllint feilet, men stderr var tom — mulig ufullstendig/avbrutt output eller parserfeil)" > xmllint.err
+            if [ -s xmllint.err ]; then
+              # Vi fant feil i stderr → validering feilet
+              EXIT_CODE=1
+            else
+              EXIT_CODE=0
             fi
           fi
 
-          # Lagre exit-code som step output
+          # Garanter at stderr ikke er tom ved feil
+          if [ $EXIT_CODE -ne 0 ] && [ ! -s xmllint.err ]; then
+            echo "(xmllint feilet, men stderr var tom — mulig parseravbrudd)" > xmllint.err
+          fi
+
           echo "exitCode=$EXIT_CODE" >> "$GITHUB_OUTPUT"
 
-          # Vis første linjer i loggene i konsollen (for rask lesing i UI)
-          echo "----- xmllint stdout (first 50 lines) -----"
+          echo "---- FIRST 50 LINES OF STDOUT ----"
           sed -n '1,50p' xmllint.out || true
 
-          echo "----- xmllint stderr (first 200 lines) -----"
+          echo "---- FIRST 200 LINES OF STDERR ----"
           sed -n '1,200p' xmllint.err || true
 
-      # 📤 Sett workflow-output KUN når det faktisk er feil
+      # 📤 Sett errors-output *kun dersom validering feilet*
       - name: Set output (errors)
         id: result
         if: always()
         shell: bash
         run: |
           EXIT_CODE="${{ steps.validate.outputs.exitCode }}"
-          if [ "${EXIT_CODE:-1}" != "0" ]; then
+          if [ "$EXIT_CODE" != "0" ]; then
             {
               echo "errors<<EOF_ERRORS"
-              # Begrens til 400 linjer for å unngå gigantiske outputs
               sed -n '1,400p' xmllint.err
               echo "EOF_ERRORS"
             } >> "$GITHUB_OUTPUT"
           fi
 
-      # Gruppér mer detaljert logg i UI (valgfritt)
-      - name: Grouped validation log
-        if: always()
-        shell: bash
-        run: |
-          echo "::group::xmllint stdout (first 200 lines)"
-          sed -n '1,200p' xmllint.out 2>/dev/null || true
-          [ "$(wc -l < xmllint.out 2>/dev/null || echo 0)" -gt 200 ] && echo "... (truncated) ..."
-          echo "::endgroup::"
-
-          echo "::group::xmllint stderr (first 400 lines)"
-          sed -n '1,400p' xmllint.err 2>/dev/null || true
-          [ "$(wc -l < xmllint.err 2>/dev/null || echo 0)" -gt 400 ] && echo "... (truncated) ..."
-          echo "::endgroup::"
-
-      # Pent sammendrag i GitHub UI
       - name: Add Job Summary
         if: always()
         shell: bash
         run: |
           EXIT_CODE="${{ steps.validate.outputs.exitCode }}"
-          {
-            echo "## NeTEx validation result"
-            echo ""
-            if [ "${EXIT_CODE:-1}" = "0" ]; then
-              echo "**Status:** ✅ Success"
-            else
-              echo "**Status:** ❌ Failed"
-            fi
-            echo ""
-            echo "### xmllint output"
-            echo ""
-            if [ -s xmllint.out ]; then
-              echo "<details><summary>Stdout (first 200 lines)</summary>"
-              echo ""
-              sed -n '1,200p' xmllint.out | sed 's/^/    /'
-              echo ""
-              echo "</details>"
-            fi
-            if [ -s xmllint.err ]; then
-              echo "<details open><summary>Stderr (first 400 lines)</summary>"
-              echo ""
-              sed -n '1,400p' xmllint.err | sed 's/^/    /'
-              echo ""
-              echo "</details>"
-            fi
-            echo ""
-            echo "### Context"
-            echo "- Schema: \`XSD 2.0/xsd/NeTEx_publication.xsd\`"
-            echo "- File: \`input.xml\`"
-            echo "- Exit code: \`${EXIT_CODE:-unknown}\`"
-          } >> "$GITHUB_STEP_SUMMARY"
+          echo "## NeTEx validation result" >> $GITHUB_STEP_SUMMARY
+          if [ "$EXIT_CODE" = "0" ]; then
+            echo "**Status:** ✅ Success" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "**Status:** ❌ Failed" >> $GITHUB_STEP_SUMMARY
+          fi
 
-      # Last opp artifacts for etterprøving
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Stderr" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          sed -n '1,200p' xmllint.err | sed 's/^/    /' >> $GITHUB_STEP_SUMMARY
+
       - name: Upload artifacts
         if: always()
         uses: actions/upload-artifact@v4
@@ -199,10 +154,7 @@ jobs:
             xmllint.out
             xmllint.err
 
-      # 🚦 Gjør jobben rød KUN ved reell valideringsfeil
+      # ❗ Feil jobben hvis valideringen faktisk feilet
       - name: Fail job if validation failed
-        if: ${{ always() && (steps.validate.outcome == 'failure' || (steps.validate.outputs.exitCode != '' && steps.validate.outputs.exitCode != '0')) }}
-        shell: bash
-        run: |
-          echo "Validation failed (exitCode=${{ steps.validate.outputs.exitCode || 'unknown' }}); forcing job to fail."
-          exit 1
+        if: ${{ steps.validate.outputs.exitCode != '0' }}
+        run: exit 1
