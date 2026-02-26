@@ -36,27 +36,73 @@ jobs:
       - name: Install validator
         run: sudo apt-get update && sudo apt-get install -y libxml2-utils
 
-      # (Optional) Normalize line endings in case XML came from Windows tools
+      # Normalize CRLF -> LF to avoid schema/weird parsing issues
       - name: Normalize line endings
         shell: bash
         run: sed -i 's/\r$//' input.xml
 
+      # (Optional) Show schema directory just to be sure the path is right
+      - name: Sanity-check schema presence
+        shell: bash
+        run: |
+          ls -l "XSD 2.0/xsd/" || true
+
+      # (Optional) Register a problem matcher so xmllint errors become annotations
+      - name: Register xmllint problem matcher
+        shell: bash
+        run: |
+          cat > .xmllint-matcher.json <<'JSON'
+          {
+            "problemMatcher": [
+              {
+                "owner": "xmllint",
+                "pattern": [
+                  {
+                    "regexp": "^(.+?):([0-9]+):([0-9]+):\\s+(error|warning)\\s+:\\s+(.*)$",
+                    "file": 1,
+                    "line": 2,
+                    "column": 3,
+                    "severity": 4,
+                    "message": 5
+                  }
+                ]
+              }
+            ]
+          }
+          JSON
+          echo "::add-matcher::.xmllint-matcher.json"
+
       - name: Validate with NeTEx XSD
         id: validate
-        continue-on-error: true
+        continue-on-error: true     # keep running to collect logs & summary
         shell: bash
         run: |
           set -o pipefail
           SCHEMA_PATH="XSD 2.0/xsd/NeTEx_publication.xsd"
 
-          echo "Validating with schema: $SCHEMA_PATH"
-          xmllint --noout --schema "$SCHEMA_PATH" input.xml 2> errors.txt
+          if [ ! -f "$SCHEMA_PATH" ]; then
+            echo "::error title=Schema not found::'$SCHEMA_PATH' does not exist in the workspace."
+            echo "Schema missing: $SCHEMA_PATH" > errors.txt
+            echo "exitCode=2" >> "$GITHUB_OUTPUT"
+            exit 2
+          fi
+
+          # Capture stdout and stderr separately so we can show both clearly.
+          # Also echo stderr to console to trigger the problem matcher.
+          xmllint --noout --schema "$SCHEMA_PATH" input.xml 1> xmllint.out 2> >(tee xmllint.err >&2)
           EXIT_CODE=$?
 
+          # Persist for later steps
           echo "exitCode=$EXIT_CODE" >> "$GITHUB_OUTPUT"
 
-          echo "----- xmllint stderr -----"
-          cat errors.txt || true
+          # Convenience files for later steps
+          cp -f xmllint.err errors.txt || true
+
+          echo "----- xmllint stdout (first 50 lines) -----"
+          sed -n '1,50p' xmllint.out || true
+
+          echo "----- xmllint stderr (first 200 lines) -----"
+          sed -n '1,200p' xmllint.err || true
 
       - name: Set output (errors)
         id: result
@@ -69,32 +115,55 @@ jobs:
             echo "EOF"
           } >> "$GITHUB_OUTPUT"
 
+      - name: Grouped validation log
+        if: always()
+        shell: bash
+        run: |
+          echo "::group::xmllint stdout (first 200 lines)"
+          sed -n '1,200p' xmllint.out 2>/dev/null || true
+          [ "$(wc -l < xmllint.out 2>/dev/null || echo 0)" -gt 200 ] && echo "... (truncated) ..."
+          echo "::endgroup::"
+
+          echo "::group::xmllint stderr (first 400 lines)"
+          sed -n '1,400p' xmllint.err 2>/dev/null || true
+          [ "$(wc -l < xmllint.err 2>/dev/null || echo 0)" -gt 400 ] && echo "... (truncated) ..."
+          echo "::endgroup::"
+
       - name: Add Job Summary
         if: always()
         shell: bash
         run: |
+          EXIT_CODE="${{ steps.validate.outputs.exitCode }}"
           {
             echo "## NeTEx validation result"
             echo ""
-            if [ -s errors.txt ]; then
+            if [ "$EXIT_CODE" = "0" ]; then
+              echo "**Status:** ✅ Success"
+            else
               echo "**Status:** ❌ Failed"
+            fi
+            echo ""
+            echo "### xmllint output"
+            echo ""
+            if [ -s xmllint.out ]; then
+              echo "<details><summary>Stdout (first 200 lines)</summary>"
               echo ""
-              echo "<details><summary>Errors (stderr)</summary>"
-              echo ""
-              # Show first 400 lines to avoid massive summaries
-              sed -n '1,400p' errors.txt | sed 's/^/    /'
+              sed -n '1,200p' xmllint.out | sed 's/^/    /'
               echo ""
               echo "</details>"
-            else
-              echo "**Status:** ✅ Success"
-              echo ""
-              echo "_No errors reported by xmllint._"
             fi
-
+            if [ -s xmllint.err ]; then
+              echo "<details open><summary>Stderr (first 400 lines)</summary>"
+              echo ""
+              sed -n '1,400p' xmllint.err | sed 's/^/    /'
+              echo ""
+              echo "</details>"
+            fi
             echo ""
             echo "### Context"
             echo "- Schema: \`XSD 2.0/xsd/NeTEx_publication.xsd\`"
             echo "- File: \`input.xml\`"
+            echo "- Exit code: \`$EXIT_CODE\`"
           } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload artifacts
@@ -104,14 +173,16 @@ jobs:
           name: netex-validation-logs
           path: |
             input.xml
+            xmllint.out
+            xmllint.err
             errors.txt
 
-      # Gate that turns the job red if validation failed
+      # Gate that turns the job red if validation failed (based on exit code)
       - name: Fail job if validation failed
-        if: steps.validate.outcome == 'failure'
+        if: ${{ steps.validate.outputs.exitCode != '0' }}
         shell: bash
         run: |
-          echo "Validation failed; forcing job to fail."
+          echo "Validation failed (exitCode=${{ steps.validate.outputs.exitCode }}); forcing job to fail."
           exit 1
 
     outputs:
