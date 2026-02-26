@@ -3,8 +3,9 @@ name: External NeTEx validator
 on:
   workflow_dispatch:
     inputs:
-      xmlContent:
-        description: "Raw XML to validate"
+      # Use base64 to avoid any quoting/newline/command parsing issues from PA
+      xmlContentB64:
+        description: "Base64-encoded NeTEx XML"
         required: true
         type: string
 
@@ -15,46 +16,55 @@ jobs:
       - uses: actions/checkout@v4
         with: { fetch-depth: 0 }
 
-      - name: Write XML to file
-        shell: bash
-        run: |
-          # If you later switch to base64, replace the next line with:
-          # echo "${{ github.event.inputs.xmlContentB64 }}" | base64 -d > input.xml
-          echo "${{ github.event.inputs.xmlContent }}" > input.xml
-
       - name: Install validator
         run: sudo apt-get update && sudo apt-get install -y libxml2-utils
+
+      - name: Write XML to file (base64 → input.xml)
+        shell: bash
+        run: |
+          set -e
+          : > input.xml
+          echo "${{ github.event.inputs.xmlContentB64 }}" | base64 -d > input.xml
+          echo "Wrote $(wc -c < input.xml) bytes to input.xml"
+          echo "Head of input.xml:"
+          sed -n '1,10p' input.xml
 
       - name: Validate with NeTEx XSD (capture exit code + messages)
         id: validate
         shell: bash
+        continue-on-error: true   # collect all messages; don’t kill the job here
         run: |
-          # Ensure no stale content
+          set -e
+          SCHEMA="XSD 2.0/xsd/NeTEx_publication.xsd"
+
+          # Basic sanity: does the schema exist at that path?
+          if [ ! -f "$SCHEMA" ]; then
+            echo "ERROR: Schema not found at: $SCHEMA"
+          else
+            echo "Found schema at: $SCHEMA"
+          fi
+
+          # Clear any old content
           : > errors.txt
 
-          # Run validator; capture stderr to file but DO NOT fail the step on non-zero yet
+          # Run validator; capture stderr to errors.txt, capture exit code
           set +e
-          xmllint --noout --schema "XSD 2.0/xsd/NeTEx_publication.xsd" input.xml 2> errors.txt
+          xmllint --noout --schema "$SCHEMA" input.xml 2> errors.txt
           exit_code=$?
           set -e
 
           echo "Validator exit code: $exit_code"
-          # Show messages in logs for convenience
-          if [ -s errors.txt ]; then
-            echo "Validator messages:"
-            sed -n '1,200p' errors.txt
-          else
-            echo "No validator messages."
-          fi
 
-          # Expose multi-line output for flows/agents
+          echo "::group::First 50 lines of validator stderr"
+          if [ -s errors.txt ]; then sed -n '1,50p' errors.txt; else echo "(no messages)"; fi
+          echo "::endgroup::"
+
+          # Expose outputs for your flow
           {
             echo "errors<<EOF"
             cat errors.txt || true
             echo "EOF"
           } >> "$GITHUB_OUTPUT"
-
-          # Also expose exit code as an output
           echo "exit_code=$exit_code" >> "$GITHUB_OUTPUT"
 
       - name: Upload validation errors (always)
@@ -70,10 +80,10 @@ jobs:
         shell: bash
         run: |
           if [ "${{ steps.validate.outputs.exit_code }}" != "0" ]; then
-            echo "Validation failed (exit code ${{ steps.validate.outputs.exit_code }})"
+            echo "Validation FAILED (exit code ${{ steps.validate.outputs.exit_code }})"
             exit 1
           else
-            echo "Validation succeeded (exit code 0)"
+            echo "Validation SUCCEEDED (exit code 0)"
           fi
 
     outputs:
