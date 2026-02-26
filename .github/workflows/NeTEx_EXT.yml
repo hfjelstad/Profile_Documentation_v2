@@ -16,26 +16,51 @@ jobs:
         with: { fetch-depth: 0 }
 
       - name: Write XML to file
+        shell: bash
         run: |
           echo "${{ github.event.inputs.xmlContent }}" > input.xml
 
       - name: Install validator
         run: sudo apt-get update && sudo apt-get install -y libxml2-utils
 
+      # 1) RUN VALIDATOR but DON'T kill the job on error
       - name: Validate with NeTEx XSD
         id: validate
+        shell: bash
+        continue-on-error: true
         run: |
-          xmllint --noout --schema "XSD 2.0/xsd/NeTEx_publication.xsd" input.xml 2> errors.txt || true
-          cat errors.txt
+          # Run once, capture all stderr into errors.txt
+          xmllint --noout --schema "XSD 2.0/xsd/NeTEx_publication.xsd" input.xml 2> errors.txt
+          # Show whatever was produced for logs (won't fail if file is empty)
+          cat errors.txt || true
 
-      - name: Set output
-        id: result
-        run: |
+          # Multi-line output (handy for tools/flows)
           {
             echo "errors<<EOF"
-            cat errors.txt
+            cat errors.txt || true
             echo "EOF"
-          } >> $GITHUB_OUTPUT
+          } >> "$GITHUB_OUTPUT"
+
+      # 2) ALWAYS upload artifact so your flow/agent can fetch clean text
+      - name: Upload validation errors (if any)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: validation
+          path: errors.txt
+          if-no-files-found: ignore
+
+      # 3) FINAL GATE: fail the job IF there are errors
+      - name: Fail if errors found
+        if: always()
+        shell: bash
+        run: |
+          if [ -s errors.txt ]; then
+            echo "Validation errors detected — failing the job."
+            exit 1
+          else
+            echo "No validation errors."
+          fi
 
     outputs:
-      errors: ${{ steps.result.outputs.errors }}
+      errors: ${{ steps.validate.outputs.errors }}
