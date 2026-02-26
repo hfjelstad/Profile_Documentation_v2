@@ -11,9 +11,11 @@ on:
 jobs:
   NeTEx_External:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v4
-        with: { fetch-depth: 0 }
+        with:
+          fetch-depth: 0
 
       - name: Write XML to file (heredoc-safe)
         shell: bash
@@ -26,7 +28,6 @@ jobs:
         shell: bash
         run: |
           echo "===== BEGIN input.xml ====="
-          # Show line numbers to spot whitespace issues; -v shows non-printing chars
           nl -ba input.xml | sed -n '1,200p'
           echo "------ Non-printable visualization (sed -nle \"l\") ------"
           sed -nle '1,200{l;p;}' input.xml | sed -n '1,200p'
@@ -35,24 +36,83 @@ jobs:
       - name: Install validator
         run: sudo apt-get update && sudo apt-get install -y libxml2-utils
 
+      # (Optional) Normalize line endings in case XML came from Windows tools
+      - name: Normalize line endings
+        shell: bash
+        run: sed -i 's/\r$//' input.xml
+
       - name: Validate with NeTEx XSD
         id: validate
+        continue-on-error: true
         shell: bash
         run: |
           set -o pipefail
-          xmllint --noout --schema "XSD 2.0/xsd/NeTEx_publication.xsd" input.xml 2> errors.txt || true
+          SCHEMA_PATH="XSD 2.0/xsd/NeTEx_publication.xsd"
+
+          echo "Validating with schema: $SCHEMA_PATH"
+          xmllint --noout --schema "$SCHEMA_PATH" input.xml 2> errors.txt
+          EXIT_CODE=$?
+
+          echo "exitCode=$EXIT_CODE" >> "$GITHUB_OUTPUT"
+
           echo "----- xmllint stderr -----"
           cat errors.txt || true
 
-      - name: Set output
+      - name: Set output (errors)
         id: result
+        if: always()
         shell: bash
         run: |
           {
             echo "errors<<EOF"
-            cat errors.txt
+            cat errors.txt 2>/dev/null || true
             echo "EOF"
           } >> "$GITHUB_OUTPUT"
+
+      - name: Add Job Summary
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo "## NeTEx validation result"
+            echo ""
+            if [ -s errors.txt ]; then
+              echo "**Status:** ❌ Failed"
+              echo ""
+              echo "<details><summary>Errors (stderr)</summary>"
+              echo ""
+              # Show first 400 lines to avoid massive summaries
+              sed -n '1,400p' errors.txt | sed 's/^/    /'
+              echo ""
+              echo "</details>"
+            else
+              echo "**Status:** ✅ Success"
+              echo ""
+              echo "_No errors reported by xmllint._"
+            fi
+
+            echo ""
+            echo "### Context"
+            echo "- Schema: \`XSD 2.0/xsd/NeTEx_publication.xsd\`"
+            echo "- File: \`input.xml\`"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: netex-validation-logs
+          path: |
+            input.xml
+            errors.txt
+
+      # Gate that turns the job red if validation failed
+      - name: Fail job if validation failed
+        if: steps.validate.outcome == 'failure'
+        shell: bash
+        run: |
+          echo "Validation failed; forcing job to fail."
+          exit 1
 
     outputs:
       errors: ${{ steps.result.outputs.errors }}
