@@ -15,27 +15,44 @@ jobs:
       - uses: actions/checkout@v4
         with: { fetch-depth: 0 }
 
-      - name: Write XML to file
+      - name: Write XML to file (heredoc-safe)
+        shell: bash
         run: |
-          echo "${{ github.event.inputs.xmlContent }}" > input.xml
+          cat > input.xml <<'EOF_XML'
+          ${{ github.event.inputs.xmlContent }}
+          EOF_XML
+
+      - name: Output input.xml (for inspection)
+        shell: bash
+        run: |
+          echo "===== BEGIN input.xml ====="
+          # Show line numbers to spot whitespace issues; -v shows non-printing chars
+          nl -ba input.xml | sed -n '1,200p'
+          echo "------ Non-printable visualization (sed -nle \"l\") ------"
+          sed -nle '1,200{l;p;}' input.xml | sed -n '1,200p'
+          echo "===== END input.xml ====="
 
       - name: Install validator
         run: sudo apt-get update && sudo apt-get install -y libxml2-utils
 
       - name: Validate with NeTEx XSD
         id: validate
+        shell: bash
         run: |
+          set -o pipefail
           xmllint --noout --schema "XSD 2.0/xsd/NeTEx_publication.xsd" input.xml 2> errors.txt || true
-          cat errors.txt
+          echo "----- xmllint stderr -----"
+          cat errors.txt || true
 
       - name: Set output
         id: result
+        shell: bash
         run: |
           {
             echo "errors<<EOF"
             cat errors.txt
             echo "EOF"
-          } >> $GITHUB_OUTPUT
+          } >> "$GITHUB_OUTPUT"
 
     outputs:
       errors: ${{ steps.result.outputs.errors }}
