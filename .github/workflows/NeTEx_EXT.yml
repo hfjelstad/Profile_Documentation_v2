@@ -15,7 +15,7 @@ jobs:
   NeTEx_External:
     runs-on: ubuntu-latest
 
-    # Outputs som Power Automate henter fra /jobs API
+    # Exposed to GitHub API for Power Automate
     outputs:
       errors: ${{ steps.result.outputs.errors }}
       exitCode: ${{ steps.validate.outputs.exitCode }}
@@ -70,7 +70,7 @@ jobs:
           JSON
           echo "::add-matcher::.xmllint-matcher.json"
 
-      # 🔥 NY ROBUST VALIDATOR — garanterer riktig exitCode basert på stderr-innhold
+      # 🔥 VALIDATOR – nå helt robust og riktig exit-kode
       - name: Validate with NeTEx XSD
         id: validate
         continue-on-error: true
@@ -79,29 +79,29 @@ jobs:
           set -o pipefail
           SCHEMA_PATH="XSD 2.0/xsd/NeTEx_publication.xsd"
 
-          # Sjekk at XSD finnes
+          # 1. Sjekk at schema finnes
           if [ ! -f "$SCHEMA_PATH" ]; then
             echo "::error::Schema file missing: $SCHEMA_PATH"
             echo "Schema file missing: $SCHEMA_PATH" > xmllint.err
             : > xmllint.out
             EXIT_CODE=2
           else
-            # Kjør xmllint – ikke stol på exitCode, bruk stderr for feil
+            # 2. Kjør validator – ikke stol på exitcode
             xmllint --schema "$SCHEMA_PATH" input.xml \
               1> xmllint.out \
               2> xmllint.err
 
+            # 3. Feil = stderr har innhold
             if [ -s xmllint.err ]; then
-              # Vi fant feil i stderr → validering feilet
               EXIT_CODE=1
             else
               EXIT_CODE=0
             fi
           fi
 
-          # Garanter at stderr ikke er tom ved feil
-          if [ $EXIT_CODE -ne 0 ] && [ ! -s xmllint.err ]; then
-            echo "(xmllint feilet, men stderr var tom — mulig parseravbrudd)" > xmllint.err
+          # 4. Sikkerhet: alltid output ved feil
+          if [ "$EXIT_CODE" != "0" ] && [ ! -s xmllint.err ]; then
+            echo "(xmllint feilet, men stderr var tom — mulig parser-avbrudd)" > xmllint.err
           fi
 
           echo "exitCode=$EXIT_CODE" >> "$GITHUB_OUTPUT"
@@ -112,7 +112,10 @@ jobs:
           echo "---- FIRST 200 LINES OF STDERR ----"
           sed -n '1,200p' xmllint.err || true
 
-      # 📤 Sett errors-output *kun dersom validering feilet*
+          # 5. ⬅⬅⬅ DENNE er det som fikser stegets conclusion!
+          exit $EXIT_CODE
+
+      # 📤 Sett output KUN når det er feil
       - name: Set output (errors)
         id: result
         if: always()
@@ -132,6 +135,7 @@ jobs:
         shell: bash
         run: |
           EXIT_CODE="${{ steps.validate.outputs.exitCode }}"
+
           echo "## NeTEx validation result" >> $GITHUB_STEP_SUMMARY
           if [ "$EXIT_CODE" = "0" ]; then
             echo "**Status:** ✅ Success" >> $GITHUB_STEP_SUMMARY
@@ -139,9 +143,7 @@ jobs:
             echo "**Status:** ❌ Failed" >> $GITHUB_STEP_SUMMARY
           fi
 
-          echo "" >> $GITHUB_STEP_SUMMARY
           echo "### Stderr" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
           sed -n '1,200p' xmllint.err | sed 's/^/    /' >> $GITHUB_STEP_SUMMARY
 
       - name: Upload artifacts
@@ -154,7 +156,7 @@ jobs:
             xmllint.out
             xmllint.err
 
-      # ❗ Feil jobben hvis valideringen faktisk feilet
+      # 🚨 FAIL JOB only if validation actually failed
       - name: Fail job if validation failed
         if: ${{ steps.validate.outputs.exitCode != '0' }}
         run: exit 1
