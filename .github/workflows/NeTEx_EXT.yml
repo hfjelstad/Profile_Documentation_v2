@@ -1,11 +1,10 @@
-name: External NeTEx validator
+name: External NeTEx validator (fail fast)
 
 on:
   workflow_dispatch:
     inputs:
-      # Use base64 to avoid any quoting/newline/command parsing issues from PA
-      xmlContentB64:
-        description: "Base64-encoded NeTEx XML"
+      xmlContent:
+        description: "Raw XML to validate"
         required: true
         type: string
 
@@ -19,72 +18,16 @@ jobs:
       - name: Install validator
         run: sudo apt-get update && sudo apt-get install -y libxml2-utils
 
-      - name: Write XML to file (base64 → input.xml)
+      - name: Write XML to file
         shell: bash
         run: |
-          set -e
-          : > input.xml
-          echo "${{ github.event.inputs.xmlContentB64 }}" | base64 -d > input.xml
-          echo "Wrote $(wc -c < input.xml) bytes to input.xml"
-          echo "Head of input.xml:"
-          sed -n '1,10p' input.xml
+          set -euo pipefail
+          # Write the XML verbatim; printf avoids echo+quote issues
+          printf '%s' "${{ github.event.inputs.xmlContent }}" > input.xml
 
-      - name: Validate with NeTEx XSD (capture exit code + messages)
-        id: validate
-        shell: bash
-        continue-on-error: true   # collect all messages; don’t kill the job here
-        run: |
-          set -e
-          SCHEMA="XSD 2.0/xsd/NeTEx_publication.xsd"
-
-          # Basic sanity: does the schema exist at that path?
-          if [ ! -f "$SCHEMA" ]; then
-            echo "ERROR: Schema not found at: $SCHEMA"
-          else
-            echo "Found schema at: $SCHEMA"
-          fi
-
-          # Clear any old content
-          : > errors.txt
-
-          # Run validator; capture stderr to errors.txt, capture exit code
-          set +e
-          xmllint --noout --schema "$SCHEMA" input.xml 2> errors.txt
-          exit_code=$?
-          set -e
-
-          echo "Validator exit code: $exit_code"
-
-          echo "::group::First 50 lines of validator stderr"
-          if [ -s errors.txt ]; then sed -n '1,50p' errors.txt; else echo "(no messages)"; fi
-          echo "::endgroup::"
-
-          # Expose outputs for your flow
-          {
-            echo "errors<<EOF"
-            cat errors.txt || true
-            echo "EOF"
-          } >> "$GITHUB_OUTPUT"
-          echo "exit_code=$exit_code" >> "$GITHUB_OUTPUT"
-
-      - name: Upload validation errors (always)
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: validation
-          path: errors.txt
-          if-no-files-found: ignore
-
-      - name: Final gate (fail only if validator exit code != 0)
-        if: always()
+      - name: Validate with NeTEx XSD (fail fast)
         shell: bash
         run: |
-          if [ "${{ steps.validate.outputs.exit_code }}" != "0" ]; then
-            echo "Validation FAILED (exit code ${{ steps.validate.outputs.exit_code }})"
-            exit 1
-          else
-            echo "Validation SUCCEEDED (exit code 0)"
-          fi
-
-    outputs:
-      errors: ${{ steps.validate.outputs.errors }}
+          set -euo pipefail
+          xmllint --noout --schema "XSD 2.0/xsd/NeTEx_publication.xsd" input.xml
+          # If xmllint finds an error it exits non‑zero and the job stops here
