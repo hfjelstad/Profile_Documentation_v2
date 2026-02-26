@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       xmlContent:
-        description: "Raw XML to validate"
+        description: "Raw XML content to validate"
         required: true
         type: string
 
@@ -15,27 +15,21 @@ jobs:
   NeTEx_External:
     runs-on: ubuntu-latest
 
-    # Eksponert til Power Automate via /runs/{id}/jobs
     outputs:
-      errors: ${{ steps.result.outputs.errors }}
-      exitCode: ${{ steps.result.outputs.exitCode }}
+      errors: ${{ steps.collect.outputs.errors }}
+      exitCode: ${{ steps.collect.outputs.exitCode }}
 
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Write XML to file (heredoc-safe)
+      - name: Store XML input to file
         shell: bash
         run: |
           cat > input.xml <<'EOF_XML'
           ${{ github.event.inputs.xmlContent }}
           EOF_XML
-
-      - name: Show input.xml (first 200 lines)
-        shell: bash
-        run: |
-          nl -ba input.xml | sed -n '1,200p'
 
       - name: Install validator
         run: sudo apt-get update && sudo apt-get install -y libxml2-utils
@@ -68,51 +62,56 @@ jobs:
           JSON
           echo "::add-matcher::.xmllint-matcher.json"
 
-      # ⭐ Robust validator – ingen continue-on-error
-      - name: Validate with NeTEx XSD
+      # ---------------------------------------------
+      #   ⭐ VALIDATION STEP (MUST NEVER EXIT 1)
+      # ---------------------------------------------
+      - name: Validate XML using NeTEx schema
         id: validate
         shell: bash
         run: |
-          set -o pipefail
           SCHEMA_PATH="XSD 2.0/xsd/NeTEx_publication.xsd"
 
-          # 1️⃣ Sjekk at schema finnes
+          # 1) Schema check
           if [ ! -f "$SCHEMA_PATH" ]; then
-            echo "Schema file missing: $SCHEMA_PATH" > xmllint.err
+            echo "::error title=Schema Missing::$SCHEMA_PATH not found"
+            echo "Schema missing: $SCHEMA_PATH" > xmllint.err
             : > xmllint.out
-            echo "::error title=Schema missing::$SCHEMA_PATH not found"
-            EXIT_CODE=2
+            echo "2" > exitcode.txt
+            exit 0
+          fi
+
+          # 2) Run xmllint
+          xmllint --schema "$SCHEMA_PATH" input.xml \
+            1> xmllint.out \
+            2> xmllint.err
+
+          # 3) Determine failure based on stderr
+          if [ -s xmllint.err ]; then
+            echo "::error title=NeTEx Validation Failed::See stderr output"
+            echo "1" > exitcode.txt
           else
-            # 2️⃣ Kjør xmllint (ikke stol på exit-code)
-            xmllint --schema "$SCHEMA_PATH" input.xml \
-              1> xmllint.out \
-              2> xmllint.err
-
-            # 3️⃣ Hvis stderr har innhold → valideringsfeil
-            if [ -s xmllint.err ]; then
-              echo "::error title=NeTEx validation failed::Errors found in XML"
-              EXIT_CODE=1
-            else
-              EXIT_CODE=0
-            fi
+            echo "0" > exitcode.txt
           fi
 
-          # 4️⃣ fallback hvis stderr uforståelig tom
-          if [ "$EXIT_CODE" != "0" ] && [ ! -s xmllint.err ]; then
-            echo "(xmllint feilet, men stderr var tom — mulig parser-avbrudd)" > xmllint.err
+          # Fallback if stderr is unexpectedly empty on error
+          if [ "$(cat exitcode.txt)" != "0" ] && [ ! -s xmllint.err ]; then
+            echo "(Validator failed but produced no stderr — parser aborted early)" > xmllint.err
           fi
 
-          # 5️⃣ LAST: skriv exitCode TIL workflow-outputs
-          echo "exitCode=$EXIT_CODE" >> $GITHUB_OUTPUT
+          # IMPORTANT: Do NOT exit 1 here. That breaks output forwarding.
+          exit 0
 
-      # ⭐ Sett errors-output kun ved feil
-      - name: Set workflow outputs
-        id: result
+      # ---------------------------------------------
+      #   ⭐ COLLECT OUTPUTS (SAFE STEP)
+      #   This step ALWAYS runs and ALWAYS sets job outputs.
+      # ---------------------------------------------
+      - name: Collect output for Power Automate
+        id: collect
         if: always()
         shell: bash
         run: |
-          EXIT_CODE="${{ steps.validate.outputs.exitCode }}"
-          echo "exitCode=${EXIT_CODE}" >> $GITHUB_OUTPUT
+          EXIT_CODE=$(cat exitcode.txt 2>/dev/null || echo "1")
+          echo "exitCode=$EXIT_CODE" >> $GITHUB_OUTPUT
 
           if [ "$EXIT_CODE" != "0" ]; then
             {
@@ -122,12 +121,13 @@ jobs:
             } >> $GITHUB_OUTPUT
           fi
 
-      - name: Add Job Summary
+      - name: Add summary
         if: always()
         shell: bash
         run: |
-          EXIT_CODE="${{ steps.validate.outputs.exitCode }}"
-          echo "## NeTEx validation result" >> $GITHUB_STEP_SUMMARY
+          EXIT_CODE=$(cat exitcode.txt)
+          echo "## NeTEx Validation Result" >> $GITHUB_STEP_SUMMARY
+
           if [ "$EXIT_CODE" = "0" ]; then
             echo "**Status:** ✅ Success" >> $GITHUB_STEP_SUMMARY
           else
@@ -135,7 +135,7 @@ jobs:
           fi
 
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "### Stderr (first 200 lines)" >> $GITHUB_STEP_SUMMARY
+          echo "### Stderr output" >> $GITHUB_STEP_SUMMARY
           sed -n '1,200p' xmllint.err | sed 's/^/    /' >> $GITHUB_STEP_SUMMARY
 
       - name: Upload artifacts
@@ -147,8 +147,11 @@ jobs:
             input.xml
             xmllint.out
             xmllint.err
+            exitcode.txt
 
-      # 🚨 Feiler jobben hvis valideringen feilet
+      # ---------------------------------------------
+      #   ⭐ FINAL FAILURE GATE (NOW RELIABLE)
+      # ---------------------------------------------
       - name: Fail job if validation failed
-        if: ${{ steps.validate.outputs.exitCode != '0' }}
+        if: ${{ steps.collect.outputs.exitCode != '0' }}
         run: exit 1
