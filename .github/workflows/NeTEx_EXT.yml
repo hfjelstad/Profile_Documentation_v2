@@ -15,6 +15,7 @@ jobs:
   NeTEx_External:
     runs-on: ubuntu-latest
 
+    # Exposed to API consumers (e.g., Power Automate)
     outputs:
       errors: ${{ steps.collect.outputs.errors }}
       exitCode: ${{ steps.collect.outputs.exitCode }}
@@ -62,7 +63,7 @@ jobs:
           JSON
           echo "::add-matcher::.xmllint-matcher.json"
 
-      # Pre-create log files so later steps never fail on 'file not found'
+      # Ensure logs exist so downstream steps never fail on 'file not found'
       - name: Prepare log files
         shell: bash
         run: |
@@ -71,7 +72,8 @@ jobs:
           : > exitcode.txt
 
       # ---------------------------------------------
-      #   ⭐ VALIDATION STEP (MUST NEVER EXIT 1)
+      #   ✅ VALIDATION — trust xmllint exit code
+      #   (do not 'exit 1' here; we gate at the end)
       # ---------------------------------------------
       - name: Validate XML using NeTEx schema
         id: validate
@@ -79,37 +81,36 @@ jobs:
         run: |
           SCHEMA_PATH="XSD 2.0/xsd/NeTEx_publication.xsd"
 
-          # 1) Schema check
+          # 1) Schema presence
           if [ ! -f "$SCHEMA_PATH" ]; then
-            echo "::error title=Schema Missing::$SCHEMA_PATH not found"
-            echo "Schema missing: $SCHEMA_PATH" > xmllint.err
             echo "2" > exitcode.txt
+            echo "Schema missing: $SCHEMA_PATH" > xmllint.err
+            echo "::error title=Schema Missing::$SCHEMA_PATH not found"
             exit 0
           fi
 
-          # 2) Run xmllint (stdout/stderr to files)
-          xmllint --schema "$SCHEMA_PATH" input.xml \
+          # 2) Run xmllint; '--noout' suppresses the "validates" message
+          xmllint --noout --schema "$SCHEMA_PATH" input.xml \
             1> xmllint.out \
             2> xmllint.err
+          EXIT_CODE=$?
 
-          # 3) Determine failure based on stderr content
-          if [ -s xmllint.err ]; then
-            echo "::error title=NeTEx Validation Failed::See stderr output"
-            echo "1" > exitcode.txt
-          else
-            echo "0" > exitcode.txt
+          echo "$EXIT_CODE" > exitcode.txt
+
+          # 3) Only annotate as error if validation failed
+          if [ "$EXIT_CODE" -ne 0 ]; then
+            # If tool produced no stderr, write a minimal fallback
+            if [ ! -s xmllint.err ]; then
+              echo "(Validation failed but no details were produced by xmllint)" > xmllint.err
+            fi
+            echo "::error title=NeTEx validation failed::See details in summary/artifacts"
           fi
 
-          # Fallback if stderr unexpectedly empty on error
-          if [ "$(cat exitcode.txt)" != "0" ] && [ ! -s xmllint.err ]; then
-            echo "(Validator failed but produced no stderr — parser aborted early)" > xmllint.err
-          fi
-
-          # Do NOT exit 1 here. We will fail the job at the final gate only if needed.
+          # Do NOT exit 1 here; downstream steps will still run
           exit 0
 
       # ---------------------------------------------
-      #   ⭐ COLLECT OUTPUTS (SAFE STEP)
+      #   📤 COLLECT OUTPUTS — for Power Automate
       # ---------------------------------------------
       - name: Collect output for Power Automate
         id: collect
@@ -117,39 +118,46 @@ jobs:
         shell: bash
         run: |
           EXIT_CODE=$(cat exitcode.txt 2>/dev/null || echo "1")
-          echo "exitCode=$EXIT_CODE" >> $GITHUB_OUTPUT
+          echo "exitCode=$EXIT_CODE" >> "$GITHUB_OUTPUT"
 
-          if [ "$EXIT_CODE" != "0" ]; then
+          if [ "$EXIT_CODE" -ne 0 ]; then
             {
               echo "errors<<EOF"
               sed -n '1,400p' xmllint.err
               echo "EOF"
-            } >> $GITHUB_OUTPUT
+            } >> "$GITHUB_OUTPUT"
           fi
 
+      # ---------------------------------------------
+      #   📝 SUMMARY — never fail on success
+      # ---------------------------------------------
       - name: Add summary
         if: always()
         shell: bash
         run: |
-          # DO NOT enable 'set -e' or 'pipefail' here. We don't want summary to fail the job.
+          set +e
           EXIT_CODE=$(cat exitcode.txt 2>/dev/null || echo "1")
           {
             echo "## NeTEx Validation Result"
-            echo ""
-            if [ "$EXIT_CODE" = "0" ]; then
+            echo
+            if [ "$EXIT_CODE" -eq 0 ]; then
               echo "**Status:** ✅ Success"
             else
               echo "**Status:** ❌ Failed"
             fi
-            echo ""
-            echo "### Stdout (first 200 lines)"
-            echo ""
-            sed -n '1,200p' xmllint.out | sed 's/^/    /' || true
-            echo ""
-            echo "### Stderr (first 200 lines)"
-            echo ""
-            # Guard: if file is empty or missing, this won't fail the step
-            sed -n '1,200p' xmllint.err | sed 's/^/    /' || true
+            echo
+            if [ -s xmllint.err ]; then
+              echo "### Stderr (first 200 lines)"
+              echo
+              sed -n '1,200p' xmllint.err | sed 's/^/    /'
+              echo
+            fi
+            if [ -s xmllint.out ]; then
+              echo "### Stdout (first 200 lines)"
+              echo
+              sed -n '1,200p' xmllint.out | sed 's/^/    /'
+              echo
+            fi
           } >> "$GITHUB_STEP_SUMMARY" || true
 
       - name: Upload artifacts
@@ -162,10 +170,10 @@ jobs:
             xmllint.out
             xmllint.err
             exitcode.txt
-          if-no-files-found: ignore    # <- prevent failure if any are missing
+          if-no-files-found: ignore
 
       # ---------------------------------------------
-      #   ⭐ FINAL FAILURE GATE (ONLY IF EXITCODE != 0)
+      #   🚦 FINAL GATE — fail only if exitCode != 0
       # ---------------------------------------------
       - name: Fail job if validation failed
         if: ${{ steps.collect.outputs.exitCode != '0' }}
