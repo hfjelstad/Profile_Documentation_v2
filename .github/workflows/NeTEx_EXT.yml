@@ -73,12 +73,13 @@ jobs:
 
       # ---------------------------------------------
       #   ✅ VALIDATION — trust xmllint exit code
-      #   (do not 'exit 1' here; we gate at the end)
+      #   (keep step green; gate at the end)
       # ---------------------------------------------
       - name: Validate XML using NeTEx schema
         id: validate
         shell: bash
         run: |
+          set -o pipefail
           SCHEMA_PATH="XSD 2.0/xsd/NeTEx_publication.xsd"
 
           # 1) Schema presence
@@ -89,16 +90,21 @@ jobs:
             exit 0
           fi
 
-          # 2) Run xmllint; '--noout' suppresses the "validates" message
+          # 2) Run xmllint; capture non-zero exit even under '-e'
+          set +e
           xmllint --noout --schema "$SCHEMA_PATH" input.xml \
             1> xmllint.out \
             2> xmllint.err
           EXIT_CODE=$?
+          set -e
 
           echo "$EXIT_CODE" > exitcode.txt
+          echo "Validator exit code: $EXIT_CODE"
 
-          # 3) Only annotate as error if validation failed
-          if [ "$EXIT_CODE" -ne 0 ]; then
+          if [ "$EXIT_CODE" -eq 0 ]; then
+            # xmllint often writes "input.xml validates" to STDERR on success → drop it
+            : > xmllint.err
+          else
             # If tool produced no stderr, write a minimal fallback
             if [ ! -s xmllint.err ]; then
               echo "(Validation failed but no details were produced by xmllint)" > xmllint.err
@@ -106,7 +112,7 @@ jobs:
             echo "::error title=NeTEx validation failed::See details in summary/artifacts"
           fi
 
-          # Do NOT exit 1 here; downstream steps will still run
+          # Keep step green; final gate will decide job conclusion
           exit 0
 
       # ---------------------------------------------
@@ -174,8 +180,9 @@ jobs:
 
       # ---------------------------------------------
       #   🚦 FINAL GATE — fail only if exitCode != 0
+      #   (robust parse to avoid empty/whitespace traps)
       # ---------------------------------------------
       - name: Fail job if validation failed
-        if: ${{ steps.collect.outputs.exitCode != '0' }}
+        if: ${{ fromJson(steps.collect.outputs.exitCode || '0') != 0 }}
         shell: bash
         run: exit 1
