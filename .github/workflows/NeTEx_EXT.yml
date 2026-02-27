@@ -62,6 +62,14 @@ jobs:
           JSON
           echo "::add-matcher::.xmllint-matcher.json"
 
+      # Pre-create log files so later steps never fail on 'file not found'
+      - name: Prepare log files
+        shell: bash
+        run: |
+          : > xmllint.out
+          : > xmllint.err
+          : > exitcode.txt
+
       # ---------------------------------------------
       #   ⭐ VALIDATION STEP (MUST NEVER EXIT 1)
       # ---------------------------------------------
@@ -75,17 +83,16 @@ jobs:
           if [ ! -f "$SCHEMA_PATH" ]; then
             echo "::error title=Schema Missing::$SCHEMA_PATH not found"
             echo "Schema missing: $SCHEMA_PATH" > xmllint.err
-            : > xmllint.out
             echo "2" > exitcode.txt
             exit 0
           fi
 
-          # 2) Run xmllint
+          # 2) Run xmllint (stdout/stderr to files)
           xmllint --schema "$SCHEMA_PATH" input.xml \
             1> xmllint.out \
             2> xmllint.err
 
-          # 3) Determine failure based on stderr
+          # 3) Determine failure based on stderr content
           if [ -s xmllint.err ]; then
             echo "::error title=NeTEx Validation Failed::See stderr output"
             echo "1" > exitcode.txt
@@ -93,17 +100,16 @@ jobs:
             echo "0" > exitcode.txt
           fi
 
-          # Fallback if stderr is unexpectedly empty on error
+          # Fallback if stderr unexpectedly empty on error
           if [ "$(cat exitcode.txt)" != "0" ] && [ ! -s xmllint.err ]; then
             echo "(Validator failed but produced no stderr — parser aborted early)" > xmllint.err
           fi
 
-          # IMPORTANT: Do NOT exit 1 here. That breaks output forwarding.
+          # Do NOT exit 1 here. We will fail the job at the final gate only if needed.
           exit 0
 
       # ---------------------------------------------
       #   ⭐ COLLECT OUTPUTS (SAFE STEP)
-      #   This step ALWAYS runs and ALWAYS sets job outputs.
       # ---------------------------------------------
       - name: Collect output for Power Automate
         id: collect
@@ -125,18 +131,26 @@ jobs:
         if: always()
         shell: bash
         run: |
-          EXIT_CODE=$(cat exitcode.txt)
-          echo "## NeTEx Validation Result" >> $GITHUB_STEP_SUMMARY
-
-          if [ "$EXIT_CODE" = "0" ]; then
-            echo "**Status:** ✅ Success" >> $GITHUB_STEP_SUMMARY
-          else
-            echo "**Status:** ❌ Failed" >> $GITHUB_STEP_SUMMARY
-          fi
-
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "### Stderr output" >> $GITHUB_STEP_SUMMARY
-          sed -n '1,200p' xmllint.err | sed 's/^/    /' >> $GITHUB_STEP_SUMMARY
+          # DO NOT enable 'set -e' or 'pipefail' here. We don't want summary to fail the job.
+          EXIT_CODE=$(cat exitcode.txt 2>/dev/null || echo "1")
+          {
+            echo "## NeTEx Validation Result"
+            echo ""
+            if [ "$EXIT_CODE" = "0" ]; then
+              echo "**Status:** ✅ Success"
+            else
+              echo "**Status:** ❌ Failed"
+            fi
+            echo ""
+            echo "### Stdout (first 200 lines)"
+            echo ""
+            sed -n '1,200p' xmllint.out | sed 's/^/    /' || true
+            echo ""
+            echo "### Stderr (first 200 lines)"
+            echo ""
+            # Guard: if file is empty or missing, this won't fail the step
+            sed -n '1,200p' xmllint.err | sed 's/^/    /' || true
+          } >> "$GITHUB_STEP_SUMMARY" || true
 
       - name: Upload artifacts
         if: always()
@@ -148,10 +162,12 @@ jobs:
             xmllint.out
             xmllint.err
             exitcode.txt
+          if-no-files-found: ignore    # <- prevent failure if any are missing
 
       # ---------------------------------------------
-      #   ⭐ FINAL FAILURE GATE (NOW RELIABLE)
+      #   ⭐ FINAL FAILURE GATE (ONLY IF EXITCODE != 0)
       # ---------------------------------------------
       - name: Fail job if validation failed
         if: ${{ steps.collect.outputs.exitCode != '0' }}
+        shell: bash
         run: exit 1
