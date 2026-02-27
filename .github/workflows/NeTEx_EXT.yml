@@ -12,159 +12,77 @@ permissions:
   contents: read
 
 jobs:
-  NeTEx_External:
+  validate:
     runs-on: ubuntu-latest
-
-    # Exposed to API consumers (e.g., Power Automate)
     outputs:
-      errors: ${{ steps.collect.outputs.errors }}
       exitCode: ${{ steps.collect.outputs.exitCode }}
+      errors:   ${{ steps.collect.outputs.errors }}
 
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
 
-      - name: Store XML input to file
+      - name: Write input.xml
         shell: bash
         run: |
-          cat > input.xml <<'EOF_XML'
+          cat > input.xml <<'EOF'
           ${{ github.event.inputs.xmlContent }}
-          EOF_XML
+          EOF
 
-      - name: Install validator
+      - name: Install xmllint
         run: sudo apt-get update && sudo apt-get install -y libxml2-utils
 
       - name: Normalize line endings
-        shell: bash
         run: sed -i 's/\r$//' input.xml
 
-      - name: Register xmllint problem matcher
-        shell: bash
-        run: |
-          cat > .xmllint-matcher.json <<'JSON'
-          {
-            "problemMatcher": [
-              {
-                "owner": "xmllint",
-                "pattern": [
-                  {
-                    "regexp": "^(.+?):([0-9]+):([0-9]+):\\s+(error|warning)\\s+:\\s+(.*)$",
-                    "file": 1,
-                    "line": 2,
-                    "column": 3,
-                    "severity": 4,
-                    "message": 5
-                  }
-                ]
-              }
-            ]
-          }
-          JSON
-          echo "::add-matcher::.xmllint-matcher.json"
-
-      # Ensure logs exist so downstream steps never fail on 'file not found'
-      - name: Prepare log files
-        shell: bash
-        run: |
-          : > xmllint.out
-          : > xmllint.err
-          : > exitcode.txt
-
-      # ---------------------------------------------
-      #   ✅ VALIDATION — trust xmllint exit code
-      #   (keep step green; gate at the end)
-      # ---------------------------------------------
-      - name: Validate XML using NeTEx schema
+      - name: Validate with NeTEx schema
         id: validate
         shell: bash
         run: |
-          set -o pipefail
-          SCHEMA_PATH="XSD 2.0/xsd/NeTEx_publication.xsd"
+          SCHEMA="XSD 2.0/xsd/NeTEx_publication.xsd"
+          : > xmllint.out
+          : > xmllint.err
 
-          # 1) Schema presence
-          if [ ! -f "$SCHEMA_PATH" ]; then
-            echo "2" > exitcode.txt
-            echo "Schema missing: $SCHEMA_PATH" > xmllint.err
-            echo "::error title=Schema Missing::$SCHEMA_PATH not found"
+          if [ ! -f "$SCHEMA" ]; then
+            echo 2 > exitcode.txt
+            echo "Schema missing: $SCHEMA" > xmllint.err
+            echo "::error title=Schema missing::$SCHEMA"
             exit 0
           fi
 
-          # 2) Run xmllint; capture non-zero exit even under '-e'
+          # Run xmllint and capture real exit code without letting -e abort the step
           set +e
-          xmllint --noout --schema "$SCHEMA_PATH" input.xml \
-            1> xmllint.out \
-            2> xmllint.err
-          EXIT_CODE=$?
+          xmllint --noout --schema "$SCHEMA" input.xml 1>xmllint.out 2>xmllint.err
+          status=$?
           set -e
 
-          echo "$EXIT_CODE" > exitcode.txt
-          echo "Validator exit code: $EXIT_CODE"
+          echo "$status" > exitcode.txt
+          echo "xmllint exit code: $status"
 
-          if [ "$EXIT_CODE" -eq 0 ]; then
-            # xmllint often writes "input.xml validates" to STDERR on success → drop it
+          if [ "$status" -eq 0 ]; then
+            # Ensure stderr is empty on success
             : > xmllint.err
           else
-            # If tool produced no stderr, write a minimal fallback
-            if [ ! -s xmllint.err ]; then
-              echo "(Validation failed but no details were produced by xmllint)" > xmllint.err
-            fi
-            echo "::error title=NeTEx validation failed::See details in summary/artifacts"
+            # If no details, add a single fallback line
+            [ -s xmllint.err ] || echo "(Validation failed but xmllint produced no details)" > xmllint.err
+            echo "::error title=NeTEx validation failed::See artifacts for details"
           fi
 
-          # Keep step green; final gate will decide job conclusion
-          exit 0
-
-      # ---------------------------------------------
-      #   📤 COLLECT OUTPUTS — for Power Automate
-      # ---------------------------------------------
-      - name: Collect output for Power Automate
+      - name: Collect outputs
         id: collect
         if: always()
         shell: bash
         run: |
-          EXIT_CODE=$(cat exitcode.txt 2>/dev/null || echo "1")
-          echo "exitCode=$EXIT_CODE" >> "$GITHUB_OUTPUT"
-
-          if [ "$EXIT_CODE" -ne 0 ]; then
+          code=$(cat exitcode.txt 2>/dev/null || echo 1)
+          echo "exitCode=$code" >> "$GITHUB_OUTPUT"
+          if [ "$code" -ne 0 ]; then
             {
               echo "errors<<EOF"
               sed -n '1,400p' xmllint.err
               echo "EOF"
             } >> "$GITHUB_OUTPUT"
           fi
-
-      # ---------------------------------------------
-      #   📝 SUMMARY — never fail on success
-      # ---------------------------------------------
-      - name: Add summary
-        if: always()
-        shell: bash
-        run: |
-          set +e
-          EXIT_CODE=$(cat exitcode.txt 2>/dev/null || echo "1")
-          {
-            echo "## NeTEx Validation Result"
-            echo
-            if [ "$EXIT_CODE" -eq 0 ]; then
-              echo "**Status:** ✅ Success"
-            else
-              echo "**Status:** ❌ Failed"
-            fi
-            echo
-            if [ -s xmllint.err ]; then
-              echo "### Stderr (first 200 lines)"
-              echo
-              sed -n '1,200p' xmllint.err | sed 's/^/    /'
-              echo
-            fi
-            if [ -s xmllint.out ]; then
-              echo "### Stdout (first 200 lines)"
-              echo
-              sed -n '1,200p' xmllint.out | sed 's/^/    /'
-              echo
-            fi
-          } >> "$GITHUB_STEP_SUMMARY" || true
 
       - name: Upload artifacts
         if: always()
@@ -178,11 +96,6 @@ jobs:
             exitcode.txt
           if-no-files-found: ignore
 
-      # ---------------------------------------------
-      #   🚦 FINAL GATE — fail only if exitCode != 0
-      #   (robust parse to avoid empty/whitespace traps)
-      # ---------------------------------------------
-      - name: Fail job if validation failed
-        if: ${{ fromJson(steps.collect.outputs.exitCode || '0') != 0 }}
-        shell: bash
+      - name: Fail if invalid
+        if: ${{ steps.collect.outputs.exitCode != '0' }}
         run: exit 1
