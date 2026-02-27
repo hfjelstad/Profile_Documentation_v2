@@ -1,25 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<PublicationDelivery xmlns="http://www.netex.org.uk/netex"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    version="1.0">
-  <PublicationTimestamp>2026-02-27T12:50:00Z</PublicationTimestamp>
+<PublicationDelivery xmlns="http://www.netex.org.uk/netex" version="1.0">
+  <PublicationTimestamp>2026-02-27T12:59:00Z</PublicationTimestamp>
   <ParticipantRef>ERP</ParticipantRef>
   <dataObjects>
-    <CompositeFrame id="ERP:CompositeFrame:Line:1001" version="1">
+    <CompositeFrame id="ERP:CompositeFrame:LineExample:1" version="1">
       <frames>
-        <ResourceFrame id="ERP:ResourceFrame:ENTUR" version="1">
+        <ResourceFrame id="ERP:ResourceFrame:LineExample:1" version="1">
           <organisations>
-            <Operator id="ERP:Operator:ENTUR" version="1">
-              <Name>Entur AS</Name>
+            <Operator id="ERP:Operator:OP1" version="1">
+              <Name>Example Operator</Name>
             </Operator>
           </organisations>
         </ResourceFrame>
-        <ServiceFrame id="ERP:ServiceFrame:Line:1001" version="1">
+        <ServiceFrame id="ERP:ServiceFrame:LineExample:1" version="1">
           <lines>
-            <Line id="ERP:Line:1001" version="1">
-              <Name>Express 1001</Name>
-              <PublicCode>1001</PublicCode>
-              <OperatorRef ref="ERP:Operator:ENTUR"/>
+            <Line id="ERP:Line:1" version="1">
+              <Name>Line 1</Name>
+              <OperatorRef ref="ERP:Operator:OP1" version="1"/>
+              <Presentation>
+                <Colour>005EB8</Colour>
+                <TextColour>FFFFFF</TextColour>
+              </Presentation>
             </Line>
           </lines>
         </ServiceFrame>
