@@ -1,0 +1,124 @@
+name: NeTEx XML Validation (PR)
+
+on:
+  pull_request:
+    paths:
+      - "**/*.xml"
+
+jobs:
+  validate-pr:
+    name: "PR – Validate changed XML"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # beholder historikk for git diff
+
+      - name: Install xmllint
+        run: sudo apt-get update && sudo apt-get install -y libxml2-utils
+
+      - name: Validate changed XML (continue on error; summary; annotations; exclude 'XSD 2.0/')
+        shell: bash
+        run: |
+          set -uo pipefail
+
+          SCHEMA="XSD 2.0/xsd/NeTEx_publication.xsd"
+          echo "Using schema: $SCHEMA"
+
+          # Hent base og head for PR, og lag diff over alle commits (triple-dot)
+          git fetch --no-tags --prune --depth=1 origin "${{ github.base_ref }}" "${{ github.head_ref }}"
+          DIFF_CMD=(git diff --name-only -z "origin/${{ github.base_ref }}...origin/${{ github.head_ref }}")
+
+          # Les null-separert liste til array
+          mapfile -d '' changed < <("${DIFF_CMD[@]}")
+
+          # Filtrer til XML og ekskluder 'XSD 2.0/'
+          filtered=()
+          for f in "${changed[@]}"; do
+            [[ -z "$f" ]] && continue
+            # bare xml
+            [[ "${f,,}" != *.xml ]] && continue
+            # ekskluder mappe
+            if [[ "$f" == "XSD 2.0/"* ]]; then
+              echo "Skipping excluded: $f"
+              continue
+            fi
+            filtered+=("$f")
+          done
+
+          if [[ ${#filtered[@]} -eq 0 ]]; then
+            echo "No changed XML files to validate (after filtering)."
+            {
+              echo "## NeTEx XML validation (PR)"
+              echo ""
+              echo "**Schema:** \`$SCHEMA\`"
+              echo ""
+              echo "Ingen filer å validere etter filtrering (ekskludert \`XSD 2.0/\`). ✅"
+            } >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+
+          echo "::group::Validating XML files"
+          pass_count=0
+          fail_count=0
+          declare -a summary_rows
+
+          escape_for_gha() {
+            local s="$1"
+            s="${s//'%'/'%25'}"
+            s="${s//$'\r'/'%0D'}"
+            s="${s//$'\n'/'%0A'}"
+            printf '%s' "$s"
+          }
+          escape_for_md_cell() {
+            local s="$1"
+            s="${s//|/\\|}"
+            printf '%s' "$s"
+          }
+
+          for file in "${filtered[@]}"; do
+            echo "Validating: $file"
+            out="$(xmllint --schema "$SCHEMA" --noout "$file" 2>&1)"
+            status=$?
+            if [[ $status -eq 0 ]]; then
+              pass_count=$((pass_count+1))
+              summary_rows+=("| $file | ✅ | |")
+            else
+              fail_count=$((fail_count+1))
+              ann_msg="$(escape_for_gha "$out")"
+              echo "::error file=$file::${ann_msg}"
+              first_line="${out%%$'\n'*}"
+              first_line="$(escape_for_md_cell "$first_line")"
+              summary_rows+=("| $file | ❌ | $first_line |")
+            fi
+          done
+          echo "::endgroup::"
+
+          total=$((pass_count+fail_count))
+
+          {
+            echo "## NeTEx XML validation (PR)"
+            echo ""
+            echo "**Schema:** \`$SCHEMA\`"
+            echo ""
+            echo "- **Sjekket filer:** $total"
+            echo "- **Bestått:** $pass_count"
+            echo "- **Feilet:** $fail_count"
+            echo ""
+            echo "| Fil | Status | Feil (kort) |"
+            echo "|---|:---:|---|"
+            for row in "${summary_rows[@]}"; do
+              echo "$row"
+            done
+            if [[ $fail_count -gt 0 ]]; then
+              echo ""
+              echo "> Detaljerte feilmeldinger ligger som **Annotations** i run-loggen (se fanen *Annotations*)."
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          # Feil utgangskode til slutt hvis det finnes feil
+          if [[ $fail_count -gt 0 ]]; then
+            exit 1
+          fi
