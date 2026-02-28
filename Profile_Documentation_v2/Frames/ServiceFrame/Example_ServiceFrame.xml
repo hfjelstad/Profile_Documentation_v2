@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PublicationDelivery xmlns="http://www.netex.org.uk/netex" version="1.0">
+  <PublicationTimestamp>2026-02-27T23:30:00Z</PublicationTimestamp>
+  <ParticipantRef>ERP:ENTUR</ParticipantRef>
+  <dataObjects>
+    <CompositeFrame id="ERP:CompositeFrame:1" version="1">
+      <frames>
+        <ResourceFrame id="ERP:ResourceFrame:1" version="1">
+          <organisations>
+            <Operator id="ERP:Operator:ENTUR" version="1">
+              <Name>Entur</Name>
+            </Operator>
+          </organisations>
+        </ResourceFrame>
+        <ServiceFrame id="ERP:ServiceFrame:1" version="1">
+          <lines>
+            <Line id="ERP:Line:1001" version="1">
+              <Name>Line 21</Name>
+              <PublicCode>21</PublicCode>
+              <OperatorRef ref="ERP:Operator:ENTUR"/>
+            </Line>
+          </lines>
+        </ServiceFrame>
+      </frames>
+    </CompositeFrame>
+  </dataObjects>
+</PublicationDelivery>
