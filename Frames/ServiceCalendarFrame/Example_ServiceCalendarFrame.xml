@@ -1,27 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<PublicationDelivery xmlns="http://www.netex.org.uk/netex" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.0">
-  <PublicationTimestamp>2026-02-25T14:22:00Z</PublicationTimestamp>
-  <ParticipantRef>ENTUR</ParticipantRef>
+<PublicationDelivery xmlns="http://www.netex.org.uk/netex" version="1.0">
+  <PublicationTimestamp>2026-02-27T23:30:00Z</PublicationTimestamp>
+  <ParticipantRef>ERP:ENTUR</ParticipantRef>
   <dataObjects>
-    <ServiceCalendarFrame version="1" id="ERP:ServiceCalendarFrame:Core">
-      <dayTypes>
-        <DayType version="1" id="ERP:DayType:Weekday">
-          <Name>Weekday</Name>
-        </DayType>
-      </dayTypes>
-      <operatingPeriods>
-        <OperatingPeriod version="1" id="ERP:OperatingPeriod:2026">
-          <FromDate>2026-01-01</FromDate>
-          <ToDate>2026-12-31</ToDate>
-        </OperatingPeriod>
-      </operatingPeriods>
-      <dayTypeAssignments>
-        <DayTypeAssignment version="1" id="ERP:DayTypeAssignment:Weekday-All">
-          <OperatingPeriodRef ref="ERP:OperatingPeriod:2026" version="1"/>
-          <DayTypeRef ref="ERP:DayType:Weekday" version="1"/>
-          <isAvailable>true</isAvailable>
-        </DayTypeAssignment>
-      </dayTypeAssignments>
-    </ServiceCalendarFrame>
+    <CompositeFrame id="ERP:CompositeFrame:1" version="1">
+      <frames>
+        <ServiceCalendarFrame id="ERP:ServiceCalendarFrame:1" version="1">
+          <dayTypes>
+            <DayType id="ERP:DayType:WKD" version="1">
+              <Name>Weekdays</Name>
+              <properties>
+                <PropertyOfDay>
+                  <DaysOfWeek>Weekdays</DaysOfWeek>
+                </PropertyOfDay>
+              </properties>
+            </DayType>
+          </dayTypes>
+          <operatingPeriods>
+            <OperatingPeriod id="ERP:OperatingPeriod:2026H1" version="1">
+              <FromDate>2026-01-01T00:00:00Z</FromDate>
+              <ToDate>2026-06-30T00:00:00Z</ToDate>
+            </OperatingPeriod>
+          </operatingPeriods>
+          <dayTypeAssignments>
+            <DayTypeAssignment id="ERP:DTA:WKD_2026H1" version="1">
+              <OperatingPeriodRef ref="ERP:OperatingPeriod:2026H1"/>
+              <DayTypeRef ref="ERP:DayType:WKD"/>
+              <isAvailable>true</isAvailable>
+            </DayTypeAssignment>
+          </dayTypeAssignments>
+        </ServiceCalendarFrame>
+      </frames>
+    </CompositeFrame>
   </dataObjects>
 </PublicationDelivery>
