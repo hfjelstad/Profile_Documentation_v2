@@ -1,0 +1,29 @@
+<PublicationDelivery xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                    version="2.0">
+  <ParticipantRef>ERP</ParticipantRef>
+  <Description>Minimal example using ERP as the codespace</Description>
+  <dataObjects>
+    <CompositeFrame id="ERP:CompositeFrame:CF_1" version="1">
+      <frames>
+        <ServiceFrame id="ERP:ServiceFrame:SF_1" version="1">
+          <lines>
+            <Line id="ERP:Line:10" version="1"/>
+          </lines>
+          <journeyPatterns>
+            <JourneyPattern id="ERP:JourneyPattern:JP_10_1" version="1">
+              <RouteRef ref="ERP:Route:R_10"/>
+            </JourneyPattern>
+          </journeyPatterns>
+          <operators>
+            <Operator id="ERP:Operator:OPR_1" version="1"/>
+          </operators>
+        </ServiceFrame>
+        <SiteFrame id="ERP:SiteFrame:ST_1" version="1">
+          <quays>
+            <Quay id="ERP:Quay:Q_100" version="1"/>
+          </quays>
+        </SiteFrame>
+      </frames>
+    </CompositeFrame>
+  </dataObjects>
+</PublicationDelivery>
