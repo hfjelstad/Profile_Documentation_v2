@@ -15,26 +15,6 @@
           <XmlnsUrl>http://www.rutebanken.org/ns/nsr</XmlnsUrl>
         </Codespace>
       </codespaces>
-      <frames>
-        <ServiceFrame id="ERP:ServiceFrame:SF_1" version="1">
-          <lines>
-            <Line id="ERP:Line:10" version="1"/>
-          </lines>
-          <journeyPatterns>
-            <JourneyPattern id="ERP:JourneyPattern:JP_10_1" version="1">
-              <RouteRef ref="ERP:Route:R_10"/>
-            </JourneyPattern>
-          </journeyPatterns>
-          <operators>
-            <Operator id="ERP:Operator:OPR_1" version="1"/>
-          </operators>
-        </ServiceFrame>
-        <SiteFrame id="ERP:SiteFrame:ST_1" version="1">
-          <quays>
-            <QuayRef ref="NSR:Quay:Q_100"/>
-          </quays>
-        </SiteFrame>
-      </frames>
     </CompositeFrame>
   </dataObjects>
 </PublicationDelivery>
