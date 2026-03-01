@@ -1,33 +1,51 @@
 # Line
 
-Purpose
-- The Line object represents a marketed public transport line within the profile. It groups service journeys and routes that are publicly communicated as one line.
+The Line object represents a public transport line within a ServiceFrame.
 
-Scope and assumptions
-- A Line is identified and versioned within the ERP codespace. All identifiers MUST be ERP-scoped (e.g., ERP:Line:1001) and stable across updates.
-- A Line may cover one or more routes and multiple service journeys. Operational details (timetables, day types) are specified elsewhere.
+Schema/XSD observations for the current variant used in this repository:
+- TransportMode is not present directly under Line. If line classification is required, use an allowed alternative modelling pattern (e.g., OperationalContextRef) or document it as a profile-specific rule. Do not place TransportMode under Line for this XSD variant.
+- TypeOfLineRef is not accepted directly under Line in this schema variant. If needed by the profile, reference it via an allowed context or profile construct, not as a direct child of Line.
+- Presentation must be a direct child of Line. Do not add @id or @version to Presentation. Colour and TextColour shall be six uppercase hexadecimal digits without a leading # (e.g., 005EB8, FFFFFF).
+- Use lowerCamelCase for collection elements in examples and guidance: dataObjects, frames, lines, organisations.
 
-Identification and namespace
-- All NeTEx examples and IDs in this profile use the ERP codespace/namespace.
-- Example IDs: ERP:Line:1001, ERP:CompositeFrame:Line:1, ERP:ServiceFrame:1, ERP:Operator:ENTUR.
+Validated minimal example (ERP codespace)
 
-Key relationships
-- OperatorRef: References the responsible operator organisation.
-- Routes: A Line may relate to multiple Routes. Route definitions live in ServiceFrame/Route objects.
-- Branding/Presentation: Optional presentation elements for colour and branding.
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<PublicationDelivery xmlns="http://www.netex.org.uk/netex" version="1.0">
+  <PublicationTimestamp>2026-02-27T12:59:00Z</PublicationTimestamp>
+  <ParticipantRef>ERP</ParticipantRef>
+  <dataObjects>
+    <CompositeFrame id="ERP:CompositeFrame:LineExample:1" version="1">
+      <frames>
+        <ResourceFrame id="ERP:ResourceFrame:LineExample:1" version="1">
+          <organisations>
+            <Operator id="ERP:Operator:OP1" version="1">
+              <Name>Example Operator</Name>
+            </Operator>
+          </organisations>
+        </ResourceFrame>
+        <ServiceFrame id="ERP:ServiceFrame:LineExample:1" version="1">
+          <lines>
+            <Line id="ERP:Line:1" version="1">
+              <Name>Line 1</Name>
+              <OperatorRef ref="ERP:Operator:OP1" version="1"/>
+              <Presentation>
+                <Colour>005EB8</Colour>
+                <TextColour>FFFFFF</TextColour>
+              </Presentation>
+            </Line>
+          </lines>
+        </ServiceFrame>
+      </frames>
+    </CompositeFrame>
+  </dataObjects>
+</PublicationDelivery>
+```
 
-Business rules
-- The combination of id and version uniquely identifies a Line.
-- Name or PublicCode MUST be present so that the line can be understood by end users.
-- TransportMode MUST be provided. TransportSubmode SHOULD be provided when relevant (e.g., expressBus).
-- All referenced objects (e.g., Operator) MUST exist within the delivered data set or a known external frame.
-
-Validation checklist
-- [ ] File content is written in English.
-- [ ] All IDs are ERP-scoped (prefix ERP:...).
-- [ ] Required elements provided: id, version, Name or PublicCode, TransportMode, OperatorRef.
-- [ ] Example complies with NeTEx structure used by this profile.
+Notes
+- The XML above has been validated against the repository's XSD setup and demonstrates the required structure and constraints for Line, including resolution of OperatorRef in ResourceFrame and the permitted Presentation structure.
 
 See also
-- Objects/Line/Table_Line.md for the property specification table.
-- Objects/Line/Example_Line.xml for a minimal NeTEx example with ERP namespace.
+- Objects/Line/Table_Line.md for the synchronized requirements table.
+- Objects/Line/Example_Line.xml for the standalone example file matching the snippet above.

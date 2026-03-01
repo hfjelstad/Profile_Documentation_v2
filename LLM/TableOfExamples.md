@@ -24,7 +24,6 @@ This document lists all Example_*.xml files in the repository. For each entry, t
 | Objects/TrainBlock/Example_TrainBlock.xml | ERP sample for TrainBlock | [Description_TrainBlock.md](../Objects/TrainBlock/Description_TrainBlock.md) | [Table_TrainBlock.md](../Objects/TrainBlock/Table_TrainBlock.md) |
 | Objects/Vehicle/Example_Vehicle.xml | ERP sample for Vehicle | [Description_Vehicle.md](../Objects/Vehicle/Description_Vehicle.md) | [Table_Vehicle.md](../Objects/Vehicle/Table_Vehicle.md) |
 | Objects/VehicleType/Example_VehicleType.xml | ERP sample for VehicleType | [Description_VehicleType.md](../Objects/VehicleType/Description_VehicleType.md) | [Table_VehicleType.md](../Objects/VehicleType/Table_VehicleType.md) |
-| Frames/Example_PublicationDelivery.xml | Best-practice PublicationDelivery (CompositeFrame + ResourceFrame + ServiceFrame) | [FramesOverview.md](../Guides/FramesOverview.md) | — |
 
 ## How to maintain this list
 

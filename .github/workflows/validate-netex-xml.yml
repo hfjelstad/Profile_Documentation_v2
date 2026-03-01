@@ -16,29 +16,56 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0   # ← Fixes exit code 128
+          fetch-depth: 0   # beholder historikk for git diff
 
       - name: Install xmllint
         run: sudo apt-get update && sudo apt-get install -y libxml2-utils
 
-      - name: Validate only changed XML files
+      - name: Validate only changed XML files (excluding certain folders)
+        shell: bash
         run: |
+          set -euo pipefail
+
           SCHEMA="XSD 2.0/xsd/NeTEx_publication.xsd"
 
           echo "Using schema: $SCHEMA"
 
+          # Hent endrede filer (null-separert for å tåle mellomrom)
           if [ "${{ github.event_name }}" = "pull_request" ]; then
-            CHANGED=$(git diff --name-only origin/${{ github.base_ref }} origin/${{ github.head_ref }})
+            git fetch origin "${{ github.base_ref }}" --depth=1
+            git fetch origin "${{ github.head_ref }}" --depth=1
+            DIFF_CMD=(git diff --name-only -z "origin/${{ github.base_ref }}" "origin/${{ github.head_ref }}")
           else
-            CHANGED=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
+            DIFF_CMD=(git diff --name-only -z "${{ github.event.before }}" "${{ github.sha }}")
           fi
 
-          echo "Changed files:"
-          echo "$CHANGED"
+          # Mapper som skal ekskluderes (prefix-match). Legg til flere ved behov.
+          EXCLUDE_DIRS=(
+            "XSD 2.0/"         # ekskluder hovedmappa + alt under
+            "docs/generated/"  # eksempel på flere
+          )
 
-          for xmlfile in $CHANGED; do
-            if [[ "$xmlfile" == *.xml ]]; then
-              echo "Validating $xmlfile"
-              xmllint --schema "$SCHEMA" --noout "$xmlfile"
-            fi
+          echo "Changed files (raw):"
+          "${DIFF_CMD[@]}" | tr '\0' '\n' | sed '/^$/d' || true
+
+          # Les null-separert liste, filtrer ekskluderte og valider xml
+          echo "Filtering and validating XML files..."
+          "${DIFF_CMD[@]}" | \
+          while IFS= read -r -d '' file; do
+            # Hopp over ikke-XML
+            [[ "${file,,}" != *.xml ]] && continue
+
+            # Hopp over ekskluderte mapper
+            skip=false
+            for ex in "${EXCLUDE_DIRS[@]}"; do
+              # prefiks-sjekk (tar også undermapper)
+              if [[ "$file" == "$ex"* ]]; then
+                skip=true
+                break
+              fi
+            done
+            $skip && { echo "Skipping excluded: $file"; continue; }
+
+            echo "Validating: $file"
+            xmllint --schema "$SCHEMA" --noout "$file"
           done

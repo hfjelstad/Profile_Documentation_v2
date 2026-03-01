@@ -1,32 +1,20 @@
-# Line – Property specification table
+# Line – Requirements Table
 
-This table defines the required and optional properties for a Line object in the profile. All identifiers MUST use the ERP codespace.
+This table enumerates the required and optional elements for a NeTEx Line in this profile. It reflects constraints from the current XSD variant used in this repository.
 
-Columns
-- Property: Logical name in the profile
-- XPath: Location in the NeTEx document
-- Card.: Cardinality
-- Type/Values: Datatype and allowed values or constraints
-- Example: Example value using ERP namespace
+| Element | XPath | Cardinality | Type | Rules / Notes |
+|---|---|---|---|---|
+| Line | /PublicationDelivery/dataObjects/CompositeFrame/frames/ServiceFrame/lines/Line | 1..n | Line | Must be in the NeTEx namespace (http://www.netex.org.uk/netex). |
+| @id | @id | 1..1 | xs:ID | Use codespace ERP, e.g. ERP:Line:<LOCAL_ID>. |
+| @version | @version | 1..1 | xs:string | Use profile’s versioning convention (e.g. "1"). |
+| Name | Name | 1..1 | xs:string | Human-readable line name. |
+| OperatorRef | OperatorRef | 1..1 | Reference | Must resolve to an Operator defined in ResourceFrame/organisations. |
+| Presentation | Presentation | 0..1 | Complex | Presentation is a direct child of Line. Do not add @id or @version on Presentation. |
+| Colour | Presentation/Colour | 0..1 | string (HEX) | Use six uppercase hex digits without a leading #, e.g. 005EB8. |
+| TextColour | Presentation/TextColour | 0..1 | string (HEX) | Use six uppercase hex digits without a leading #, e.g. FFFFFF. |
+| TransportMode | — | — | — | Not applicable: TransportMode is not present directly under Line in the current XSD variant. Model line classification elsewhere (see notes). |
+| TypeOfLineRef | — | — | — | Not applicable under Line in this XSD variant. If required by profile, document usage under an allowed context (e.g. via OperationalContextRef or other profile construct). |
 
-| Property | XPath | Card. | Type/Values | Example |
-|---|---|---:|---|---|
-| id | ServiceFrame/lines/Line/@id | 1..1 | ERP-scoped identifier | ERP:Line:1001 |
-| version | ServiceFrame/lines/Line/@version | 1..1 | Positive integer or semantic version | 1 |
-| Name | ServiceFrame/lines/Line/Name | 0..1 | String; SHOULD be present if PublicCode is missing | Line 21 |
-| PublicCode | ServiceFrame/lines/Line/PublicCode | 0..1 | String; SHOULD be present if Name is missing | 21 |
-| TransportMode | ServiceFrame/lines/Line/TransportMode | 1..1 | NeTEx TransportMode enumeration | bus |
-| TransportSubmode | ServiceFrame/lines/Line/TransportSubmode | 0..1 | NeTEx BusSubmode/… enumeration; SHOULD when relevant | expressBus |
-| OperatorRef | ServiceFrame/lines/Line/OperatorRef/@ref | 1..1 | Ref to Operator in ResourceFrame | ERP:Operator:ENTUR |
-| Presentation/Colour | ServiceFrame/lines/Line/presentations/Presentation/Colour | 0..1 | RGB hex or named colour | #005EB8 |
-| Presentation/TextColour | ServiceFrame/lines/Line/presentations/Presentation/TextColour | 0..1 | RGB hex or named colour | #FFFFFF |
-
-Validation rules
-- The combination of id and version uniquely identifies a Line within the dataset.
-- Either Name or PublicCode MUST be present.
-- All references (e.g., OperatorRef) MUST resolve within this delivery or a referenced frame.
-- All IDs and references MUST be ERP-scoped (prefix ERP:...).
-
-Related documents
-- Objects/Line/Description_Line.md – narrative description and business rules.
-- Objects/Line/Example_Line.xml – minimal NeTEx example using ERP codespace.
+Additional notes
+- LowerCamelCase is used for collection elements: dataObjects, frames, lines, organisations.
+- Line classification: Since TransportMode and TypeOfLineRef are not accepted directly under Line in the current schema, classification should be handled via an alternative modelling pattern permitted by the schema/profile (e.g. OperationalContextRef) or documented as a profile rule. Keep such usage out of Line if the XSD variant does not permit it.

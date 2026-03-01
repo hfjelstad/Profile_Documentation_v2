@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PublicationDelivery xmlns="http://www.netex.org.uk/netex" xmlns:gml="http://www.opengis.net/gml/3.2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:siri="http://www.siri.org.uk/siri" version="2.0">
+  <PublicationTimestamp>2026-02-28T13:37:46.0Z</PublicationTimestamp>
+  <ParticipantRef>ERP</ParticipantRef>
+  <Description>Minimal example using ERP as the codespace</Description>
+  <dataObjects>
+    <CompositeFrame id="ERP:CompositeFrame:CF_1" version="1">
+      <codespaces>
+        <Codespace id="ERP">
+          <Xmlns>ERP</Xmlns>
+          <XmlnsUrl>http://www.someurl.org/ns/erp</XmlnsUrl>
+        </Codespace>
+        <Codespace id="nsr">
+          <Xmlns>NSR</Xmlns>
+          <XmlnsUrl>http://www.rutebanken.org/ns/nsr</XmlnsUrl>
+        </Codespace>
+      </codespaces>
+    </CompositeFrame>
+  </dataObjects>
+</PublicationDelivery>
