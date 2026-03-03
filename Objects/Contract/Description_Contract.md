@@ -1,27 +1,17 @@
 # Contract – description
 
-Purpose
-A Contract models an administrative/legal agreement at organisation/service level, not a customer fare agreement. It corresponds to the NeTEx class Contract and is used to capture the governing agreement between parties such as a Transport Authority and an Operator.
+Purpose: Defines the legal or commercial agreement that governs responsibilities, rights, and obligations between parties (e.g., an Authority and an Operator) for providing, operating, selling, or publishing public transport services or data. Contract is part of NeTEx v2.0 (Part 3) and is referenced across frames to indicate governance and accountability.
 
-Scope and placement
-- Not a FareContract: A FareContract is a customer agreement defined in Part 3 – Sales and lives in a SalesTransactionFrame. See also: Objects/FareContract/Description_FareContract.md
-- Exchange placement: Until specified otherwise in the profile, Contract is proposed to be exchanged in a ResourceFrame that carries organisational and shared resource objects.
-- Versioning: Contract is a versioned object and must carry @id and @version.
+Typical elements:
+- ContractType: Form of contract (e.g., written, oral, formal). Enumeration in the XSD.
+- LegalStatus: Optional description of legal status or registration details.
+- ContractGoverningLaw: Jurisdiction or legal code (e.g., country code) governing the contract.
+- contractees: The party or parties benefiting from the contract (each Contractee has an OrganisationRef).
+- contractors: The party or parties performing under the contract (each Contractor has an OrganisationRef).
+- Name/Description: Optional descriptive labeling.
+- ValidBetween / validityConditions: Optional validity windows.
 
-Minimum viable subset (profile MVP)
-The profile initially supports the following Contract elements and relations:
-- id (required)
-- version (required)
-- Name (optional but recommended)
-- Description (optional)
-- ValidBetween (optional)
-- Involved organisations (Authority/Operator) via OrganisationRef. Use separate lists for contractees (clients) and contractors (suppliers) when available; otherwise a simple involved organisations list may be used by the profile.
-- Optional references for responsibilities: ResponsibilitySetRef and/or ResponsibilityRoleAssignmentRef (optional, for governance and data stewardship where relevant)
-- Optional scope references (subject to further study): LineRef, GroupOfLinesRef, or other scope-defining references that indicate which services the contract covers.
-
-Conformance notes
-- Uniqueness: The tuple [Contract id + version] must be unique within a single document.
-- Codespace: All identifiers should use an assigned codespace. For examples in this profile, the ERP codespace is used (e.g., ERP:Contract:CON-001).
-
-See also
-- FareContract (customer agreement in SalesTransactionFrame)
+Keys:
+- Identification: @id and @version are mandatory for the Contract object and follow the profile’s codespace conventions (use ERP:Contract:{LocalId}).
+- References: ContractRef is a reference structure with attributes ref, versionRef, and nameOfRefClass, and is used by other elements to point to a Contract. In this profile, ContractRef is used by ResponsibilitySetAssignment and ResponsibilityRoleAssignment to express which Contract applies to a given scope or role.
+- Placement: In NeTEx v2.0, Contract instances are defined under SalesTransactionFrame (Part 3). In this profile’s examples, documentation for Contract is grouped under Objects, and cross-referenced from relevant frames.
