@@ -23,6 +23,7 @@
           <contractors>
             <OrganisationRef ref="ERP:Operator:OP-1" version="1"/>
           </contractors>
+          <LineRef ref="ERP:Line:LINE-001"/>
         </Contract>
       </members>
     </GeneralFrame>
