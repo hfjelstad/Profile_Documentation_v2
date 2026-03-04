@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PublicationDelivery xmlns="http://www.netex.org.uk/netex"
+                     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                     version="2.0">
+
+  <!-- Ofte mandatory i profiler/utvekslingsmetodikk (Entur/Nordic): -->
+  <PublicationTimestamp>2026-03-04T10:00:00+01:00</PublicationTimestamp>
+  <ParticipantRef>NO:ORG:ExampleProducer</ParticipantRef>
+
+  <dataObjects>
+    <CompositeFrame id="NO:CompositeFrame:EXAMPLE:1" version="1">
+      <frames>
+
+        <!-- ResponsibilitySet skal ligge i ResourceFrame -->
+        <ResourceFrame id="NO:ResourceFrame:RESOURCES:1" version="1">
+
+          <!-- 1) Definer roller som assignments kan referere til -->
+          <!-- Dette er kjernen i issue #104: assignments kan referere ResponsibilityRole,
+               men du må selv definere rollene i datasettet. -->
+          <responsibilityRoles>
+            <ResponsibilityRole id="NO:ResponsibilityRole:DATA_OWNER:1" version="1">
+              <Name>Data owner</Name>
+              <Description>Hovedansvarlig for datasettinnhold</Description>
+            </ResponsibilityRole>
+
+            <ResponsibilityRole id="NO:ResponsibilityRole:PUBLISHER:1" version="1">
+              <Name>Publisher</Name>
+              <Description>Publiserer NeTEx-leveransen</Description>
+            </ResponsibilityRole>
+          </responsibilityRoles>
+
+          <!-- 2) Definer selve ResponsibilitySet -->
+          <responsibilitySets>
+            <ResponsibilitySet id="NO:ResponsibilitySet:EXAMPLE:1" version="1">
+              <Name>Eksempel ansvarsett</Name>
+
+              <!-- 3) Assignments inni ResponsibilitySet -->
+              <responsibilityRoleAssignments>
+                <ResponsibilityRoleAssignment id="NO:RespRoleAssignment:1" version="1">
+                  <ResponsibilityRoleRef ref="NO:ResponsibilityRole:DATA_OWNER:1"/>
+                  <!-- Vanlig å knytte til organisasjon som har ansvaret -->
+                  <ResponsibleOrganisationRef ref="NO:Organisation:OPERATOR:1"/>
+                </ResponsibilityRoleAssignment>
+
+                <ResponsibilityRoleAssignment id="NO:RespRoleAssignment:2" version="1">
+                  <ResponsibilityRoleRef ref="NO:ResponsibilityRole:PUBLISHER:1"/>
+                  <ResponsibleOrganisationRef ref="NO:Organisation:AUTHORITY:1"/>
+                </ResponsibilityRoleAssignment>
+              </responsibilityRoleAssignments>
+
+            </ResponsibilitySet>
+          </responsibilitySets>
+
+          <!-- (Valgfritt) Organisasjoner som ResponsibleOrganisationRef peker til.
+               Noen validatorer krever at disse faktisk finnes i samme ResourceFrame. -->
+          <organisations>
+            <Operator id="NO:Organisation:OPERATOR:1" version="1">
+              <Name>Eksempel Operatør AS</Name>
+            </Operator>
+
+            <Authority id="NO:Organisation:AUTHORITY:1" version="1">
+              <Name>Eksempel Myndighet</Name>
+            </Authority>
+          </organisations>
+
+        </ResourceFrame>
+      </frames>
+    </CompositeFrame>
+  </dataObjects>
+</PublicationDelivery>
