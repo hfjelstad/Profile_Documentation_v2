@@ -10,7 +10,7 @@
             <Line id="ERP:Line:1" version="1">
               <Name>Line 1</Name>
               <TransportMode>bus</TransportMode>
-              <OperatorRef ref="ERP:Operator:OP1" version="1"/>
+              <OperatorRef ref="ERP:Operator:OP1"/>
               <Presentation>
                 <Colour>005EB8</Colour>
                 <TextColour>FFFFFF</TextColour>
