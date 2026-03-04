@@ -8,7 +8,12 @@
         <ServiceFrame id="ERP:ServiceFrame:1" version="1">
           <lines>
             <Line id="ERP:Line:1" version="1">
-              <Name>Example Line</Name>
+              <Name>Line 1</Name>
+              <OperatorRef ref="ERP:Operator:OP1" version="1"/>
+              <Presentation>
+                <Colour>005EB8</Colour>
+                <TextColour>FFFFFF</TextColour>
+              </Presentation>
               <TransportMode>bus</TransportMode>
             </Line>
           </lines>
