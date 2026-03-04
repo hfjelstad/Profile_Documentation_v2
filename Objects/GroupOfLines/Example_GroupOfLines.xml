@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PublicationDelivery xmlns="http://www.netex.org.uk/netex" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="1.0">
+  <PublicationTimestamp>2026-03-04T16:44:01Z</PublicationTimestamp>
+  <ParticipantRef>ERP</ParticipantRef>
+  <dataObjects>
+    <CompositeFrame id="ERP:CompositeFrame:GroupOfLines:1" version="1">
+      <frames>
+        <ServiceFrame id="ERP:ServiceFrame:1" version="1">
+          <lines>
+            <Line id="ERP:Line:10" version="1">
+              <Name>ERP Line 10</Name>
+            </Line>
+            <Line id="ERP:Line:20" version="1">
+              <Name>ERP Line 20</Name>
+            </Line>
+          </lines>
+          <groupsOfLines>
+            <GroupOfLines id="ERP:GroupOfLines:100" version="1">
+              <Name>Example Group of Lines</Name>
+              <members>
+                <LineRef ref="ERP:Line:10" version="1"/>
+                <LineRef ref="ERP:Line:20" version="1"/>
+              </members>
+            </GroupOfLines>
+          </groupsOfLines>
+        </ServiceFrame>
+      </frames>
+    </CompositeFrame>
+  </dataObjects>
+</PublicationDelivery>
