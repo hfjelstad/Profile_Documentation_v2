@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PublicationDelivery xmlns="http://www.netex.org.uk/netex" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.0">
+    <PublicationTimestamp>2026-03-04T10:00:00+01:00</PublicationTimestamp>
+    <ParticipantRef>ERP</ParticipantRef>
+    <dataObjects>
+        <CompositeFrame id="ERP:CompositeFrame:EXAMPLE_1" version="1">
+            <codespaces>
+                <Codespace id="erp" >
+                    <Xmlns>ERP</Xmlns>
+                </Codespace>
+                <Codespace id="noc">
+                    <Xmlns>NOC</Xmlns>
+                </Codespace>
+                <Codespace id="nog">
+                    <Xmlns>NOG</Xmlns>
+                </Codespace>
+            </codespaces>
+            <frames>
+                <ResourceFrame id="ERP:ResourceFrame:RESOURCES_1" version="1">
+                    <responsibilitySets>
+                        <ResponsibilitySet id="ERP:ResponsibilitySet:EXAMPLE_1" version="1">
+                            <Name>Eksempel ansvarsett</Name>
+                            <roles> 
+                                <ResponsibilityRoleAssignment id="ERP:RespRoleAssignment:2" version="1">
+                                    <AssociatedContract>
+                                        <ContractRef ref="NOC:Contract:XYZ"/>
+                                    </AssociatedContract>
+                                </ResponsibilityRoleAssignment>
+                            </roles>
+                        </ResponsibilitySet>
+                    </responsibilitySets>
+                </ResourceFrame>
+                <ServiceFrame version="1" id="">
+                    <lines>
+                        <Line version="1" id="ERP:Line:Example_1" responsibilitySetRef="ERP:ResponsibilitySet:EXAMPLE_1">
+                            <Name>ExampleLine</Name>
+                            <AuthorityRef ref="NOG:Authority:X"/>
+                            <OperatorRef ref="NOG:Operator:Y"/>
+                        </Line>
+                    </lines>
+                </ServiceFrame>
+                <TimetableFrame version="1" id="ERP:TimetableFrame:1" responsibilitySetRef="ERP:ResponsibilitySet:EXAMPLE_1">
+                    <vehicleJourneys>
+                        <ServiceJourney version="1" id="" responsibilitySetRef="ERP:ResponsibilitySet:EXAMPLE_1">
+                        </ServiceJourney>
+                    </vehicleJourneys>
+                </TimetableFrame>
+            </frames>
+        </CompositeFrame>
+    </dataObjects>
+</PublicationDelivery>
