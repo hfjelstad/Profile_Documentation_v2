@@ -1,0 +1,76 @@
+name: NeTEx XML Validation (PR)
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - "**/*.xml"
+
+jobs:
+  validate-pr:
+    name: "PR – Validate changed XML"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install xmllint
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libxml2-utils
+
+      - name: Validate changed XML
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          SCHEMA="XSD 2.0/xsd/NeTEx_publication.xsd"
+          echo "Using schema: $SCHEMA"
+
+          # --- Fetch base ref for proper diff ---
+          git fetch origin "${{ github.base_ref }}" --depth=1
+
+          # --- Compute merge-base (robust diff) ---
+          MB=$(git merge-base HEAD "origin/${{ github.base_ref }}")
+          echo "Merge-base: $MB"
+
+          # --- Find changed files ---
+          mapfile -d '' changed < <(git diff --name-only -z "$MB" HEAD)
+
+          # --- Filter XML files, exclude 'XSD 2.0/' ---
+          filtered=()
+          for f in "${changed[@]}"; do
+            [[ -z "$f" ]] && continue
+            [[ "${f,,}" != *.xml ]] && continue
+            [[ "$f" == "XSD 2.0/"* ]] && continue
+            filtered+=("$f")
+          done
+
+          echo "XML files to validate:"
+          printf '%s\n' "${filtered[@]:-}"
+
+          if [[ ${#filtered[@]:-0} -eq 0 ]]; then
+            echo "No XML files changed."
+            exit 0
+          fi
+
+          FAIL=0
+          for file in "${filtered[@]}"; do
+            echo "Validating: $file"
+
+            # Run xmllint
+            if xmllint --schema "$SCHEMA" --noout "$file" 2>err.txt; then
+              echo "OK: $file"
+            else
+              echo "❌ Validation failed: $file"
+              # Add GitHub annotation
+              MSG=$(sed ':a;N;$!ba;s/\n/%0A/g' err.txt)
+              echo "::error file=$file::$MSG"
+              FAIL=1
+            fi
+          done
+
+          exit $FAIL
