@@ -1,0 +1,71 @@
+name: Validate NeTEx XML (changed files only)
+
+on:
+  push:
+    paths:
+      - "**/*.xml"
+  pull_request:
+    paths:
+      - "**/*.xml"
+
+jobs:
+  validate-netex-xml:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # beholder historikk for git diff
+
+      - name: Install xmllint
+        run: sudo apt-get update && sudo apt-get install -y libxml2-utils
+
+      - name: Validate only changed XML files (excluding certain folders)
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          SCHEMA="XSD 2.0/xsd/NeTEx_publication.xsd"
+
+          echo "Using schema: $SCHEMA"
+
+          # Hent endrede filer (null-separert for å tåle mellomrom)
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            git fetch origin "${{ github.base_ref }}" --depth=1
+            git fetch origin "${{ github.head_ref }}" --depth=1
+            DIFF_CMD=(git diff --name-only -z "origin/${{ github.base_ref }}" "origin/${{ github.head_ref }}")
+          else
+            DIFF_CMD=(git diff --name-only -z "${{ github.event.before }}" "${{ github.sha }}")
+          fi
+
+          # Mapper som skal ekskluderes (prefix-match). Legg til flere ved behov.
+          EXCLUDE_DIRS=(
+            "XSD 2.0/"         # ekskluder hovedmappa + alt under
+            "docs/generated/"  # eksempel på flere
+          )
+
+          echo "Changed files (raw):"
+          "${DIFF_CMD[@]}" | tr '\0' '\n' | sed '/^$/d' || true
+
+          # Les null-separert liste, filtrer ekskluderte og valider xml
+          echo "Filtering and validating XML files..."
+          "${DIFF_CMD[@]}" | \
+          while IFS= read -r -d '' file; do
+            # Hopp over ikke-XML
+            [[ "${file,,}" != *.xml ]] && continue
+
+            # Hopp over ekskluderte mapper
+            skip=false
+            for ex in "${EXCLUDE_DIRS[@]}"; do
+              # prefiks-sjekk (tar også undermapper)
+              if [[ "$file" == "$ex"* ]]; then
+                skip=true
+                break
+              fi
+            done
+            $skip && { echo "Skipping excluded: $file"; continue; }
+
+            echo "Validating: $file"
+            xmllint --schema "$SCHEMA" --noout "$file"
+          done
