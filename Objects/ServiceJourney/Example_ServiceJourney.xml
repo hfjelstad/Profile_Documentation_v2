@@ -9,7 +9,7 @@
             <frames>
                 <TimetableFrame id="ENT:TimetableFrame:1" version="1">
                     <vehicleJourneys>
-                        <ServiceJourney id="ENT:ServiceJourney:SJ_001:1" version="1" esponsibilitySetRef="ERP:ResponsibilitySet:Test">
+                        <ServiceJourney id="ENT:ServiceJourney:SJ_001:1" version="1" responsibilitySetRef="ERP:ResponsibilitySet:Test">
                             <Name>Example ServiceJourney</Name>
                         </ServiceJourney>
                     </vehicleJourneys>
