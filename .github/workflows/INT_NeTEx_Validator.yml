@@ -1,0 +1,173 @@
+name: Reusable — NeTEx XML Validation
+
+on:
+  workflow_call:
+    inputs:
+      mode:            # 'pr' eller 'push'
+        required: true
+        type: string
+      checkout_ref:    # hvilken commit/branch som skal valideres (HEAD i PR/push)
+        required: true
+        type: string
+      base_ref:        # PR-base (f.eks. 'review') — kreves når mode=pr
+        required: false
+        type: string
+      before:          # for push: før-SHA
+        required: false
+        type: string
+      after:           # for push: etter-SHA (vanligvis github.sha)
+        required: false
+        type: string
+      schema_path:
+        required: false
+        type: string
+        default: "XSD 2.0/xsd/NeTEx_publication.xsd"
+      exclude_prefix:  # ekskluder filer under denne mappen (typisk XSD-katalogen)
+        required: false
+        type: string
+        default: "XSD 2.0/"
+      fail_fast:
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  validate-netex:
+    name: "Validate NeTEx XML (${{ inputs.mode }})"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out the code to validate
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.checkout_ref }}
+          fetch-depth: 0
+
+      - name: Ensure origin/main is available (to fetch canonical schema)
+        run: |
+          git remote set-branches origin '*'
+          git fetch origin main --depth=1
+
+      - name: Bring schema folder from origin/main
+        run: |
+          set -euo pipefail
+          git checkout origin/main -- "XSD 2.0/xsd/"
+          echo "Schema folder content:"
+          ls -lah "XSD 2.0/xsd/" || true
+
+      - name: Install xmllint
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libxml2-utils
+
+      - name: Validate changed XML files
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          SCHEMA_FILE="${{ inputs.schema_path }}"
+          EXCLUDE_PREFIX="${{ inputs.exclude_prefix }}"
+          FAIL_FAST="${{ inputs.fail_fast }}"
+
+          echo "Using schema file: $SCHEMA_FILE"
+          if [ ! -f "$SCHEMA_FILE" ]; then
+            echo "ERROR: Schema not found at $SCHEMA_FILE"
+            exit 1
+          fi
+
+          # Absolutt file://-URI for å håndtere mellomrom i stier
+          SCHEMA_ABS="$(realpath "$SCHEMA_FILE")"
+          SCHEMA_URI="file://$SCHEMA_ABS"
+          SCHEMA_DIR="$(dirname "$SCHEMA_ABS")"
+          SCHEMA_PATHS="$SCHEMA_DIR"
+
+          echo "Schema URI: $SCHEMA_URI"
+          echo "Schema search paths: $SCHEMA_PATHS"
+
+          # Finn endrede filer basert på mode
+          DIFF=""
+          if [ "${{ inputs.mode }}" = "pr" ]; then
+            if [ -z "${{ inputs.base_ref }}" ]; then
+              echo "ERROR: base_ref is required for mode=pr"
+              exit 1
+            fi
+            git fetch origin "${{ inputs.base_ref }}" --depth=1
+            MB=$(git merge-base HEAD "origin/${{ inputs.base_ref }}")
+            echo "Merge-base: $MB"
+            DIFF=$(git diff --name-only -z "$MB" HEAD)
+          elif [ "${{ inputs.mode }}" = "push" ]; then
+            BEFORE="${{ inputs.before }}"
+            AFTER="${{ inputs.after }}"
+            ZERO40="0000000000000000000000000000000000000000"
+
+            if [ -z "$AFTER" ]; then
+              AFTER="$(git rev-parse HEAD)"
+            fi
+
+            if [ -z "$BEFORE" ] || [ "$BEFORE" = "$ZERO40" ]; then
+              echo "First push / unknown BEFORE; using merge-base vs origin/main."
+              git fetch origin main --depth=1
+              MB=$(git merge-base "$AFTER" "origin/main" || true)
+              if [ -n "$MB" ]; then
+                DIFF=$(git diff --name-only -z "$MB" "$AFTER")
+              else
+                DIFF=$(git diff-tree --no-commit-id --name-only -z -r "$AFTER")
+              fi
+            else
+              DIFF=$(git diff --name-only -z "$BEFORE" "$AFTER")
+            fi
+          else
+            echo "ERROR: Unknown mode '${{ inputs.mode }}' (expected 'pr' or 'push')"
+            exit 1
+          fi
+
+          echo "Changed files (raw):"
+          printf '%s' "$DIFF" | tr '\0' '\n' | sed '/^$/d' || true
+
+          STATUS=0
+          FOUND_XML=0
+
+          while IFS= read -r -d '' file; do
+            # Filtrer til *.xml
+            shopt -s nocasematch
+            if [[ "$file" != *.xml ]]; then
+              shopt -u nocasematch
+              continue
+            fi
+            shopt -u nocasematch
+
+            # Ekskluder XSD-mappa (schemaene selv)
+            if [[ -n "$EXCLUDE_PREFIX" && "$file" == "$EXCLUDE_PREFIX"* ]]; then
+              echo "Skipping excluded: $file"
+              continue
+            fi
+
+            # Hopp over slettede filer
+            if [ ! -f "$file" ]; then
+              echo "Skipping (deleted): $file"
+              continue
+            fi
+
+            FOUND_XML=1
+            echo "Validating: $file"
+
+            # Valider — bruk file:// og --path for includes/imports
+            if ! xmllint --schema "$SCHEMA_URI" --path "$SCHEMA_PATHS" --noout "$file" 2>err.txt; then
+              echo "❌ Validation failed: $file"
+              MSG=$(sed ':a;N;$!ba;s/\n/%0A/g' err.txt)
+              echo "::error file=$file::$MSG"
+              STATUS=1
+              if [ "$FAIL_FAST" = "true" ]; then
+                echo "Fail-fast is enabled — stopping on first failure."
+                exit 1
+              fi
+            else
+              echo "✅ OK: $file"
+            fi
+          done < <(printf '%s' "$DIFF")
+
+          if [ "$FOUND_XML" -eq 0 ]; then
+            echo "No changed XML files to validate."
+          fi
+
+          exit $STATUS
