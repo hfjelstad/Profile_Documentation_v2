@@ -1,14 +1,14 @@
 name: Validate NeTEx XML (changed files only)
 
 on:
-  push:
-    paths:
-      - "**/*.xml"
+  #push:
+    #paths:
+      #- "**/*.xml"
   pull_request:
     types: [opened, synchronize, reopened]
     paths:
       - "**/*.xml"
-
+  workflow_dispatch: {}
 jobs:
   validate-netex-xml:
     runs-on: ubuntu-latest
