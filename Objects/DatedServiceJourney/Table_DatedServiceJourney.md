@@ -11,6 +11,3 @@ This table explicitly distinguishes the NeTEx XSD (schema) cardinality from the 
 | ServiceAlteration | 0..1 | 0..1 | Status of the journey (e.g. cancellation, replacement, reinforcement). |
 | DatedCalls | 0..1 | TBD..TBD | Container for one or more DatedCall elements. |
 | DatedCall | 0..* | TBD..TBD | Stop-level dated timing and references. |
-
-Notes
-- Codespace: All identifiers must use the ERP codespace.
