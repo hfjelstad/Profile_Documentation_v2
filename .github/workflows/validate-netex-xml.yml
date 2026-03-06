@@ -1,10 +1,14 @@
 name: Validate NeTEx XML (changed files only)
 
 on:
+  # Run for XML changes on push
   push:
     paths:
       - "**/*.xml"
+
+  # Run for XML changes in PRs
   pull_request:
+    types: [opened, synchronize, reopened]
     paths:
       - "**/*.xml"
 
@@ -13,59 +17,67 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check out repository
+      - name: Check out repository (event ref)
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0   # beholder historikk for git diff
+          fetch-depth: 0  # full history so git diff works reliably
+
+      # --- Solution A: Always fetch schema folder from origin/main ---
+      - name: Fetch schema folder from main
+        run: |
+          set -euo pipefail
+          git fetch origin main --depth=1
+          # Bring the folder from main into the current working tree
+          git checkout origin/main -- "XSD 2.0/xsd/"
+          echo "Schema folder content:"
+          ls -lah "XSD 2.0/xsd/" || true
 
       - name: Install xmllint
-        run: sudo apt-get update && sudo apt-get install -y libxml2-utils
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libxml2-utils
 
-      - name: Validate only changed XML files (excluding certain folders)
+      - name: Validate only changed XML files
         shell: bash
         run: |
           set -euo pipefail
 
           SCHEMA="XSD 2.0/xsd/NeTEx_publication.xsd"
-
           echo "Using schema: $SCHEMA"
-
-          # Hent endrede filer (null-separert for å tåle mellomrom)
-          if [ "${{ github.event_name }}" = "pull_request" ]; then
-            git fetch origin "${{ github.base_ref }}" --depth=1
-            git fetch origin "${{ github.head_ref }}" --depth=1
-            DIFF_CMD=(git diff --name-only -z "origin/${{ github.base_ref }}" "origin/${{ github.head_ref }}")
-          else
-            DIFF_CMD=(git diff --name-only -z "${{ github.event.before }}" "${{ github.sha }}")
+          if [ ! -f "$SCHEMA" ]; then
+            echo "ERROR: Schema not found at $SCHEMA (ensure it exists on origin/main)."
+            exit 1
           fi
 
-          # Mapper som skal ekskluderes (prefix-match). Legg til flere ved behov.
-          EXCLUDE_DIRS=(
-            "XSD 2.0/"         # ekskluder hovedmappa + alt under
-            "docs/generated/"  # eksempel på flere
-          )
+          # Build null-separated list of changed files for current event
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            # Compare PR head to base (triple-dot merge-base behavior is fine here too)
+            git fetch origin "${{ github.base_ref }}" --depth=1
+            git fetch origin "${{ github.head_ref }}" --depth=1
+            DIFF=$(git diff --name-only -z "origin/${{ github.base_ref }}" "origin/${{ github.head_ref }}")
+          else
+            # push event: diff between before and after SHAs
+            DIFF=$(git diff --name-only -z "${{ github.event.before }}" "${{ github.sha }}")
+          fi
 
           echo "Changed files (raw):"
-          "${DIFF_CMD[@]}" | tr '\0' '\n' | sed '/^$/d' || true
+          printf '%s' "$DIFF" | tr '\0' '\n' | sed '/^$/d' || true
 
-          # Les null-separert liste, filtrer ekskluderte og valider xml
-          echo "Filtering and validating XML files..."
-          "${DIFF_CMD[@]}" | \
-          while IFS= read -r -d '' file; do
-            # Hopp over ikke-XML
-            [[ "${file,,}" != *.xml ]] && continue
-
-            # Hopp over ekskluderte mapper
-            skip=false
-            for ex in "${EXCLUDE_DIRS[@]}"; do
-              # prefiks-sjekk (tar også undermapper)
-              if [[ "$file" == "$ex"* ]]; then
-                skip=true
-                break
-              fi
-            done
-            $skip && { echo "Skipping excluded: $file"; continue; }
+          # Iterate null-separated list; validate only *.xml
+          STATUS=0
+          printf '%s' "$DIFF" | while IFS= read -r -d '' file; do
+            # Skip non-XML files
+            shopt -s nocasematch
+            [[ "$file" != *.xml ]] && continue
+            shopt -u nocasematch
 
             echo "Validating: $file"
-            xmllint --schema "$SCHEMA" --noout "$file"
+            if ! xmllint --schema "$SCHEMA" --noout "$file"; then
+              echo "❌ Validation failed: $file"
+              STATUS=1
+            else
+              echo "✅ OK: $file"
+            fi
           done
+
+          exit $STATUS
