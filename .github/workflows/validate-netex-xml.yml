@@ -14,19 +14,28 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check out repository (event ref)
+      - name: Check out repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # full history so git diff works reliably
+          fetch-depth: 0
 
-      # Always fetch schema folder from origin/main so we validate against the canonical schema
+      #####################################################################
+      # 🔥 FORCE: Always fetch origin/main so schema checkout works on push
+      #####################################################################
+
+      - name: Ensure main is fetched
+        run: |
+          git remote set-branches origin '*'
+          git fetch origin main --depth=1
+
       - name: Fetch schema folder from main
         run: |
           set -euo pipefail
-          git fetch origin main --depth=1
           git checkout origin/main -- "XSD 2.0/xsd/"
-          echo "Schema folder content:"
+          echo "Schema folder from origin/main loaded:"
           ls -lah "XSD 2.0/xsd/" || true
+
+      ######################################
 
       - name: Install xmllint
         run: |
@@ -38,34 +47,43 @@ jobs:
         run: |
           set -euo pipefail
 
-          SCHEMA="XSD 2.0/xsd/NeTEx_publication.xsd"
-          echo "Using schema: $SCHEMA"
-          if [ ! -f "$SCHEMA" ]; then
-            echo "ERROR: Schema not found at $SCHEMA (ensure it exists on origin/main)."
+          echo "PWD: $(pwd)"
+          ls -lah
+
+          SCHEMA_FILE="XSD 2.0/xsd/NeTEx_publication.xsd"
+          if [ ! -f "$SCHEMA_FILE" ]; then
+            echo "ERROR: Schema not found at $SCHEMA_FILE"
             exit 1
           fi
 
-          # Build null-separated list of changed files for current event
+          SCHEMA_ABS="$(realpath "$SCHEMA_FILE")"
+          SCHEMA_URI="file://$SCHEMA_ABS"
+          SCHEMA_DIR="$(dirname "$SCHEMA_ABS")"
+          SCHEMA_PATHS="$SCHEMA_DIR"
+
+          echo "Using schema: $SCHEMA_URI"
+          echo "Schema search paths: $SCHEMA_PATHS"
+
+          # --------------------
+          # Determine diff
+          # --------------------
           DIFF=""
           if [ "${{ github.event_name }}" = "pull_request" ]; then
-            # PR: diff base vs head
             git fetch origin "${{ github.base_ref }}" --depth=1
             git fetch origin "${{ github.head_ref }}" --depth=1
             DIFF=$(git diff --name-only -z "origin/${{ github.base_ref }}" "origin/${{ github.head_ref }}")
           else
-            # push: diff between before and after SHAs, robust for first push
             BEFORE="${{ github.event.before }}"
             AFTER="${{ github.sha }}"
             ZERO40="0000000000000000000000000000000000000000"
 
             if [ -z "$BEFORE" ] || [ "$BEFORE" = "$ZERO40" ]; then
-              echo "First push (or unknown before). Comparing against merge-base with origin/main."
+              echo "First push or unknown before-sha. Using merge-base diff."
               git fetch origin main --depth=1
               MERGE_BASE=$(git merge-base "$AFTER" "origin/main" || true)
               if [ -n "$MERGE_BASE" ]; then
                 DIFF=$(git diff --name-only -z "$MERGE_BASE" "$AFTER")
               else
-                echo "No merge-base found; using files from the current commit."
                 DIFF=$(git diff-tree --no-commit-id --name-only -z -r "$AFTER")
               fi
             else
@@ -73,15 +91,13 @@ jobs:
             fi
           fi
 
-          echo "Changed files (raw):"
-          printf '%s' "$DIFF" | tr '\0' '\n' | sed '/^$/d' || true
+          echo "Changed files (raw diff):"
+          printf '%s' "$DIFF" | tr '\0' '\n' | sed '/^$/d'
 
-          # Filter to existing *.xml files and validate
           STATUS=0
           FOUND_XML=0
 
           while IFS= read -r -d '' file; do
-            # Skip non-XML files (case-insensitive)
             shopt -s nocasematch
             if [[ "$file" != *.xml ]]; then
               shopt -u nocasematch
@@ -89,15 +105,15 @@ jobs:
             fi
             shopt -u nocasematch
 
-            # Skip if file no longer exists (deleted/renamed away)
             if [ ! -f "$file" ]; then
-              echo "Skipping (no longer exists): $file"
+              echo "Skipping deleted file: $file"
               continue
             fi
 
             FOUND_XML=1
             echo "Validating: $file"
-            if ! xmllint --schema "$SCHEMA" --noout "$file"; then
+
+            if ! xmllint --schema "$SCHEMA_URI" --path "$SCHEMA_PATHS" --noout "$file"; then
               echo "❌ Validation failed: $file"
               STATUS=1
             else
@@ -106,7 +122,7 @@ jobs:
           done < <(printf '%s' "$DIFF")
 
           if [ "$FOUND_XML" -eq 0 ]; then
-            echo "No changed XML files to validate."
+            echo "No changed XML files found."
           fi
 
           exit $STATUS
