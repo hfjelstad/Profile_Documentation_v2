@@ -1,14 +1,16 @@
-# DatedServiceJourney — Field Table
+# DatedServiceJourney — Schema vs Profile requirements
 
-This table documents the key elements of DatedServiceJourney and their constraints as used in the ERP profile.
+This table explicitly distinguishes the NeTEx XSD (schema) cardinality from the profile-level requirements used for day-specific timetable publications.
 
-| Element | Cardinality | Description | Requirement |
+| Element | XSD cardinality | ERP cardinality | Description |
 |---|---|---|---|
-| ServiceJourneyRef | 1..1 | Reference to the base ServiceJourney. | Must resolve in the same dataset (PublicationDelivery), across frames within the same CompositeFrame. |
-| OperatingDayRef | 1..1 | Reference to the OperatingDay, which resides in ServiceCalendarFrame. | Must resolve in the same dataset (PublicationDelivery), across frames within the same CompositeFrame. Note: Cross-frame resolution is expected for OperatingDayRef. |
-| ServiceAlteration | 0..1 | Indicates an alteration of the base service (e.g., extraJourney, cancellation, replacement). | When set to extraJourney (reinforcement), the journey is an addition to the base plan. |
-| replacedJourneys | 0..1 | References journeys that are replaced by this DatedServiceJourney. | Recommended when ServiceAlteration = extraJourney to make replacement semantics explicit, but optional (0..1). |
+| @id | 1..1 | 1..1 | ERP scoped identifier, e.g. ERP:DatedServiceJourney:2026-01-01-12345 |
+| @version | 1..1 | 1..1 | Use profile-compliant versioning. |
+| JourneyRef | 1..1 | 1..1 | Reference to the underlying ServiceJourney. |
+| OperatingDayRef | 1..1 | 1..1 | Operating day of this DatedServiceJourney. |
+| ServiceAlteration | 0..1 | 0..1 | Status of the journey (e.g. cancellation, replacement, reinforcement). |
+| DatedCalls | 0..1 | 0..0 | Container for one or more DatedCall elements. |
+| DatedCall | 0..* | 0..0 | Stop-level dated timing and references. |
 
 Notes
-- All references must be stable within the ERP codespace and use the ERP namespace (e.g., ERP:SJ:..., ERP:OD:...).
-- The resolution scope for references is the PublicationDelivery payload, and references may cross frames as long as they are within the same CompositeFrame.
+- Codespace: All identifiers must use the ERP codespace.
