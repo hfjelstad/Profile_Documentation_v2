@@ -1,12 +1,9 @@
 name: Validate NeTEx XML (changed files only)
 
 on:
-  # Run for XML changes on push
   push:
     paths:
       - "**/*.xml"
-
-  # Run for XML changes in PRs
   pull_request:
     types: [opened, synchronize, reopened]
     paths:
@@ -22,12 +19,11 @@ jobs:
         with:
           fetch-depth: 0  # full history so git diff works reliably
 
-      # --- Solution A: Always fetch schema folder from origin/main ---
+      # Always fetch schema folder from origin/main so we validate against the canonical schema
       - name: Fetch schema folder from main
         run: |
           set -euo pipefail
           git fetch origin main --depth=1
-          # Bring the folder from main into the current working tree
           git checkout origin/main -- "XSD 2.0/xsd/"
           echo "Schema folder content:"
           ls -lah "XSD 2.0/xsd/" || true
@@ -50,27 +46,56 @@ jobs:
           fi
 
           # Build null-separated list of changed files for current event
+          DIFF=""
           if [ "${{ github.event_name }}" = "pull_request" ]; then
-            # Compare PR head to base (triple-dot merge-base behavior is fine here too)
+            # PR: diff base vs head
             git fetch origin "${{ github.base_ref }}" --depth=1
             git fetch origin "${{ github.head_ref }}" --depth=1
             DIFF=$(git diff --name-only -z "origin/${{ github.base_ref }}" "origin/${{ github.head_ref }}")
           else
-            # push event: diff between before and after SHAs
-            DIFF=$(git diff --name-only -z "${{ github.event.before }}" "${{ github.sha }}")
+            # push: diff between before and after SHAs, robust for first push
+            BEFORE="${{ github.event.before }}"
+            AFTER="${{ github.sha }}"
+            ZERO40="0000000000000000000000000000000000000000"
+
+            if [ -z "$BEFORE" ] || [ "$BEFORE" = "$ZERO40" ]; then
+              echo "First push (or unknown before). Comparing against merge-base with origin/main."
+              git fetch origin main --depth=1
+              MERGE_BASE=$(git merge-base "$AFTER" "origin/main" || true)
+              if [ -n "$MERGE_BASE" ]; then
+                DIFF=$(git diff --name-only -z "$MERGE_BASE" "$AFTER")
+              else
+                echo "No merge-base found; using files from the current commit."
+                DIFF=$(git diff-tree --no-commit-id --name-only -z -r "$AFTER")
+              fi
+            else
+              DIFF=$(git diff --name-only -z "$BEFORE" "$AFTER")
+            fi
           fi
 
           echo "Changed files (raw):"
           printf '%s' "$DIFF" | tr '\0' '\n' | sed '/^$/d' || true
 
-          # Iterate null-separated list; validate only *.xml
+          # Filter to existing *.xml files and validate
           STATUS=0
-          printf '%s' "$DIFF" | while IFS= read -r -d '' file; do
-            # Skip non-XML files
+          FOUND_XML=0
+
+          while IFS= read -r -d '' file; do
+            # Skip non-XML files (case-insensitive)
             shopt -s nocasematch
-            [[ "$file" != *.xml ]] && continue
+            if [[ "$file" != *.xml ]]; then
+              shopt -u nocasematch
+              continue
+            fi
             shopt -u nocasematch
 
+            # Skip if file no longer exists (deleted/renamed away)
+            if [ ! -f "$file" ]; then
+              echo "Skipping (no longer exists): $file"
+              continue
+            fi
+
+            FOUND_XML=1
             echo "Validating: $file"
             if ! xmllint --schema "$SCHEMA" --noout "$file"; then
               echo "❌ Validation failed: $file"
@@ -78,6 +103,10 @@ jobs:
             else
               echo "✅ OK: $file"
             fi
-          done
+          done < <(printf '%s' "$DIFF")
+
+          if [ "$FOUND_XML" -eq 0 ]; then
+            echo "No changed XML files to validate."
+          fi
 
           exit $STATUS
