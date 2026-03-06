@@ -6,10 +6,10 @@ on:
       mode:            # 'pr' eller 'push'
         required: true
         type: string
-      checkout_ref:    # hvilken commit/branch som skal valideres (HEAD i PR/push)
+      checkout_ref:    # commit/branch/tag som skal valideres (HEAD i PR/push)
         required: true
         type: string
-      base_ref:        # PR-base (f.eks. 'review') — kreves når mode=pr
+      base_ref:        # PR-base (kreves for mode=pr), f.eks. 'review'
         required: false
         type: string
       before:          # for push: før-SHA
@@ -22,7 +22,7 @@ on:
         required: false
         type: string
         default: "XSD 2.0/xsd/NeTEx_publication.xsd"
-      exclude_prefix:  # ekskluder filer under denne mappen (typisk XSD-katalogen)
+      exclude_prefix:  # ekskluder filer i denne mappen (skjemaene selv)
         required: false
         type: string
         default: "XSD 2.0/"
@@ -43,7 +43,7 @@ jobs:
           ref: ${{ inputs.checkout_ref }}
           fetch-depth: 0
 
-      - name: Ensure origin/main is available (to fetch canonical schema)
+      - name: Ensure origin/main is available (for canonical schema)
         run: |
           git remote set-branches origin '*'
           git fetch origin main --depth=1
@@ -75,7 +75,7 @@ jobs:
             exit 1
           fi
 
-          # Absolutt file://-URI for å håndtere mellomrom i stier
+          # Absolutt file://-URI (robust mot mellomrom) og --path for includes/imports
           SCHEMA_ABS="$(realpath "$SCHEMA_FILE")"
           SCHEMA_URI="file://$SCHEMA_ABS"
           SCHEMA_DIR="$(dirname "$SCHEMA_ABS")"
@@ -84,51 +84,55 @@ jobs:
           echo "Schema URI: $SCHEMA_URI"
           echo "Schema search paths: $SCHEMA_PATHS"
 
-          # Finn endrede filer basert på mode
-          DIFF=""
-          if [ "${{ inputs.mode }}" = "pr" ]; then
-            if [ -z "${{ inputs.base_ref }}" ]; then
-              echo "ERROR: base_ref is required for mode=pr"
-              exit 1
-            fi
-            git fetch origin "${{ inputs.base_ref }}" --depth=1
-            MB=$(git merge-base HEAD "origin/${{ inputs.base_ref }}")
-            echo "Merge-base: $MB"
-            DIFF=$(git diff --name-only -z "$MB" HEAD)
-          elif [ "${{ inputs.mode }}" = "push" ]; then
-            BEFORE="${{ inputs.before }}"
-            AFTER="${{ inputs.after }}"
-            ZERO40="0000000000000000000000000000000000000000"
+          # --- Bygg en kommando som produserer NUL-separerte filnavn ---
+          build_diff_cmd() {
+            if [ "${{ inputs.mode }}" = "pr" ]; then
+              if [ -z "${{ inputs.base_ref }}" ]; then
+                echo "ERROR: base_ref is required for mode=pr" >&2
+                return 2
+              fi
+              git fetch -q origin "${{ inputs.base_ref }}" --depth=1
+              MB=$(git merge-base HEAD "origin/${{ inputs.base_ref }}")
+              >&2 echo "Merge-base: $MB"
+              echo "git diff --name-only -z \"$MB\" HEAD"
+            elif [ "${{ inputs.mode }}" = "push" ]; then
+              BEFORE="${{ inputs.before }}"
+              AFTER="${{ inputs.after }}"
+              ZERO40="0000000000000000000000000000000000000000"
 
-            if [ -z "$AFTER" ]; then
-              AFTER="$(git rev-parse HEAD)"
-            fi
+              if [ -z "$AFTER" ]; then
+                AFTER="$(git rev-parse HEAD)"
+              fi
 
-            if [ -z "$BEFORE" ] || [ "$BEFORE" = "$ZERO40" ]; then
-              echo "First push / unknown BEFORE; using merge-base vs origin/main."
-              git fetch origin main --depth=1
-              MB=$(git merge-base "$AFTER" "origin/main" || true)
-              if [ -n "$MB" ]; then
-                DIFF=$(git diff --name-only -z "$MB" "$AFTER")
+              if [ -z "$BEFORE" ] || [ "$BEFORE" = "$ZERO40" ]; then
+                >&2 echo "First push / unknown BEFORE; using merge-base vs origin/main."
+                git fetch -q origin main --depth=1
+                MB=$(git merge-base "$AFTER" "origin/main" || true)
+                if [ -n "$MB" ]; then
+                  echo "git diff --name-only -z \"$MB\" \"$AFTER\""
+                else
+                  # Faller tilbake til filer i selve committen
+                  echo "git diff-tree --no-commit-id --name-only -z -r \"$AFTER\""
+                fi
               else
-                DIFF=$(git diff-tree --no-commit-id --name-only -z -r "$AFTER")
+                echo "git diff --name-only -z \"$BEFORE\" \"$AFTER\""
               fi
             else
-              DIFF=$(git diff --name-only -z "$BEFORE" "$AFTER")
+              echo "ERROR: Unknown mode '${{ inputs.mode }}' (expected 'pr' or 'push')" >&2
+              return 2
             fi
-          else
-            echo "ERROR: Unknown mode '${{ inputs.mode }}' (expected 'pr' or 'push')"
-            exit 1
-          fi
+          }
 
+          # --- Debug: vis endrede filer (konverter NUL -> newline for lesbarhet) ---
           echo "Changed files (raw):"
-          printf '%s' "$DIFF" | tr '\0' '\n' | sed '/^$/d' || true
+          eval "$(build_diff_cmd)" | tr '\0' '\n' | sed '/^$/d' || true
 
           STATUS=0
           FOUND_XML=0
 
+          # --- Kritisk: iterér direkte over NUL-separert output (IKKE via variabel) ---
           while IFS= read -r -d '' file; do
-            # Filtrer til *.xml
+            # Kun *.xml (case-insensitivt)
             shopt -s nocasematch
             if [[ "$file" != *.xml ]]; then
               shopt -u nocasematch
@@ -151,7 +155,6 @@ jobs:
             FOUND_XML=1
             echo "Validating: $file"
 
-            # Valider — bruk file:// og --path for includes/imports
             if ! xmllint --schema "$SCHEMA_URI" --path "$SCHEMA_PATHS" --noout "$file" 2>err.txt; then
               echo "❌ Validation failed: $file"
               MSG=$(sed ':a;N;$!ba;s/\n/%0A/g' err.txt)
@@ -164,7 +167,7 @@ jobs:
             else
               echo "✅ OK: $file"
             fi
-          done < <(printf '%s' "$DIFF")
+          done < <(eval "$(build_diff_cmd)")
 
           if [ "$FOUND_XML" -eq 0 ]; then
             echo "No changed XML files to validate."
