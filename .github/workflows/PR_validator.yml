@@ -8,7 +8,7 @@ on:
 
 jobs:
   validate:
-    uses: hfjelstad/Profile_Documentation_v2/.github/workflows/netex-validate-reusable.yml@main
+    uses: hfjelstad/Profile_Documentation_v2/.github/workflows/INT_NeTEx_Validator.yml@main
     with:
       mode: pr
       checkout_ref: ${{ github.head.sha }}   # PR HEAD-commit
