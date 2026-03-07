@@ -1,64 +1,157 @@
-# 📚 Profile_Documentation_v2
-Profile documentation for a NeTEx profile, with curated examples, descriptions, and tables designed for consistent modeling and exchange. The repository includes patterns/templates and an index for easy navigation.
 
-## 🎯 Purpose
-- Provide consistent, reusable NeTEx examples per object/frame.
-- Ensure each example has a descriptive write-up and a structural table.
-- Maintain a central, link-verified index for discoverability.
+# NeTEx Profile Documentation
+A practical reference, learning resource, and example library for working with NeTEx.
 
-## 🗂️ Repository structure
-- Root (excerpt):
-  - [Guides/](Guides/)
-  - [Frames/](Frames/)
-  - [Objects/](Objects/)
-  - [LLM/](LLM/) → see [LLM/README.md](LLM/README.md) and the example index [LLM/TableOfExamples.md](LLM/TableOfExamples.md)
-  - [XSD 2.0/](XSD%202.0/) (NeTEx 2.0 schemas)
-- Per Frame:
-  - [Frames/](Frames/)<FrameName>/{Description_*.md, Table_*.md, Example_*.xml}
-- Per Object:
-  - [Objects/](Objects/)<ObjectName>/{Description_*.md, Table_*.md, Example_*.xml}
+This repository is designed as a human-friendly entry point to NeTEx: a place to learn the structure of the standard, explore real examples, and understand how frames and objects relate to each other in practice.
+
+Its goals are:
+- 📘 **Introduce** the concepts and structure of NeTEx
+- 🧭 **Guide** readers through frames, objects, and modeling patterns
+- 🗂️ **Provide** a high-quality example library
+- 🛠️ **Define** conventions for profiling and documentation
+- 🔎 **Serve** as a reference for navigation and discovery
+
+---
+
+## 🎯 What This Repository Contains
+
+### 1. **High‑quality NeTEx examples**
+Each example is:
+- Minimal, but complete enough to be meaningful
+- Structured consistently using the ERP codespace
+- Designed to illustrate a single concept or object clearly
+- Built using a unified pattern:
+
+```
+PublicationDelivery → dataObjects → CompositeFrame → frames → …
+```
+
+### 2. **Human‑oriented documentation**
+For every frame or object, you will find:
+- A description file explaining purpose, usage, and relationships
+- A structured table outlining elements, cardinality, and type information
+- One or more XML examples showing how to model the entity
+
+### 3. **A centralized navigation index**
+Located at:
+```
+LLM/TableOfExamples.md
+```
+This file provides an alphabetically ordered list of all examples, together with links to documentation and tables.
+
+---
+
+## 🗂️ Repository Structure
+
+```
+Root
+│
+├── Guides/                 → Introductory material and conceptual explanations
+├── Frames/                 → Documentation and examples grouped by Frame
+│     └── <FrameName>/
+│          ├── Description_*.md
+│          ├── Table_*.md
+│          └── Example_*.xml
+│
+├── Objects/                → Documentation and examples for individual NeTEx objects
+│     └── <ObjectName>/
+│          ├── Description_*.md
+│          ├── Table_*.md
+│          └── Example_*.xml
+│
+├── LLM/
+│     ├── README.md
+│     └── TableOfExamples.md → Central index of all examples
+```
+
+---
 
 ## 🧱 Conventions
-- File naming:
-  - Examples: Example_*.xml
-  - Descriptions: Description_*.md
-  - Tables: Table_*.md
-- Use ERP as the codespace for XML ids in examples (e.g., ERP:DayType:WKD).
-- Keep overview lists alphabetically ordered and verify links.
 
-## 🔄 Workflow (add/update examples)
-1) Under Objects/ (or Frames/), add at least one XML example named “Example_*.xml” using the ERP codespace, plus matching Description_*.md and Table_*.md following the master template.  
-2) Update [LLM/TableOfExamples.md](LLM/TableOfExamples.md) with a new row:
-   - Use the full relative path to the example.
-   - Add links to the corresponding Description and Table documents.
-   - Keep entries alphabetically sorted (by object, and when applicable by example name).  
-3) Verify that all links resolve correctly in EnStandardBranch before opening a pull request.
+### **File naming**
+| Type | Naming | 
+|------|--------|
+| XML examples | `Example_*.xml` |
+| Descriptions | `Description_*.md` |
+| Tables | `Table_*.md` |
 
-## 🧭 Example structure (NeTEx)
-- Container layout (minimal pattern):
-  - PublicationDelivery (xmlns="http://www.netex.org.uk/netex", version="1.0")
-  - dataObjects → CompositeFrame → frames → [Frames/Objects]
-- Conventions:
-  - Use lowerCamelCase for collection elements (e.g., dataObjects, dayTypes).
-  - Use xs:dateTime with timezone (e.g., 2026-02-25T14:22:00Z).
-  - Consistent id and version strategy; use *Ref elements for relationships.
-  - Keep examples minimal yet valid against NeTEx 2.0 XSD.
+### **Codespace**
+All XML identifiers use the `ERP` codespace:
+```
+ERP:<ObjectType>:<Identifier>
+```
+Example:
+```
+ERP:DayType:WKD
+```
 
-## 🧪 Validation and schemas
-- Validate all XML examples against the NeTEx 2.0 schemas under [XSD 2.0/](XSD%202.0/).
+### **XML structure principles**
+- Consistent element naming (`lowerCamelCase` for collections)
+- `*Ref` elements used for relationships
+- Minimal but valid examples
+- Time values use timezone-aware `xs:dateTime`
+  → `2026-02-25T14:22:00Z`
 
-## 🔗 Navigation index (LLM/TableOfExamples.md)
-- Centralized index of examples with links to their Description and Table documents.
-- New entries must include full relative paths and maintain alphabetical ordering.
-- All links must resolve correctly in EnStandardBranch prior to PR submission.
+---
 
-## 🧩 Appendix: minimal skeletons
-- Description_*.md
-  - <Title> – description
-  - Purpose: …
-  - Typical elements: …
-  - Keys: …
-- Table_*.md
-  - Columns: Element | Type (NeTEx) | XSD Cardinality | ERP Cardinality | Description
-- Example_*.xml
-  - PublicationDelivery → dataObjects → CompositeFrame → frames → …
+## 🔄 How to Add or Update an Example
+
+### 1. Add three files in the correct directory
+- `Example_<Name>.xml`
+- `Description_<Name>.md`
+- `Table_<Name>.md`
+
+Use the master templates found in the Guides/ folder whenever applicable.
+
+### 2. Update the navigation index
+In:
+```
+LLM/TableOfExamples.md
+```
+Add a new row with:
+- Relative path to the XML example
+- Links to description and table
+- Alphabetical ordering
+- Verified working links
+
+### 3. Verify links in the target branch
+All links must resolve correctly before opening a pull request.
+
+---
+
+## 🧩 Template Structures
+
+### **Description_*.md**
+Should include:
+- Purpose
+- Typical elements
+- Key relationships
+- Notes related to examples
+
+### **Table_*.md**
+Standard columns:
+| Element | Type | Cardinality | Notes |
+
+### **Example_*.xml**
+A minimal but correct XML example, using ERP codespace and consistent structure.
+
+---
+
+## 📚 How to Use This Repository for Learning
+1. Begin in `Guides/` to understand the overall context
+2. Explore `Frames/` for structural patterns
+3. Dive into `Objects/` for detailed reference material
+4. Use the index in `LLM/TableOfExamples.md` for quick lookup
+5. Compare XML examples with table documentation
+6. Read description files to understand modeling intent
+
+---
+
+## ✨ Goal of This Repository
+This project exists to make NeTEx easier to understand and apply by providing:
+- Clear documentation
+- Consistent modeling patterns
+- A rich library of examples
+- A unified reference structure
+
+It is designed to help both newcomers and experienced practitioners work with NeTEx in a predictable, well-documented, and transparent way.

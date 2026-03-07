@@ -1,10 +1,10 @@
 # Documentation Templates for the NeTEx Profile (LLM)
 
 Scope
-- This guide defines the templates and conventions for documentation and examples used in this profile. It covers: folder structure, file naming, required documentation sections, description formatting, table formatting, and XML example formatting.
+- This guide defines the templates and conventions for documentation and examples used in this profile (ERP - European Recommended Profile). It covers: folder structure, file naming, required documentation sections, description formatting, table formatting, and XML example formatting.
 
 Folder structure
-- Root (excerpt): Guides/, Frames/, Objects/, LLM/, XSD 2.0/
+- Root (excerpt): Guides/, Frames/, Objects/, LLM/
 - Per Frame: Frames/<FrameName>/{Description_<FrameName>.md, Table_<FrameName>.md, Example_<FrameName>.xml}
 - Per Object: Objects/<ObjectName>/{Description_<ObjectName>.md, Table_<ObjectName>.md, Example_<ObjectName>.xml}
 - Keep overview entries and links updated in navigation lists where applicable.
@@ -61,6 +61,7 @@ Appendix: Minimal skeletons
   - Typical elements: ...
   - Keys: ...
 - Table_<Name>.md
-  - Columns: Element | Type | Cardinality | Notes
+  - Columns: Element | Type | XSD Cardinality | ERP Cardinality | Description
+  - Attributes should have @ as prefix, like @id and @version
 - Example_<Name>.xml
   - PublicationDelivery → dataObjects → CompositeFrame → frames → <Name>

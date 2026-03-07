@@ -1,22 +1,13 @@
-# DatedServiceJourney – Table
+# DatedServiceJourney — Schema vs Profile requirements
 
-The table below separates structural cardinality defined by the CEN NeTEx XSD from profile-specific constraints defined by ERP (European Recommended Profile). Use both columns together: XSD expresses what the schema allows; ERP expresses what the profile requires within those bounds.
+This table explicitly distinguishes the NeTEx XSD (schema) cardinality from the profile-level requirements used for day-specific timetable publications.
 
-| Field | Description | NeTEx Type | Cardinality (XSD) | Cardinality (ERP) |
-|---|---|---|---|---|
-| id | Globally unique identifier of the DatedServiceJourney | Attribute | 1..1 | 1..1 |
-| version | Version of the element instance | Attribute | 0..1 | 1..1 |
-| Name | Human-readable name of the dated journey | Element | 0..1 | 0..1 |
-| PrivateCode | Private operator code for the dated journey | Element | 0..1 | 0..1 |
-| ServiceJourneyRef | Reference to the planned ServiceJourney instantiated on this date | Reference | 1..1 | 1..1 |
-| OperatingDayRef | Reference to the OperatingDay this dated journey runs on | Reference | 1..1 | 1..1 |
-| OperatorRef | Reference to the operating company for this dated journey | Reference | 0..1 | 0..1 |
-| ResponsibilitySetRef | Reference to the responsibility set applicable to this dated journey | Reference | 0..1 | 0..1 |
-| TrainBlockRef | Reference to a Block/Train grouping if applicable | Reference | 0..1 | 0..1 |
-| NoticeAssignment | Notices linked to the dated journey | Collection | 0..n | 0..n |
-| KeyList/Key | Key-value pairs for extensible metadata | Collection | 0..n | 0..n |
-
-Notes
-- Cardinality (XSD) reflects the structural constraints of the CEN NeTEx schema.
-- Cardinality (ERP) reflects additional profile constraints and must be respected by ERP-compliant data producers.
-- Descriptions are semantic; do not duplicate cardinality or requiredness in the Description column.
+| Element | XSD cardinality | ERP cardinality | Description |
+|---|---|---|---|
+| @id | 1..1 | 1..1 | ERP scoped identifier, e.g. ERP:DatedServiceJourney:2026-01-01-12345 |
+| @version | 1..1 | 1..1 | Use profile-compliant versioning. |
+| JourneyRef | 1..1 | 1..1 | Reference to the underlying ServiceJourney. |
+| OperatingDayRef | 1..1 | 1..1 | Operating day of this DatedServiceJourney. |
+| ServiceAlteration | 0..1 | 0..1 | Status of the journey (e.g. cancellation, replacement, reinforcement). |
+| DatedCalls | 0..1 | TBD..TBD | Container for one or more DatedCall elements. |
+| DatedCall | 0..* | TBD..TBD | Stop-level dated timing and references. |

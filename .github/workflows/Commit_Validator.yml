@@ -1,0 +1,19 @@
+name: Push (EnStandardBranch) — NeTEx XML Validation (Fail Fast)
+
+on:
+  push:
+    branches: [EnStandardBranch]
+    paths:
+      - "**/*.xml"
+
+jobs:
+  validate:
+    uses: hfjelstad/Profile_Documentation_v2/.github/workflows/INT_NeTEx_Validator.yml@main
+    with:
+      mode: push
+      checkout_ref: ${{ github.sha }}          # commit som ble pushet
+      before: ${{ github.event.before }}       # for diff
+      after: ${{ github.sha }}
+      schema_path: "XSD 2.0/xsd/NeTEx_publication.xsd"
+      exclude_prefix: "XSD 2.0/"
+      fail_fast: true

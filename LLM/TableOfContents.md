@@ -63,19 +63,6 @@ AI assistance materials and examples that complement the documentation.
 - [Table of Examples](TableOfExamples.md) — prompt and response examples for common tasks.
 - [Validated XML Example](Validatet_XML_Example.xml) — a small, valid NeTEx XML snippet for reference/testing.
 
-## XSD 2.0
-Schemas and related assets for validation and development.
-- [README](../XSD%202.0/README.md) — overview of the XSD package.
-- [Readme.md.htm](../XSD%202.0/Readme.md.htm) — HTML-rendered readme.
-- [change_log.md](../XSD%202.0/change_log.md) — detailed change log.
-- [CHANGELOG.md](../XSD%202.0/CHANGELOG.md) — alternative change log.
-- [LICENSE](../XSD%202.0/LICENSE) — license information.
-- [NeTEx.spp](../XSD%202.0/NeTEx.spp) — project file.
-- [NeTEx.xpr](../XSD%202.0/NeTEx.xpr) — project file.
-- [xsd/](../XSD%202.0/xsd/) — schema files.
-- [examples/](../XSD%202.0/examples/) — sample data.
-- [scripts/](../XSD%202.0/scripts/) — helper scripts.
-
 ## Continuous Integration
 Automation for validating XML and ensuring quality.
 - GitHub Actions: [validate-netex-xml.yml](../.github/workflows/validate-netex-xml.yml)
