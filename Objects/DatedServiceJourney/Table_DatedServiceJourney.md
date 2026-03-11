@@ -9,7 +9,7 @@ Sources considered:
 
 Columns: Element | Type | MIN Cardinality | ERP Cardinality | NP Cardinality | Description
 
-| Element | Type | MIN Cardinality | ERP Cardinality | NP Cardinality | Description |
+| Element | Type | MIN | ERP | NP | Description |
 |---|---|---|---|---|---|
 | @id | xsd:NMTOKEN | 1..1 | 1..1 | 1..1 | Unique identifier for the dated journey instance. |
 | @version | xsd:integer |  | 1..1 | 1..1 | Version number of the object. |
