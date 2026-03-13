@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PublicationDelivery version="2.0" xmlns="http://www.netex.org.uk/netex" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <PublicationTimestamp>2026-02-09T08:30:18Z</PublicationTimestamp>
+  <ParticipantRef>ERP</ParticipantRef>
+  <dataObjects>
+    <CompositeFrame version="1" id="ERP:CompositeFrame:Example_ServiceJourney_NP">
+      <frames>
+        <ServiceFrame version="1" id="ERP:ServiceFrame:Example">
+          <Name>Example Service Data</Name>
+          <lines>
+            <Line version="0" id="ERP:Line:R12">
+              <Name>R12</Name>
+            </Line>
+          </lines>
+          <scheduledStopPoints>
+            <ScheduledStopPoint version="0" id="ERP:ScheduledStopPoint:ASR-B-1">
+              <Name>ASR-B-1</Name>
+            </ScheduledStopPoint>
+            <ScheduledStopPoint version="0" id="ERP:ScheduledStopPoint:MJD-B-3">
+              <Name>MJD-B-3</Name>
+            </ScheduledStopPoint>
+          </scheduledStopPoints>
+          <journeyPatterns>
+            <JourneyPattern version="0" id="ERP:JourneyPattern:R12-778">
+              <Name>R12-778</Name>
+              <pointsInSequence>
+                <StopPointInJourneyPattern version="0" id="ERP:StopPointInJourneyPattern:R12-778-1" order="1">
+                  <ScheduledStopPointRef ref="ERP:ScheduledStopPoint:ASR-B-1" version="0"/>
+                </StopPointInJourneyPattern>
+                <StopPointInJourneyPattern version="0" id="ERP:StopPointInJourneyPattern:R12-778-2" order="2">
+                  <ScheduledStopPointRef ref="ERP:ScheduledStopPoint:MJD-B-3" version="0"/>
+                </StopPointInJourneyPattern>
+              </pointsInSequence>
+            </JourneyPattern>
+          </journeyPatterns>
+        </ServiceFrame>
+        <TimetableFrame version="1" id="ERP:TimetableFrame:Example">
+          <Name>Example Timetable</Name>
+          <vehicleJourneys>
+            <ServiceJourney version="0" id="ERP:ServiceJourney:BUS-523_531982-R" created="2026-02-09T08:30:18">
+              <Name>BUS-523</Name>
+              <Description>BUS-523 [16:40 : ASR-MJD]</Description>
+              <PrivateCode>523</PrivateCode>
+              <TransportMode>bus</TransportMode>
+              <TransportSubmode>
+                <BusSubmode>railReplacementBus</BusSubmode>
+              </TransportSubmode>
+              <JourneyPatternRef ref="ERP:JourneyPattern:R12-778" version="0"/>
+              <passingTimes>
+                <TimetabledPassingTime version="0" id="ERP:TimetabledPassingTime:BUS-523_531982_1_ASR">
+                  <StopPointInJourneyPatternRef ref="ERP:StopPointInJourneyPattern:R12-778-1" version="0"/>
+                  <DepartureTime>16:40:00</DepartureTime>
+                </TimetabledPassingTime>
+                <TimetabledPassingTime version="0" id="ERP:TimetabledPassingTime:BUS-523_531982_2_MJD">
+                  <StopPointInJourneyPatternRef ref="ERP:StopPointInJourneyPattern:R12-778-2" version="0"/>
+                  <ArrivalTime>17:08:00</ArrivalTime>
+                </TimetabledPassingTime>
+              </passingTimes>
+            </ServiceJourney>
+          </vehicleJourneys>
+        </TimetableFrame>
+      </frames>
+    </CompositeFrame>
+  </dataObjects>
+</PublicationDelivery>

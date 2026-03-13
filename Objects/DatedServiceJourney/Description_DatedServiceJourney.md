@@ -6,6 +6,17 @@ A **DatedServiceJourney** represents a specific operational instance of a `Servi
 > Key mandatory references: `ServiceJourneyRef`, `OperatingDayRef`.
 > Optional but common: `ServiceAlteration`, `BlockRef`, **`replacedJourneys` / `DatedVehicleJourneyRef`** (see below).
 
+### Structure Overview — DatedServiceJourney
+
+📄 @id  
+📄 @version  
+📄 ServiceAlteration  
+🔗 TrainBlockRef  
+🔗 ServiceJourneyRef  
+📁 replacedJourneys  
+└── 🔗 DatedVehicleJourneyRef (0..*)  
+🔗 OperatingDayRef
+
 ## When to Use
 Use **DatedServiceJourney** when you need to:
 - State that a planned `ServiceJourney` runs on a **specific date** (via `OperatingDayRef`).
