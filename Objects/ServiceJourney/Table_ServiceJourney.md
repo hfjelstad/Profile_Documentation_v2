@@ -1,12 +1,36 @@
 # Table — ServiceJourney
 
-Purpose — Summarize core fields, cardinality, and conventions so producers and consumers can validate structure consistently across objects. The order and structure below are aligned to the Example_ServiceJourney.xml and Example_ServiceJourney_NP.xml examples.
-
-Notes
-- Columns: Element, Type, MIN, ERP, NP, Description
-- Sub‑elements are represented using slash notation
-- MIN uses NeTEx cardinality semantics (e.g., 1..1, 0..1, 1..*, 0..*)
-- ERP/NP indicate whether the element typically appears in the ERP example and/or the NP example (left blank when unknown)
+ServiceJourney
+ ├─ @id
+ ├─ @version
+ ├─ Name
+ ├─ PrivateCode
+ ├─ Description
+ ├─ TransportMode
+ ├─ TransportSubmode
+ │    ├─ BusSubmode
+ │    └─ RailSubmode
+ ├─ JourneyPatternRef/@ref
+ ├─ LineRef/@ref
+ ├─ FlexibleLineRef/@ref
+ ├─ OperatorRef/@ref
+ ├─ dayTypes
+ │    └─ DayTypeRef/@ref (0..*)
+ ├─ passingTimes
+ │    └─ TimetabledPassingTime (1..*)
+ │          ├─ @id
+ │          ├─ StopPointInJourneyPatternRef/@ref
+ │          ├─ ArrivalTime
+ │          ├─ DepartureTime
+ │          ├─ ArrivalDayOffset
+ │          ├─ DepartureDayOffset
+ │          ├─ EarliestDepartureTime
+ │          └─ LatestArrivalTime
+ ├─ keyList
+ │    └─ KeyValue (0..*)
+ └─ parts
+      └─ JourneyPart (0..*)
+ └─ BlockRef/@ref
 
 | Element | Type | MIN | ERP | NP | Description |
 |---|---|---:|:--:|:--:|---|
