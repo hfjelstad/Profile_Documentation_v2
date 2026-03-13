@@ -1,4 +1,4 @@
-# Table: DatedServiceJourney (DatedVehicleJourney)
+# Table: DatedServiceJourney 
 
 
 | Element | Type | MIN | ERP | NP | Description |
