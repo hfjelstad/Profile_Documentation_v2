@@ -4,7 +4,7 @@
 | Element | Type | MIN | ERP | NP | Description |
 |---|---|---|---|---|---|
 | @id | xsd:NMTOKEN | 1..1 | 1..1 | 1..1 | Unique identifier for the dated journey instance. |
-| @version | xsd:integer |  | 1..1 | 1..1 | Version number of the object. |
+| @version | xsd:integer | 1..1  | 1..1 | 1..1 | Version number of the object. |
 | ServiceJourneyRef | ServiceJourneyRef | 1..1 | 1..1 | 1..1 | Reference to the underlying ServiceJourney template. |
 | OperatingDayRef | OperatingDayRef | 1..1 | 1..1 | 1..1 | Reference to the OperatingDay that anchors the date of operation. |
 | BlockRef | BlockRef |  | 0..1 | 0..1 | Reference to an operational Block/TrainBlock. |
