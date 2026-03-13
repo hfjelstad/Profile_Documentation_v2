@@ -11,11 +11,3 @@
 | ServiceAlteration | ServiceAlterationEnumeration |  | 0..1 | 0..1 | Planned/replaced/extraJourney; omitted implies planned. |
 | replacedJourneys | replacedJourneys |  |  | 0..1 | Container for references to journeys being replaced or reinforced. |
 | replacedJourneys/DatedVehicleJourneyRef | DatedVehicleJourneyRef |  |  | 0..* | Reference(s) to dated journey(ies) being replaced/reinforced. |
-| DatedCalls | DatedCalls |  |  |  | Container for one or more DatedCall elements (actual stop calls). |
-| DatedCalls/DatedCall | DatedCall |  |  |  | A single call of the dated journey. |
-| DatedCall/Order | xsd:positiveInteger |  |  |  | The call order in the journey. |
-| DatedCall/StopPlaceRef | StopPlaceRef |  |  |  | Stop reference by StopPlace/Quay; alternative to StopPointInJourneyPatternRef. |
-| DatedCall/StopPointInJourneyPatternRef | StopPointInJourneyPatternRef |  |  |  | Stop reference following the JourneyPattern; alternative to StopPlaceRef. |
-| DatedCall/DepartureTime | xsd:time |  |  |  | Scheduled departure time at this call (if applicable). |
-| DatedCall/ArrivalTime | xsd:time |  |  |  | Scheduled arrival time at this call (if applicable). |
-
