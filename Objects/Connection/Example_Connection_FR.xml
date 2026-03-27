@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Example: Connection between Oslo S (bus) and Oslo S (rail) -->
-<Connection id="ENT:Connection:OsloS_BusToRail" version="1">
-  <Name>Oslo S bus terminal to Oslo S railway station</Name>
-  <Description>Walking transfer from the bus terminal to the railway platforms at Oslo S.</Description>
+<!-- Example: Connection between Gare de Lyon (bus) and Gare de Lyon (rail) -->
+<Connection id="FR:Connection:GareDeLyon_BusToRail" version="1">
+  <Name>Gare de Lyon bus stop to Gare de Lyon railway platforms</Name>
+  <Description>Walking transfer from the bus stop to the railway platforms at Gare de Lyon.</Description>
   <Distance>250</Distance>
   <BothWays>true</BothWays>
   <TransferDuration>
@@ -12,11 +12,11 @@
     <MobilityRestrictedTravellerDuration>PT8M</MobilityRestrictedTravellerDuration>
   </TransferDuration>
   <From>
-    <ScheduledStopPointRef ref="ENT:ScheduledStopPoint:OsloS_Bus"/>
+    <ScheduledStopPointRef ref="FR:ScheduledStopPoint:GareDeLyon_Bus"/>
     <TransportMode>bus</TransportMode>
   </From>
   <To>
-    <ScheduledStopPointRef ref="ENT:ScheduledStopPoint:OsloS_Rail"/>
+    <ScheduledStopPointRef ref="FR:ScheduledStopPoint:GareDeLyon_Rail"/>
     <TransportMode>rail</TransportMode>
   </To>
 </Connection>

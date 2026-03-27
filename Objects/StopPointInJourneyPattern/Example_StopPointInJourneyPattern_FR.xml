@@ -1,33 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Example: Rich StopPointInJourneyPattern usage within a JourneyPattern -->
 <!-- Showing destination display changes, request stop, and booking arrangements -->
-<JourneyPattern id="ENT:JourneyPattern:FlexRoute7" version="1">
-  <Name>Route 7 Flex outbound</Name>
-  <RouteRef ref="ENT:Route:7_Out"/>
+<JourneyPattern id="FR:JourneyPattern:FlexLigne7" version="1">
+  <Name>Ligne 7 Flex aller</Name>
+  <RouteRef ref="FR:Route:7_Aller"/>
   <pointsInSequence>
     <!-- First stop: boarding only, initial destination display -->
-    <StopPointInJourneyPattern id="ENT:StopPointInJourneyPattern:FR7-1" version="1" order="1">
-      <ScheduledStopPointRef ref="ENT:ScheduledStopPoint:CityTerminal"/>
+    <StopPointInJourneyPattern id="FR:StopPointInJourneyPattern:L7-1" version="1" order="1">
+      <ScheduledStopPointRef ref="FR:ScheduledStopPoint:GareRoutiere"/>
       <ForAlighting>false</ForAlighting>
       <ForBoarding>true</ForBoarding>
-      <DestinationDisplayRef ref="ENT:DestinationDisplay:Fjordvik"/>
+      <DestinationDisplayRef ref="FR:DestinationDisplay:SaintMalo"/>
     </StopPointInJourneyPattern>
 
     <!-- Mid stop: regular stop with notice -->
-    <StopPointInJourneyPattern id="ENT:StopPointInJourneyPattern:FR7-2" version="1" order="2">
-      <ScheduledStopPointRef ref="ENT:ScheduledStopPoint:MainSquare"/>
+    <StopPointInJourneyPattern id="FR:StopPointInJourneyPattern:L7-2" version="1" order="2">
+      <ScheduledStopPointRef ref="FR:ScheduledStopPoint:PlaceDeLaRepublique"/>
       <ForAlighting>true</ForAlighting>
       <ForBoarding>true</ForBoarding>
       <noticeAssignments>
-        <NoticeAssignment id="ENT:NoticeAssignment:FR7-2-SchoolDays" version="1" order="1">
-          <NoticeRef ref="ENT:Notice:SchoolDaysOnly"/>
+        <NoticeAssignment id="FR:NoticeAssignment:L7-2-JoursScolaires" version="1" order="1">
+          <NoticeRef ref="FR:Notice:JoursScolairesUniquement"/>
         </NoticeAssignment>
       </noticeAssignments>
     </StopPointInJourneyPattern>
 
     <!-- Flexible request stop with booking (demand-responsive) -->
-    <StopPointInJourneyPattern id="ENT:StopPointInJourneyPattern:FR7-3" version="1" order="3">
-      <ScheduledStopPointRef ref="ENT:ScheduledStopPoint:VillageCrossing"/>
+    <StopPointInJourneyPattern id="FR:StopPointInJourneyPattern:L7-3" version="1" order="3">
+      <ScheduledStopPointRef ref="FR:ScheduledStopPoint:CarrefourDuVillage"/>
       <ForAlighting>true</ForAlighting>
       <ForBoarding>true</ForBoarding>
       <RequestStop>true</RequestStop>
@@ -37,7 +37,7 @@
         <BookWhen>advanceOnly</BookWhen>
         <LatestBookingTime>16:00:00</LatestBookingTime>
         <MinimumBookingPeriod>PT2H</MinimumBookingPeriod>
-        <BookingNote>Call the operator at +47 555 12 345 to request this stop.</BookingNote>
+        <BookingNote>Appelez le transporteur au +33 2 99 12 34 56 pour réserver cet arrêt.</BookingNote>
         <BookingMethods>
           <BookingMethod>callOffice</BookingMethod>
         </BookingMethods>
@@ -45,17 +45,17 @@
     </StopPointInJourneyPattern>
 
     <!-- Destination display change at this stop -->
-    <StopPointInJourneyPattern id="ENT:StopPointInJourneyPattern:FR7-4" version="1" order="4">
-      <ScheduledStopPointRef ref="ENT:ScheduledStopPoint:HarbourJunction"/>
+    <StopPointInJourneyPattern id="FR:StopPointInJourneyPattern:L7-4" version="1" order="4">
+      <ScheduledStopPointRef ref="FR:ScheduledStopPoint:PortDePlaisance"/>
       <ForAlighting>true</ForAlighting>
       <ForBoarding>true</ForBoarding>
-      <DestinationDisplayRef ref="ENT:DestinationDisplay:Fjordvik_via_Harbour"/>
+      <DestinationDisplayRef ref="FR:DestinationDisplay:SaintMalo_via_Port"/>
       <ChangeOfDestinationDisplay>true</ChangeOfDestinationDisplay>
     </StopPointInJourneyPattern>
 
     <!-- Last stop: alighting only -->
-    <StopPointInJourneyPattern id="ENT:StopPointInJourneyPattern:FR7-5" version="1" order="5">
-      <ScheduledStopPointRef ref="ENT:ScheduledStopPoint:Fjordvik"/>
+    <StopPointInJourneyPattern id="FR:StopPointInJourneyPattern:L7-5" version="1" order="5">
+      <ScheduledStopPointRef ref="FR:ScheduledStopPoint:SaintMalo"/>
       <ForAlighting>true</ForAlighting>
       <ForBoarding>false</ForBoarding>
     </StopPointInJourneyPattern>

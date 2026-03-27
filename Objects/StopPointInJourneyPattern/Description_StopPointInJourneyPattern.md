@@ -87,4 +87,6 @@ While the basic elements (@order, ScheduledStopPointRef, ForAlighting, ForBoardi
 
 See [Table_StopPointInJourneyPattern.md](Table_StopPointInJourneyPattern.md) for detailed attribute specifications.
 
+Example XML: [Example_StopPointInJourneyPattern_FR.xml](Example_StopPointInJourneyPattern_FR.xml)
+
 For the parent structure, see [JourneyPattern](../JourneyPattern/Description_JourneyPattern.md). For flexible transport, see also [FlexibleServiceProperties](../FlexibleServiceProperties/Description_FlexibleServiceProperties.md).

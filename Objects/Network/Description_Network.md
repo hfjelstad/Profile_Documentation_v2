@@ -50,7 +50,7 @@ A **Network** represents a branded, passenger-facing public transport network co
 ### 5b. Validation Requirements
 
 - **Name is mandatory** — a Network without a name cannot be presented to passengers.
-- **@id and @version are mandatory** — follow codespace conventions (e.g., `ENT:Network:Ruter`).
+- **@id and @version are mandatory** — follow codespace conventions (e.g., `FR:Network:IDFM`).
 
 ### 5c. Common Pitfalls
 
@@ -61,5 +61,7 @@ A **Network** represents a branded, passenger-facing public transport network co
 ## 6. Additional Information
 
 See [Table_Network.md](Table_Network.md) for detailed attribute specifications.
+
+Example XML: [Example_Network_FR.xml](Example_Network_FR.xml)
 
 Network is placed in the ServiceFrame alongside Lines and GroupOfLines. In the French profile, it is placed in a GeneralFrame with TypeOfFrame `NETEX_RESEAU`.

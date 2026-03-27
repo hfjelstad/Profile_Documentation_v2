@@ -67,3 +67,5 @@ A **Connection** represents a physical transfer opportunity between two Schedule
 See [Table_Connection.md](Table_Connection.md) for detailed attribute specifications.
 
 For default transfer times that apply broadly (by mode or area), see DefaultConnection. For connections between physical sites with navigation details, see SiteConnection.
+
+Example XML: [Example_Connection_FR.xml](Example_Connection_FR.xml)

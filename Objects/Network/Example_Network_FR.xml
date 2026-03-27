@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Network id="FR:Network:IleDeFrance" version="1">
+  <Name>Île-de-France Mobilités</Name>
+  <Description>Regional public transport network for Île-de-France region</Description>
+  <TransportMode>bus</TransportMode>
+  <AuthorityRef ref="FR:Authority:IDFM"/>
+  <members>
+    <LineRef ref="FR:Line:1" version="1"/>
+    <LineRef ref="FR:Line:2" version="1"/>
+    <LineRef ref="FR:Line:Express3" version="1"/>
+  </members>
+</Network>

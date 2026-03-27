@@ -66,4 +66,6 @@ The French profile uses ServiceCalendar as the primary container for all calenda
 
 See [Table_ServiceCalendar.md](Table_ServiceCalendar.md) for detailed attribute specifications.
 
+Example XML: [Example_ServiceCalendar_FR.xml](Example_ServiceCalendar_FR.xml)
+
 For the frame-level documentation, see [ServiceCalendarFrame](../../Frames/ServiceCalendarFrame/Description_ServiceCalendarFrame.md).
