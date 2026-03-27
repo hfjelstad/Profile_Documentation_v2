@@ -16,14 +16,17 @@ A **DayType** represents a classification of days on which a specific set of tra
   ├─ 📄 Description (0..1)
   └─ 📁 properties (0..1)
      └─ 📁 PropertyOfDay (0..n)
-        └─ 📄 DaysOfWeek (0..1)
+        ├─ 📄 DaysOfWeek (0..1)
+        ├─ 📄 Seasons (0..1)
+        ├─ 📄 HolidayTypes (0..1)
+        └─ 📄 Tides (0..1)
 ```
 
 ## 3. Key Elements
 
 - **Name**: Human-readable label for the day classification (e.g., "Weekdays", "Saturday", "Public Holidays"); used in timetable displays and planning tools.
 - **Description**: Optional free text providing additional context about the day type's intended scope or usage.
-- **properties / PropertyOfDay**: Optional structured attributes describing operational characteristics of the day type (e.g., day of week, holiday type).
+- **properties / PropertyOfDay**: Optional structured attributes describing operational characteristics of the day type (e.g., day of week, holiday type, season, tidal conditions).
 
 ## 4. References
 

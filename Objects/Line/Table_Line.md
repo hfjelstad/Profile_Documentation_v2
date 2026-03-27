@@ -19,6 +19,15 @@ Line
  ├─ PublicCode (0..1)
  ├─ PrivateCode (0..1)
  ├─ RepresentedByGroupRef/@ref (0..1)
+ ├─ Monitored (0..1)
+ ├─ TypeOfLineRef/@ref (0..1)
+ ├─ AccessibilityAssessment (0..1)
+ │  └─ MobilityImpairedAccess (1..1)
+ ├─ allowedDirections (0..1)
+ │  └─ AllowedLineDirection (0..n)
+ │     └─ DirectionRef/@ref (1..1)
+ ├─ documentLinks (0..1)
+ │  └─ InfoLink (0..n)
  └─ Presentation (0..1)
     ├─ Colour (0..1)
     └─ TextColour (0..1)
@@ -45,5 +54,13 @@ Line
 | PublicCode | String |  | 0..1 | Public-facing line number or code | Line/PublicCode |
 | PrivateCode | String |  | 0..1 | Internal non-public code | Line/PrivateCode |
 | RepresentedByGroupRef/@ref | Reference |  | 0..1 | Reference to the Network or GroupOfLines this line belongs to | Line/RepresentedByGroupRef/@ref |
+| Monitored | Boolean |  | 0..1 | Whether the line is tracked by a real-time monitoring system | Line/Monitored |
+| TypeOfLineRef/@ref | Reference |  |  | Reference to a TypeOfLine classification | Line/TypeOfLineRef/@ref |
+| AccessibilityAssessment | Element |  |  | Line-level accessibility declaration | Line/AccessibilityAssessment |
+| MobilityImpairedAccess | Enum |  |  | Accessibility status: `true`, `false`, `partial`, `unknown` | Line/AccessibilityAssessment/MobilityImpairedAccess |
+| allowedDirections | Container |  |  | Permitted directions for this line | Line/allowedDirections |
+| DirectionRef/@ref | Reference |  |  | Reference to a Direction | Line/allowedDirections/AllowedLineDirection/DirectionRef/@ref |
+| documentLinks | Container |  |  | External information links | Line/documentLinks |
+| InfoLink | xsd:anyURI |  |  | URL to external document (timetable PDF, info page) | Line/documentLinks/InfoLink |
 | Colour | String | 0..1 | 0..1 | Line colour as 6-digit uppercase hex (e.g., 005EB8) | Line/Presentation/Colour |
 | TextColour | String | 0..1 | 0..1 | Text colour as 6-digit uppercase hex (e.g., FFFFFF) | Line/Presentation/TextColour |

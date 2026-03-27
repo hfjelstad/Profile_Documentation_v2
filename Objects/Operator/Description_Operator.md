@@ -22,7 +22,9 @@ Operator
  │  ├─ 📄 Phone (0..1)
  │  └─ 📄 Url (0..1)
  ├─ 📄 OrganisationType (0..1)
- ├─ 🔗 AuthorityRef/@ref (0..1)
+ ├─ � PrimaryMode (0..1)
+ ├─ 📄 CountryRef (0..1)
+ ├─ �🔗 AuthorityRef/@ref (0..1)
  └─ 🔗 ResponsibilitySetRef/@ref (0..1)
 ```
 
@@ -31,6 +33,8 @@ Operator
 - **ShortName**: Brief abbreviated form of Operator name for compact display in timetables and UI; optional but recommended.
 - **ContactDetails**: Element containing phone, email, and website information; supports customer service references.
 - **AuthorityRef**: Optional reference linking Operator to the Authority that contracts/manages the network; critical for organizational hierarchy.
+- **PrimaryMode**: The primary transport mode operated by this organization (e.g., `bus`, `rail`). Useful for filtering and classification.
+- **CountryRef**: ISO country code identifying where the operator is registered (e.g., `NO`, `FR`). Important for cross-border datasets.
 - **ResponsibilitySetRef**: Links to a ResponsibilitySet element defining specific roles and obligations; enables flexible responsibility modeling.
 
 ## 4. References

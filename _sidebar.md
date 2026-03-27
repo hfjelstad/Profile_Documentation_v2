@@ -22,6 +22,8 @@
   - [Decision Makers](/Guides/DecisionMakers/DecisionMakers_Guide.md)
   - [Regulatory Compliance](/Guides/RegulatoryCompliance/RegulatoryCompliance_Guide.md)
   - [MaaS Consumers](/Guides/MaaSConsumers/MaaSConsumers_Guide.md)
+  - [NeTEx Inheritance](/Guides/NeTExInheritance/NeTExInheritance_Guide.md)
+  - [Transport Modes](/Guides/TransportModes/TransportModes_Guide.md)
 
 <details>
 <summary><strong>Frames</strong></summary>
@@ -45,6 +47,7 @@
   - [AlternativeText](/Objects/AlternativeText/Description_AlternativeText.md)
   - [Authority](/Objects/Authority/Description_Authority.md)
   - [Codespace](/Objects/Codespace/Description_Codespace.md)
+  - [Connection](/Objects/Connection/Description_Connection.md)
   - [Contract](/Objects/Contract/Description_Contract.md)
   - [DatedServiceJourney](/Objects/DatedServiceJourney/Description_DatedServiceJourney.md)
   - [DayType](/Objects/DayType/Description_DayType.md)
@@ -58,6 +61,7 @@
   - [JourneyPattern](/Objects/JourneyPattern/Description_JourneyPattern.md)
   - [Line](/Objects/Line/Description_Line.md)
   - [LinkSequenceProjection](/Objects/LinkSequenceProjection/Description_LinkSequenceProjection.md)
+  - [Network](/Objects/Network/Description_Network.md)
   - [Notice](/Objects/Notice/Description_Notice.md)
   - [OperatingDay](/Objects/OperatingDay/Description_OperatingDay.md)
   - [OperatingPeriod](/Objects/OperatingPeriod/Description_OperatingPeriod.md)
@@ -71,9 +75,11 @@
   - [Route](/Objects/Route/Description_Route.md)
   - [SanitaryEquipment](/Objects/SanitaryEquipment/Description_SanitaryEquipment.md)
   - [ScheduledStopPoint](/Objects/ScheduledStopPoint/Description_ScheduledStopPoint.md)
+  - [ServiceCalendar](/Objects/ServiceCalendar/Description_ServiceCalendar.md)
   - [ServiceJourney](/Objects/ServiceJourney/Description_ServiceJourney.md)
   - [ShelterEquipment](/Objects/ShelterEquipment/Description_ShelterEquipment.md)
   - [StopPlace](/Objects/StopPlace/Description_StopPlace.md)
+  - [StopPointInJourneyPattern](/Objects/StopPointInJourneyPattern/Description_StopPointInJourneyPattern.md)
   - [TariffZone](/Objects/TariffZone/Description_TariffZone.md)
   - [TicketingEquipment](/Objects/TicketingEquipment/Description_TicketingEquipment.md)
   - [TopographicPlace](/Objects/TopographicPlace/Description_TopographicPlace.md)

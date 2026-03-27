@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Example: ServiceCalendar for a timetable period with Weekday and Saturday day types -->
+<ServiceCalendar id="ENT:ServiceCalendar:2025-Summer" version="1">
+  <Name>Summer 2025 Calendar</Name>
+  <FromDate>2025-06-15T00:00:00</FromDate>
+  <ToDate>2025-08-17T23:59:59</ToDate>
+
+  <dayTypes>
+    <DayType id="ENT:DayType:Weekdays" version="1">
+      <Name>Weekdays</Name>
+      <properties>
+        <PropertyOfDay>
+          <DaysOfWeek>Monday Tuesday Wednesday Thursday Friday</DaysOfWeek>
+        </PropertyOfDay>
+      </properties>
+    </DayType>
+    <DayType id="ENT:DayType:Saturday" version="1">
+      <Name>Saturday</Name>
+      <properties>
+        <PropertyOfDay>
+          <DaysOfWeek>Saturday</DaysOfWeek>
+        </PropertyOfDay>
+      </properties>
+    </DayType>
+  </dayTypes>
+
+  <operatingPeriods>
+    <OperatingPeriod id="ENT:OperatingPeriod:2025-Summer" version="1">
+      <FromDate>2025-06-15T00:00:00</FromDate>
+      <ToDate>2025-08-17T23:59:59</ToDate>
+    </OperatingPeriod>
+  </operatingPeriods>
+
+  <dayTypeAssignments>
+    <DayTypeAssignment id="ENT:DayTypeAssignment:Weekdays-Summer" version="1" order="1">
+      <OperatingPeriodRef ref="ENT:OperatingPeriod:2025-Summer"/>
+      <DayTypeRef ref="ENT:DayType:Weekdays"/>
+      <isAvailable>true</isAvailable>
+    </DayTypeAssignment>
+    <DayTypeAssignment id="ENT:DayTypeAssignment:Saturday-Summer" version="1" order="1">
+      <OperatingPeriodRef ref="ENT:OperatingPeriod:2025-Summer"/>
+      <DayTypeRef ref="ENT:DayType:Saturday"/>
+      <isAvailable>true</isAvailable>
+    </DayTypeAssignment>
+    <!-- Exception: National Day is not a weekday service -->
+    <DayTypeAssignment id="ENT:DayTypeAssignment:NationalDay-Exception" version="1" order="2">
+      <Date>2025-06-23</Date>
+      <DayTypeRef ref="ENT:DayType:Weekdays"/>
+      <isAvailable>false</isAvailable>
+    </DayTypeAssignment>
+  </dayTypeAssignments>
+</ServiceCalendar>

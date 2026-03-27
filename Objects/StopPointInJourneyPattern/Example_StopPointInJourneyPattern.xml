@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Example: Rich StopPointInJourneyPattern usage within a JourneyPattern -->
+<!-- Showing destination display changes, request stop, and booking arrangements -->
+<JourneyPattern id="ENT:JourneyPattern:FlexRoute7" version="1">
+  <Name>Route 7 Flex outbound</Name>
+  <RouteRef ref="ENT:Route:7_Out"/>
+  <pointsInSequence>
+    <!-- First stop: boarding only, initial destination display -->
+    <StopPointInJourneyPattern id="ENT:StopPointInJourneyPattern:FR7-1" version="1" order="1">
+      <ScheduledStopPointRef ref="ENT:ScheduledStopPoint:CityTerminal"/>
+      <ForAlighting>false</ForAlighting>
+      <ForBoarding>true</ForBoarding>
+      <DestinationDisplayRef ref="ENT:DestinationDisplay:Fjordvik"/>
+    </StopPointInJourneyPattern>
+
+    <!-- Mid stop: regular stop with notice -->
+    <StopPointInJourneyPattern id="ENT:StopPointInJourneyPattern:FR7-2" version="1" order="2">
+      <ScheduledStopPointRef ref="ENT:ScheduledStopPoint:MainSquare"/>
+      <ForAlighting>true</ForAlighting>
+      <ForBoarding>true</ForBoarding>
+      <noticeAssignments>
+        <NoticeAssignment id="ENT:NoticeAssignment:FR7-2-SchoolDays" version="1" order="1">
+          <NoticeRef ref="ENT:Notice:SchoolDaysOnly"/>
+        </NoticeAssignment>
+      </noticeAssignments>
+    </StopPointInJourneyPattern>
+
+    <!-- Flexible request stop with booking (demand-responsive) -->
+    <StopPointInJourneyPattern id="ENT:StopPointInJourneyPattern:FR7-3" version="1" order="3">
+      <ScheduledStopPointRef ref="ENT:ScheduledStopPoint:VillageCrossing"/>
+      <ForAlighting>true</ForAlighting>
+      <ForBoarding>true</ForBoarding>
+      <RequestStop>true</RequestStop>
+      <RequestMethod>phoneCall</RequestMethod>
+      <BookingArrangements>
+        <BookingAccess>public</BookingAccess>
+        <BookWhen>advanceOnly</BookWhen>
+        <LatestBookingTime>16:00:00</LatestBookingTime>
+        <MinimumBookingPeriod>PT2H</MinimumBookingPeriod>
+        <BookingNote>Call the operator at +47 555 12 345 to request this stop.</BookingNote>
+        <BookingMethods>
+          <BookingMethod>callOffice</BookingMethod>
+        </BookingMethods>
+      </BookingArrangements>
+    </StopPointInJourneyPattern>
+
+    <!-- Destination display change at this stop -->
+    <StopPointInJourneyPattern id="ENT:StopPointInJourneyPattern:FR7-4" version="1" order="4">
+      <ScheduledStopPointRef ref="ENT:ScheduledStopPoint:HarbourJunction"/>
+      <ForAlighting>true</ForAlighting>
+      <ForBoarding>true</ForBoarding>
+      <DestinationDisplayRef ref="ENT:DestinationDisplay:Fjordvik_via_Harbour"/>
+      <ChangeOfDestinationDisplay>true</ChangeOfDestinationDisplay>
+    </StopPointInJourneyPattern>
+
+    <!-- Last stop: alighting only -->
+    <StopPointInJourneyPattern id="ENT:StopPointInJourneyPattern:FR7-5" version="1" order="5">
+      <ScheduledStopPointRef ref="ENT:ScheduledStopPoint:Fjordvik"/>
+      <ForAlighting>true</ForAlighting>
+      <ForBoarding>false</ForBoarding>
+    </StopPointInJourneyPattern>
+  </pointsInSequence>
+</JourneyPattern>

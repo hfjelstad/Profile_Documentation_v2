@@ -16,6 +16,8 @@ Operator
  │  ├─ Phone (0..1)
  │  └─ Url (0..1)
  ├─ OrganisationType (0..1)
+ ├─ PrimaryMode (0..1)
+ ├─ CountryRef (0..1)
  ├─ AuthorityRef/@ref (0..1)
  └─ ResponsibilitySetRef/@ref (0..1)
 ```
@@ -38,5 +40,7 @@ Operator
 | Phone | String |  | 0..1 | Customer service phone | Operator/CustomerServiceContactDetails/Phone |
 | Url | String |  | 0..1 | Customer service URL | Operator/CustomerServiceContactDetails/Url |
 | OrganisationType | String |  | 0..1 | Type of organisation (e.g., company, cooperative) | Operator/OrganisationType |
+| PrimaryMode | Enum |  |  | Primary transport mode (bus, rail, water, tram, metro, etc.) | Operator/PrimaryMode |
+| CountryRef | xsd:string |  |  | ISO country code where operator is registered (e.g., NO, FR) | Operator/CountryRef |
 | [Authority](../Authority/Table_Authority.md)@ref | Reference |  |  | Reference to the contracting Authority | Operator/AuthorityRef/@ref |
 | [ResponsibilitySet](../ResponsibilitySet/Table_ResponsibilitySet.md)@ref | Reference |  |  | Reference to a ResponsibilitySet defining roles | Operator/ResponsibilitySetRef/@ref |

@@ -25,6 +25,17 @@ Line
  ├─ 📄 PublicCode (0..1)
  ├─ 📄 PrivateCode (0..1)
  ├─ 🔗 RepresentedByGroupRef/@ref (0..1)
+ ├─ 📄 Monitored (0..1)
+ ├─ 🔗 TypeOfLineRef/@ref (0..1)
+ ├─ 📁 AccessibilityAssessment (0..1)
+ │  ├─ 📄 MobilityImpairedAccess (1..1)
+ │  └─ 📁 limitations (0..1)
+ │     └─ 📄 AccessibilityLimitation (0..n)
+ ├─ 📁 allowedDirections (0..1)
+ │  └─ 📄 AllowedLineDirection (0..n)
+ │     └─ 🔗 DirectionRef/@ref (1..1)
+ ├─ 📁 documentLinks (0..1)
+ │  └─ 📄 InfoLink (0..n)
  └─ 📁 Presentation (0..1)
     ├─ 📄 Colour (0..1)
     └─ 📄 TextColour (0..1)
@@ -35,6 +46,11 @@ Line
 - **TransportMode**: Primary public transport mode for the line (e.g., `bus`, `rail`, `water`, `tram`, `metro`). Mandatory in this profile.
 - **TransportSubmode**: Optional refinement of the transport mode (e.g., `regionalBus`, `localRail`). Only one submode element should be present, matching the TransportMode.
 - **OperatorRef**: Mandatory reference to the Operator responsible for running this Line; must resolve to an Operator defined in ResourceFrame.
+- **Monitored**: Boolean indicating whether the line is tracked by a real-time monitoring system (AVL/APC). Used by journey planners to show real-time data availability.
+- **TypeOfLineRef**: Reference to a TypeOfLine classification (e.g., commercial line, school line, replacement service).
+- **AccessibilityAssessment**: Declares line-level accessibility. MobilityImpairedAccess is mandatory within it; limitations can list specific AccessibilityLimitation entries.
+- **allowedDirections**: Defines which directions (inbound, outbound, etc.) are valid for this line.
+- **documentLinks / InfoLink**: Collection of external information links about the line (timetable PDFs, passenger information URLs).
 - **Presentation**: Optional container for visual presentation properties; defines line color and text color for passenger-facing displays.
 - **Colour**: Hexadecimal color code (6 uppercase digits without `#`) for the line's visual representation; e.g., `005EB8` for blue.
 - **TextColour**: Hexadecimal color code for text displayed on the line; typically contrasts with Colour for readability; e.g., `FFFFFF` for white.

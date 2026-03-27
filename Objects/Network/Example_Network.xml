@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Network id="ENT:Network:Kolumbus" version="1">
+  <Name>Kolumbus</Name>
+  <Description>Regional public transport network for Rogaland county</Description>
+  <TransportMode>bus</TransportMode>
+  <AuthorityRef ref="ENT:Authority:KOL"/>
+  <members>
+    <LineRef ref="ENT:Line:1" version="1"/>
+    <LineRef ref="ENT:Line:2" version="1"/>
+    <LineRef ref="ENT:Line:X50" version="1"/>
+  </members>
+</Network>

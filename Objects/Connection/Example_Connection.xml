@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Example: Connection between Oslo S (bus) and Oslo S (rail) -->
+<Connection id="ENT:Connection:OsloS_BusToRail" version="1">
+  <Name>Oslo S bus terminal to Oslo S railway station</Name>
+  <Description>Walking transfer from the bus terminal to the railway platforms at Oslo S.</Description>
+  <Distance>250</Distance>
+  <BothWays>true</BothWays>
+  <TransferDuration>
+    <DefaultDuration>PT4M</DefaultDuration>
+    <FrequentTravellerDuration>PT3M</FrequentTravellerDuration>
+    <OccasionalTravellerDuration>PT6M</OccasionalTravellerDuration>
+    <MobilityRestrictedTravellerDuration>PT8M</MobilityRestrictedTravellerDuration>
+  </TransferDuration>
+  <From>
+    <ScheduledStopPointRef ref="ENT:ScheduledStopPoint:OsloS_Bus"/>
+    <TransportMode>bus</TransportMode>
+  </From>
+  <To>
+    <ScheduledStopPointRef ref="ENT:ScheduledStopPoint:OsloS_Rail"/>
+    <TransportMode>rail</TransportMode>
+  </To>
+</Connection>

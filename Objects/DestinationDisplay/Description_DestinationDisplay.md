@@ -13,8 +13,20 @@ DestinationDisplay
   ├─ 📄 @id (1..1)
   ├─ 📄 @version (1..1)
   ├─ 📄 Name (0..1)
+  ├─ 📄 ShortName (0..1)
+  ├─ 📄 PublicCode (0..1)
   ├─ 📄 FrontText (1..1)
-  └─ 📄 SideText (0..1)
+  ├─ 📄 SideText (0..1)
+  ├─ 📁 vias (0..1)
+  │  └─ 📁 Via (0..n)
+  │     └─ 🔗 DestinationDisplayRef/@ref (1..1)
+  └─ 📁 variants (0..1)
+     └─ 📁 DestinationDisplayVariant (0..n)
+        ├─ 📄 @id (1..1)
+        ├─ 📄 @version (1..1)
+        ├─ 📄 Name (0..1)
+        ├─ 📄 FrontText (1..1)
+        └─ 🔗 DestinationDisplayVariantMediaType (0..1)
 ```
 
 ## 3. Key Elements
@@ -22,6 +34,10 @@ DestinationDisplay
 - **@id**: Unique identifier for the destination display, following the `{CODESPACE}:DestinationDisplay:{LocalId}` pattern.
 - **@version**: Version number for tracking changes.
 - **FrontText**: The main text shown on the vehicle's destination display (e.g., "Oslo S", "Bergen").
+- **ShortName**: Abbreviated version of the destination for narrow displays.
+- **PublicCode**: Public-facing line or destination code displayed alongside FrontText.
+- **vias**: Ordered list of intermediate destinations shown on the display (e.g., "Bergen via Voss"). Each Via references another DestinationDisplay.
+- **variants / DestinationDisplayVariant**: Alternative renderings for different media types (printed timetable, mobile app, screen with limited width). Each variant has its own FrontText and DestinationDisplayVariantMediaType.
 
 ## 4. References
 
