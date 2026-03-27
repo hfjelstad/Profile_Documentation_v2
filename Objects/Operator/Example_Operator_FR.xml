@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PublicationDelivery xmlns="http://www.netex.org.uk/netex" version="2.0">
+  <PublicationTimestamp>2026-03-27T12:00:00Z</PublicationTimestamp>
+  <ParticipantRef>FR_Profile</ParticipantRef>
+  <dataObjects>
+    <ResourceFrame id="FR:ResourceFrame:operators:1" version="1">
+      <organisations>
+        <Operator id="FR:Operator:KEOLIS_ARMOR" version="1">
+          <Name>Keolis Armor</Name>
+          <ShortName>Keolis</ShortName>
+          <LegalName>Keolis Armor SAS</LegalName>
+          <ContactDetails>
+            <Phone>+33299261111</Phone>
+            <Url>https://www.keolis.com</Url>
+          </ContactDetails>
+          <CustomerServiceContactDetails>
+            <Email>contact@breizhgo.bzh</Email>
+            <Phone>+33800501035</Phone>
+            <Url>https://www.breizhgo.bzh</Url>
+          </CustomerServiceContactDetails>
+          <OrganisationType>operator</OrganisationType>
+          <PrimaryMode>bus</PrimaryMode>
+          <CountryRef>FR</CountryRef>
+          <AuthorityRef ref="FR:Authority:REGION_BRETAGNE"/>
+        </Operator>
+      </organisations>
+    </ResourceFrame>
+  </dataObjects>
+</PublicationDelivery>

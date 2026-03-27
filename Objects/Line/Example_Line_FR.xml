@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PublicationDelivery xmlns="http://www.netex.org.uk/netex" version="2.0">
+  <PublicationTimestamp>2026-03-27T12:00:00Z</PublicationTimestamp>
+  <ParticipantRef>FR_Profile</ParticipantRef>
+  <dataObjects>
+    <ServiceFrame id="FR:ServiceFrame:lines:1" version="1">
+      <lines>
+        <Line id="FR:Line:C01" version="1">
+          <Name>Ligne C01 - Rennes ↔ Saint-Malo</Name>
+          <TransportMode>bus</TransportMode>
+          <TransportSubmode>
+            <BusSubmode>regionalBus</BusSubmode>
+          </TransportSubmode>
+          <PublicCode>C01</PublicCode>
+          <OperatorRef ref="FR:Operator:KEOLIS_ARMOR"/>
+          <Monitored>true</Monitored>
+          <TypeOfLineRef ref="FR:TypeOfLine:CommercialLine"/>
+          <RepresentedByGroupRef ref="FR:Network:BreizhGo"/>
+          <AccessibilityAssessment>
+            <MobilityImpairedAccess>partial</MobilityImpairedAccess>
+          </AccessibilityAssessment>
+          <allowedDirections>
+            <AllowedLineDirection>
+              <DirectionRef ref="FR:Direction:Aller"/>
+            </AllowedLineDirection>
+            <AllowedLineDirection>
+              <DirectionRef ref="FR:Direction:Retour"/>
+            </AllowedLineDirection>
+          </allowedDirections>
+          <documentLinks>
+            <InfoLink>https://www.breizhgo.bzh/ligne/C01</InfoLink>
+          </documentLinks>
+          <Presentation>
+            <Colour>E4032E</Colour>
+            <TextColour>FFFFFF</TextColour>
+          </Presentation>
+        </Line>
+      </lines>
+    </ServiceFrame>
+  </dataObjects>
+</PublicationDelivery>

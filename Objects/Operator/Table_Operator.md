@@ -24,23 +24,23 @@ Operator
 
 ## Table
 
-| Element | Type | MIN | NP | Description | Path |
-|---------|------|-----|-----|-------------|------|
-| @id | ID | 1..1 | 1..1 | Unique identifier for the Operator | Operator/@id |
-| @version | String | 1..1 | 1..1 | Version label | Operator/@version |
-| Name | String |  | 1..1 | Name of the Operator organisation | Operator/Name |
-| CompanyNumber | String |  | 0..1 | Official company registration number | Operator/CompanyNumber |
-| ShortName | String |  |  | Abbreviated name | Operator/ShortName |
-| LegalName | String |  | 0..1 | Official legal name of the operator | Operator/LegalName |
-| ContactDetails | Element |  | 0..1 | Contact information (phone, email, website) | Operator/ContactDetails |
-| Phone | String |  | 0..1 | Contact telephone number | Operator/ContactDetails/Phone |
-| Url | String |  | 0..1 | Website URL | Operator/ContactDetails/Url |
-| CustomerServiceContactDetails | Element |  | 0..1 | Public-facing customer service contact details | Operator/CustomerServiceContactDetails |
-| Email | String |  | 0..1 | Customer service email | Operator/CustomerServiceContactDetails/Email |
-| Phone | String |  | 0..1 | Customer service phone | Operator/CustomerServiceContactDetails/Phone |
-| Url | String |  | 0..1 | Customer service URL | Operator/CustomerServiceContactDetails/Url |
-| OrganisationType | String |  | 0..1 | Type of organisation (e.g., company, cooperative) | Operator/OrganisationType |
-| PrimaryMode | Enum |  |  | Primary transport mode (bus, rail, water, tram, metro, etc.) | Operator/PrimaryMode |
-| CountryRef | xsd:string |  |  | ISO country code where operator is registered (e.g., NO, FR) | Operator/CountryRef |
-| [Authority](../Authority/Table_Authority.md)@ref | Reference |  |  | Reference to the contracting Authority | Operator/AuthorityRef/@ref |
-| [ResponsibilitySet](../ResponsibilitySet/Table_ResponsibilitySet.md)@ref | Reference |  |  | Reference to a ResponsibilitySet defining roles | Operator/ResponsibilitySetRef/@ref |
+| Element | Type | MIN | NP | FR | Description | Path |
+|---------|------|-----|-----|-----|-------------|------|
+| @id | ID | 1..1 | 1..1 | 1..1 | Unique identifier for the Operator | Operator/@id |
+| @version | String | 1..1 | 1..1 | 1..1 | Version label | Operator/@version |
+| Name | String |  | 1..1 | 1..1 | Name of the Operator organisation | Operator/Name |
+| CompanyNumber | String |  | 0..1 |  | Official company registration number | Operator/CompanyNumber |
+| ShortName | String |  |  | 0..1 | Abbreviated name | Operator/ShortName |
+| LegalName | String |  | 0..1 | 0..1 | Official legal name of the operator | Operator/LegalName |
+| ContactDetails | Element |  | 0..1 | 0..1 | Contact information (phone, email, website) | Operator/ContactDetails |
+| Phone | String |  | 0..1 | 0..1 | Contact telephone number | Operator/ContactDetails/Phone |
+| Url | String |  | 0..1 | 0..1 | Website URL | Operator/ContactDetails/Url |
+| CustomerServiceContactDetails | Element |  | 0..1 | 0..1 | Public-facing customer service contact details | Operator/CustomerServiceContactDetails |
+| Email | String |  | 0..1 | 0..1 | Customer service email | Operator/CustomerServiceContactDetails/Email |
+| Phone | String |  | 0..1 | 0..1 | Customer service phone | Operator/CustomerServiceContactDetails/Phone |
+| Url | String |  | 0..1 | 0..1 | Customer service URL | Operator/CustomerServiceContactDetails/Url |
+| OrganisationType | String |  | 0..1 | 0..1 | Type of organisation (e.g., company, cooperative) | Operator/OrganisationType |
+| PrimaryMode | Enum |  |  | 0..1 | Primary transport mode (bus, rail, water, tram, metro, etc.) | Operator/PrimaryMode |
+| CountryRef | xsd:string |  |  | 0..1 | ISO country code where operator is registered (e.g., NO, FR) | Operator/CountryRef |
+| [Authority](../Authority/Table_Authority.md)@ref | Reference |  |  | 0..1 | Reference to the contracting Authority | Operator/AuthorityRef/@ref |
+| [ResponsibilitySet](../ResponsibilitySet/Table_ResponsibilitySet.md)@ref | Reference |  |  |  | Reference to a ResponsibilitySet defining roles | Operator/ResponsibilitySetRef/@ref |

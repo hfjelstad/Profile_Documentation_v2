@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PublicationDelivery xmlns="http://www.netex.org.uk/netex" version="2.0">
+  <PublicationTimestamp>2026-03-27T12:00:00Z</PublicationTimestamp>
+  <ParticipantRef>FR_Profile</ParticipantRef>
+  <dataObjects>
+    <ServiceCalendarFrame id="FR:ServiceCalendarFrame:dt:1" version="1">
+      <dayTypes>
+        <DayType id="FR:DayType:SemaineHiver" version="1">
+          <Name>Jours de semaine hiver</Name>
+          <properties>
+            <PropertyOfDay>
+              <DaysOfWeek>Monday Tuesday Wednesday Thursday Friday</DaysOfWeek>
+              <Seasons>Winter</Seasons>
+              <HolidayTypes>WorkingDay</HolidayTypes>
+            </PropertyOfDay>
+          </properties>
+        </DayType>
+        <DayType id="FR:DayType:FerryMaree" version="1">
+          <Name>Service ferry marée haute</Name>
+          <Description>Ferry service only operates at high tide</Description>
+          <properties>
+            <PropertyOfDay>
+              <DaysOfWeek>Monday Tuesday Wednesday Thursday Friday Saturday Sunday</DaysOfWeek>
+              <Tides>HighTide</Tides>
+            </PropertyOfDay>
+          </properties>
+        </DayType>
+      </dayTypes>
+    </ServiceCalendarFrame>
+  </dataObjects>
+</PublicationDelivery>

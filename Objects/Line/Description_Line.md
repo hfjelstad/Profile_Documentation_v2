@@ -126,4 +126,41 @@ See [Table_Line.md](Table_Line.md) for detailed attribute specifications, cardin
 
 → [Full file](Example_Line_NP.xml)
 
+#### **FR (French)**
+
+```xml
+<Line id="FR:Line:C01" version="1">
+  <Name>Ligne C01 - Rennes ↔ Saint-Malo</Name>
+  <TransportMode>bus</TransportMode>
+  <TransportSubmode>
+    <BusSubmode>regionalBus</BusSubmode>
+  </TransportSubmode>
+  <PublicCode>C01</PublicCode>
+  <OperatorRef ref="FR:Operator:KEOLIS_ARMOR"/>
+  <Monitored>true</Monitored>
+  <TypeOfLineRef ref="FR:TypeOfLine:CommercialLine"/>
+  <RepresentedByGroupRef ref="FR:Network:BreizhGo"/>
+  <AccessibilityAssessment>
+    <MobilityImpairedAccess>partial</MobilityImpairedAccess>
+  </AccessibilityAssessment>
+  <allowedDirections>
+    <AllowedLineDirection>
+      <DirectionRef ref="FR:Direction:Aller"/>
+    </AllowedLineDirection>
+    <AllowedLineDirection>
+      <DirectionRef ref="FR:Direction:Retour"/>
+    </AllowedLineDirection>
+  </allowedDirections>
+  <documentLinks>
+    <InfoLink>https://www.breizhgo.bzh/ligne/C01</InfoLink>
+  </documentLinks>
+  <Presentation>
+    <Colour>E4032E</Colour>
+    <TextColour>FFFFFF</TextColour>
+  </Presentation>
+</Line>
+```
+
+→ [Full file](Example_Line_FR.xml)
+
 <!-- tabs:end -->

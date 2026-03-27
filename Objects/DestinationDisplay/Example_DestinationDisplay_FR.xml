@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PublicationDelivery xmlns="http://www.netex.org.uk/netex" version="2.0">
+  <PublicationTimestamp>2026-03-27T12:00:00Z</PublicationTimestamp>
+  <ParticipantRef>FR_Profile</ParticipantRef>
+  <dataObjects>
+    <ServiceFrame id="FR:ServiceFrame:dd:1" version="1">
+      <destinationDisplays>
+        <DestinationDisplay id="FR:DestinationDisplay:SaintMalo" version="1">
+          <Name>Saint-Malo Centre</Name>
+          <ShortName>St-Malo</ShortName>
+          <PublicCode>C01</PublicCode>
+          <FrontText>Saint-Malo Centre</FrontText>
+          <SideText>Saint-Malo</SideText>
+          <vias>
+            <Via>
+              <DestinationDisplayRef ref="FR:DestinationDisplay:Combourg"/>
+            </Via>
+          </vias>
+          <variants>
+            <DestinationDisplayVariant id="FR:DestinationDisplayVariant:SaintMalo_web" version="1">
+              <Name>Web display</Name>
+              <FrontText>Saint-Malo Centre (via Combourg)</FrontText>
+              <DestinationDisplayVariantMediaType>web</DestinationDisplayVariantMediaType>
+            </DestinationDisplayVariant>
+            <DestinationDisplayVariant id="FR:DestinationDisplayVariant:SaintMalo_mobile" version="1">
+              <FrontText>St-Malo</FrontText>
+              <DestinationDisplayVariantMediaType>mobile</DestinationDisplayVariantMediaType>
+            </DestinationDisplayVariant>
+          </variants>
+        </DestinationDisplay>
+      </destinationDisplays>
+    </ServiceFrame>
+  </dataObjects>
+</PublicationDelivery>
