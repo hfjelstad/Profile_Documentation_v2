@@ -53,7 +53,7 @@ The French profile uses ServiceCalendar as the primary container for all calenda
 ### 5b. Validation Requirements
 
 - **FromDate and ToDate are mandatory** — they define the calendar's validity period.
-- **@id must follow codespace conventions** — e.g., `ENT:ServiceCalendar:2025`.
+- **@id must follow codespace conventions** — e.g., `FR:ServiceCalendar:2025`.
 
 ### 5c. Common Pitfalls
 
