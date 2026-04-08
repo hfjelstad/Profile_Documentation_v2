@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SLO Profile: PassengerStopAssignment examples from Slovenian NAP data -->
+<PublicationDelivery xmlns="http://www.netex.org.uk/netex" version="1.0">
+  <PublicationTimestamp>2026-04-07T17:17:26Z</PublicationTimestamp>
+  <ParticipantRef>NAP</ParticipantRef>
+  <dataObjects>
+    <ServiceFrame id="SI:SI0:ServiceFrame:1" version="any">
+      <stopAssignments>
+        <PassengerStopAssignment id="SI:SI0:PassengerStopAssignment:00000000-1177-0003-0000-000000113926:IJPP" created="2023-10-06T04:51:58Z" version="1" order="1">
+          <ScheduledStopPointRef version="1" ref="SI:SI0:ScheduledStopPoint:00000000-1177-0003-0000-000000113926:IJPP" />
+          <StopPlaceRef version="1" ref="SI:SI0:StopPlace:00000000-1177-0002-0000-00000002222d:IJPP" />
+          <QuayRef version="1" ref="SI:SI0:Quay:00000000-1177-0003-0000-000000113926:IJPP" />
+        </PassengerStopAssignment>
+        <PassengerStopAssignment id="SI:SI0:PassengerStopAssignment:00000000-1177-0003-0000-00000011209c:IJPP" created="2024-05-02T15:17:55Z" version="1" order="1">
+          <ScheduledStopPointRef version="1" ref="SI:SI0:ScheduledStopPoint:00000000-1177-0003-0000-00000011209c:IJPP" />
+          <StopPlaceRef version="1" ref="SI:SI0:StopPlace:00000000-1177-0002-0000-000000021556:IJPP" />
+          <QuayRef version="1" ref="SI:SI0:Quay:00000000-1177-0003-0000-00000011209c:IJPP" />
+        </PassengerStopAssignment>
+      </stopAssignments>
+    </ServiceFrame>
+  </dataObjects>
+</PublicationDelivery>

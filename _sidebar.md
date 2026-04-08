@@ -24,6 +24,7 @@
   - [MaaS Consumers](/Guides/MaaSConsumers/MaaSConsumers_Guide.md)
   - [NeTEx Inheritance](/Guides/NeTExInheritance/NeTExInheritance_Guide.md)
   - [Transport Modes](/Guides/TransportModes/TransportModes_Guide.md)
+  - [Slovenian Profile](/Guides/SlovenianProfile/SlovenianProfile_Analysis.md)
 
 <details>
 <summary><strong>Frames</strong></summary>

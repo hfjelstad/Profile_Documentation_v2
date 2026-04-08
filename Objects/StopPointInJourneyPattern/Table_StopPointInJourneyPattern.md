@@ -22,17 +22,17 @@ StopPointInJourneyPattern
 
 ## Table
 
-| Element | Type | FR | Description | Path |
-|---------|------|-----|-------------|------|
-| **@id** | ID | 1..1 | Unique identifier | @id |
-| **@version** | xsd:string | 1..1 | Version label | @version |
-| **@order** | xsd:integer | 1..1 | Sequential position in the JourneyPattern (1, 2, 3…) | @order |
-| **[ScheduledStopPoint](../ScheduledStopPoint/Table_ScheduledStopPoint.md)@ref** | Reference | 1..1 | Reference to the logical stop point | ScheduledStopPointRef/@ref |
-| ForAlighting | xsd:boolean | 0..1 | Whether passengers may alight (default: true) | ForAlighting |
-| ForBoarding | xsd:boolean | 0..1 | Whether passengers may board (default: true) | ForBoarding |
-| [DestinationDisplay](../DestinationDisplay/Table_DestinationDisplay.md)@ref | Reference | 0..1 | Headsign/display shown from this stop onwards | DestinationDisplayRef/@ref |
-| ChangeOfDestinationDisplay | xsd:boolean | 0..1 | Whether the destination display changes at this stop | ChangeOfDestinationDisplay |
-| RequestStop | xsd:boolean | 0..1 | Whether this is a request stop (on-demand only) | RequestStop |
+| Element | Type | FR | SLO | Description | Path |
+|---------|------|-----|-----|-------------|------|
+| **@id** | ID | 1..1 | 1..1 | Unique identifier | @id |
+| **@version** | xsd:string | 1..1 | 1..1 | Version label | @version |
+| **@order** | xsd:integer | 1..1 | 1..1 | Sequential position in the JourneyPattern (1, 2, 3…) | @order |
+| **[ScheduledStopPoint](../ScheduledStopPoint/Table_ScheduledStopPoint.md)@ref** | Reference | 1..1 | 1..1 | Reference to the logical stop point | ScheduledStopPointRef/@ref |
+| ForAlighting | xsd:boolean | 0..1 | 0..1 | Whether passengers may alight (default: true) | ForAlighting |
+| ForBoarding | xsd:boolean | 0..1 | 0..1 | Whether passengers may board (default: true) | ForBoarding |
+| [DestinationDisplay](../DestinationDisplay/Table_DestinationDisplay.md)@ref | Reference | 0..1 |  | Headsign/display shown from this stop onwards | DestinationDisplayRef/@ref |
+| ChangeOfDestinationDisplay | xsd:boolean | 0..1 |  | Whether the destination display changes at this stop | ChangeOfDestinationDisplay |
+| RequestStop | xsd:boolean | 0..1 |  | Whether this is a request stop (on-demand only) | RequestStop |
 | RequestMethod | RequestMethodEnum | 0..1 | How to request the stop: `handSignal`, `phoneCall`, `sms`, `stopButton`, `none` | RequestMethod |
 | StopUse | StopUseEnum | | How the stop is used: `access`, `passthrough`, `interchangeOnly` | StopUse |
 | noticeAssignments | | 0..1 | Container for stop-specific notice assignments | noticeAssignments |

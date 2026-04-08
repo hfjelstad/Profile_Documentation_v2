@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SLO Profile: OperatingDay examples from Slovenian NAP data -->
+<PublicationDelivery xmlns="http://www.netex.org.uk/netex" version="1.0">
+  <PublicationTimestamp>2026-04-07T17:17:26Z</PublicationTimestamp>
+  <ParticipantRef>NAP</ParticipantRef>
+  <dataObjects>
+    <ServiceCalendarFrame id="SI:SI0:ServiceCalendarFrame:1" version="any">
+      <operatingDays>
+        <OperatingDay id="SI:SI0:OperatingDay:00000000-1177-0005-0000-01b70000592d:IJPP" created="2023-10-06T04:51:58Z" version="1">
+          <CalendarDate>2026-01-15</CalendarDate>
+        </OperatingDay>
+        <OperatingDay id="SI:SI0:OperatingDay:00000000-1177-0005-0000-01b700005a0b:IJPP" created="2023-10-06T04:51:58Z" version="1">
+          <CalendarDate>2026-02-28</CalendarDate>
+        </OperatingDay>
+      </operatingDays>
+    </ServiceCalendarFrame>
+  </dataObjects>
+</PublicationDelivery>

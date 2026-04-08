@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SLO Profile: Line examples from Slovenian NAP data (bus + rail) -->
+<PublicationDelivery xmlns="http://www.netex.org.uk/netex" version="1.0">
+  <PublicationTimestamp>2026-04-07T17:17:26Z</PublicationTimestamp>
+  <ParticipantRef>NAP</ParticipantRef>
+  <dataObjects>
+    <ServiceFrame id="SI:SI0:ServiceFrame:1" version="any">
+      <lines>
+        <!-- Bus line operated by Nomago -->
+        <Line id="SI:SI0:Line:00000000-1177-0007-0000-00000000e6e6:IJPP" created="2024-10-26T01:11:19Z" version="1">
+          <Name>Ljubno/Savinji - Celje AP (163)</Name>
+          <TransportMode>bus</TransportMode>
+          <PublicCode>163</PublicCode>
+          <PrivateCode>59110</PrivateCode>
+          <OperatorRef version="1" ref="SI:SI0:Operator:00000000-1177-0001-0000-00000000045f:IJPP" />
+        </Line>
+        <!-- Rail line operated by SŽ -->
+        <Line id="SI:SI0:Line:00000000-1177-0007-0000-00000000fba9:IJPP" created="2026-01-16T17:44:51Z" version="1">
+          <Name>Ljubljana - Jesenice (16053314)</Name>
+          <TransportMode>rail</TransportMode>
+          <PublicCode>16053314</PublicCode>
+          <PrivateCode>64425</PrivateCode>
+          <OperatorRef version="1" ref="SI:SI0:Operator:00000000-1177-0001-0000-000000000489:IJPP" />
+        </Line>
+      </lines>
+    </ServiceFrame>
+  </dataObjects>
+</PublicationDelivery>

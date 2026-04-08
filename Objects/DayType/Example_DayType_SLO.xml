@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SLO Profile: DayType examples from Slovenian NAP data -->
+<PublicationDelivery xmlns="http://www.netex.org.uk/netex" version="1.0">
+  <PublicationTimestamp>2026-04-07T17:17:26Z</PublicationTimestamp>
+  <ParticipantRef>NAP</ParticipantRef>
+  <dataObjects>
+    <ServiceCalendarFrame id="SI:SI0:ServiceCalendarFrame:1" version="any">
+      <dayTypes>
+        <!-- Runs every day including holidays -->
+        <DayType id="SI:SI0:DayType:00000000-1177-0004-0000-01b700000076:IJPP" created="2023-10-06T04:51:58Z" version="1">
+          <Name>Vozi vsak dan</Name>
+          <properties>
+            <PropertyOfDay>
+              <DaysOfWeek>Monday Tuesday Wednesday Thursday Friday Saturday Sunday</DaysOfWeek>
+              <HolidayTypes>NationalHoliday</HolidayTypes>
+            </PropertyOfDay>
+          </properties>
+        </DayType>
+        <!-- Runs on Saturdays, not on holidays -->
+        <DayType id="SI:SI0:DayType:00000000-1177-0004-0000-059200000561:IJPP" created="2023-10-06T04:51:58Z" version="1">
+          <Name>Vozi ob sobotah, ne vozi ob praznikih</Name>
+          <properties>
+            <PropertyOfDay>
+              <DaysOfWeek>Saturday</DaysOfWeek>
+            </PropertyOfDay>
+          </properties>
+        </DayType>
+        <!-- Runs on Sundays and holidays -->
+        <DayType id="SI:SI0:DayType:00000000-1177-0004-0000-03eb00000409:IJPP" created="2023-10-06T04:51:58Z" version="1">
+          <Name>Vozi ob nedeljah in praznikih</Name>
+          <properties>
+            <PropertyOfDay>
+              <DaysOfWeek>Sunday</DaysOfWeek>
+              <HolidayTypes>NationalHoliday</HolidayTypes>
+            </PropertyOfDay>
+          </properties>
+        </DayType>
+      </dayTypes>
+    </ServiceCalendarFrame>
+  </dataObjects>
+</PublicationDelivery>

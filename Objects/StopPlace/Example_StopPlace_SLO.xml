@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SLO Profile: StopPlace example from Slovenian NAP data -->
+<PublicationDelivery xmlns="http://www.netex.org.uk/netex" version="1.0">
+  <PublicationTimestamp>2026-04-07T17:17:26Z</PublicationTimestamp>
+  <ParticipantRef>NAP</ParticipantRef>
+  <dataObjects>
+    <SiteFrame id="SI:SI0:SiteFrame:1" version="any">
+      <stopPlaces>
+        <StopPlace id="SI:SI0:StopPlace:00000000-1177-0002-0000-00000002236e:IJPP" created="2023-10-06T04:51:58Z" version="1">
+          <Name>Ribnica/Dol.</Name>
+          <PrivateCode>140142</PrivateCode>
+          <Centroid>
+            <Location>
+              <Longitude>14.7279258309639</Longitude>
+              <Latitude>45.7382651483632</Latitude>
+            </Location>
+          </Centroid>
+          <placeTypes>
+            <TypeOfPlaceRef ref="monomodalStopPlace" />
+          </placeTypes>
+          <PostalAddress id="SI:SI0:PostalAddress:00000000-1177-0002-0000-00000002236e:IJPP" created="2023-10-06T04:51:58Z" version="1">
+            <CountryRef ref="sl" />
+            <Town>Ribnica</Town>
+            <Suburb>Ribnica</Suburb>
+          </PostalAddress>
+          <TransportMode>bus</TransportMode>
+          <StopPlaceType>busStation</StopPlaceType>
+          <quays>
+            <Quay id="SI:SI0:Quay:00000000-1177-0003-0000-000000113bb4:IJPP" created="2023-10-06T04:51:58Z" version="1">
+              <Name>Ribnica/Dol. 01</Name>
+              <PrivateCode>1129396</PrivateCode>
+              <Centroid>
+                <Location>
+                  <Longitude>14.7279258309639</Longitude>
+                  <Latitude>45.7382651483632</Latitude>
+                </Location>
+              </Centroid>
+              <Covered>unknown</Covered>
+              <QuayType>busStop</QuayType>
+            </Quay>
+          </quays>
+        </StopPlace>
+        <!-- Multi-quay stop -->
+        <StopPlace id="SI:SI0:StopPlace:00000000-1177-0002-0000-00000002217d:IJPP" created="2023-10-06T04:51:58Z" version="1">
+          <Name>Podcerkev</Name>
+          <PrivateCode>139645</PrivateCode>
+          <Centroid>
+            <Location>
+              <Longitude>14.457989416851</Longitude>
+              <Latitude>45.7118744897482</Latitude>
+            </Location>
+          </Centroid>
+          <placeTypes>
+            <TypeOfPlaceRef ref="monomodalStopPlace" />
+          </placeTypes>
+          <PostalAddress id="SI:SI0:PostalAddress:00000000-1177-0002-0000-00000002217d:IJPP" created="2023-10-06T04:51:58Z" version="1">
+            <CountryRef ref="sl" />
+            <Town>Loška dolina</Town>
+            <Suburb>Podcerkev</Suburb>
+          </PostalAddress>
+          <TransportMode>bus</TransportMode>
+          <StopPlaceType>busStation</StopPlaceType>
+          <quays>
+            <Quay id="SI:SI0:Quay:00000000-1177-0003-0000-0000001137cd:IJPP" created="2023-10-06T04:51:58Z" version="1">
+              <Name>Podcerkev 02</Name>
+              <PrivateCode>1128397</PrivateCode>
+              <Centroid>
+                <Location>
+                  <Longitude>14.4579560089092</Longitude>
+                  <Latitude>45.7118477118716</Latitude>
+                </Location>
+              </Centroid>
+              <Covered>unknown</Covered>
+              <QuayType>busStop</QuayType>
+            </Quay>
+            <Quay id="SI:SI0:Quay:00000000-1177-0003-0000-0000001137ce:IJPP" created="2023-10-06T04:51:58Z" version="1">
+              <Name>Podcerkev 01</Name>
+              <PrivateCode>1128398</PrivateCode>
+              <Centroid>
+                <Location>
+                  <Longitude>14.4580228247927</Longitude>
+                  <Latitude>45.7119012676248</Latitude>
+                </Location>
+              </Centroid>
+              <Covered>unknown</Covered>
+              <QuayType>busStop</QuayType>
+            </Quay>
+          </quays>
+        </StopPlace>
+      </stopPlaces>
+    </SiteFrame>
+  </dataObjects>
+</PublicationDelivery>

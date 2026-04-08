@@ -32,6 +32,7 @@ The agent must always consult this folder when reading, validating, or generatin
 | MIN | Minimum profile | 
 | ERP | European Recomended Profile |
 | NP | Nordic Profile |
+| SLO | Slovenian Profile |
 
 ---
 

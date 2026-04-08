@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SLO Profile: DayTypeAssignment examples from Slovenian NAP data -->
+<PublicationDelivery xmlns="http://www.netex.org.uk/netex" version="1.0">
+  <PublicationTimestamp>2026-04-07T17:17:26Z</PublicationTimestamp>
+  <ParticipantRef>NAP</ParticipantRef>
+  <dataObjects>
+    <ServiceCalendarFrame id="SI:SI0:ServiceCalendarFrame:1" version="any">
+      <dayTypeAssignments>
+        <!-- Standard assignment: DayType applies on a specific OperatingDay -->
+        <DayTypeAssignment id="SI:SI0:DayTypeAssignment:00000000-1177-0005-0000-06070001023b:IJPP" created="2023-10-06T04:51:58Z" version="1" order="38">
+          <OperatingDayRef ref="SI:SI0:OperatingDay:00000000-1177-0005-0000-01b70000592d:IJPP" />
+          <DayTypeRef version="1" ref="SI:SI0:DayType:00000000-1177-0004-0000-06070000064a:IJPP" />
+        </DayTypeAssignment>
+        <!-- Exception: DayType explicitly NOT available on this day -->
+        <DayTypeAssignment id="SI:SI0:DayTypeAssignment:00000000-1177-0005-0000-05c100018fa5:IJPP" created="2024-11-08T10:14:41Z" version="2" order="77">
+          <OperatingDayRef ref="SI:SI0:OperatingDay:00000000-1177-0005-0000-05b500018f7c:IJPP" />
+          <DayTypeRef version="1" ref="SI:SI0:DayType:00000000-1177-0004-0000-05c10000057d:IJPP" />
+          <isAvailable>false</isAvailable>
+        </DayTypeAssignment>
+      </dayTypeAssignments>
+    </ServiceCalendarFrame>
+  </dataObjects>
+</PublicationDelivery>

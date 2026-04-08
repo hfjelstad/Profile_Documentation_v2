@@ -84,6 +84,7 @@ Complete index of all XML examples in the repository.
 
 - [Example_DayType_MIN.xml](../../Objects/DayType/Example_DayType_MIN.xml) – Minimum profile example
 - [Example_DayType_NP.xml](../../Objects/DayType/Example_DayType_NP.xml) – Nordic Profile example
+- [Example_DayType_SLO.xml](../../Objects/DayType/Example_DayType_SLO.xml) – Slovenian Profile example
 
 </details>
 
@@ -91,6 +92,7 @@ Complete index of all XML examples in the repository.
 <summary>DayTypeAssignment</summary>
 
 - [Example_DayTypeAssignment.xml](../../Objects/DayTypeAssignment/Example_DayTypeAssignment.xml) – Baseline assignment with holiday exception
+- [Example_DayTypeAssignment_SLO.xml](../../Objects/DayTypeAssignment/Example_DayTypeAssignment_SLO.xml) – Slovenian Profile example
 
 </details>
 
@@ -143,6 +145,7 @@ Complete index of all XML examples in the repository.
 
 - [Example_JourneyPattern_MIN.xml](../../Objects/JourneyPattern/Example_JourneyPattern_MIN.xml) – Minimum profile example
 - [Example_JourneyPattern_NP.xml](../../Objects/JourneyPattern/Example_JourneyPattern_NP.xml) – Nordic Profile example
+- [Example_JourneyPattern_SLO.xml](../../Objects/JourneyPattern/Example_JourneyPattern_SLO.xml) – Slovenian Profile example (ServiceJourneyPattern)
 
 </details>
 
@@ -151,6 +154,7 @@ Complete index of all XML examples in the repository.
 
 - [Example_Line_MIN.xml](../../Objects/Line/Example_Line_MIN.xml) – Minimum profile example
 - [Example_Line_NP.xml](../../Objects/Line/Example_Line_NP.xml) – Nordic Profile example
+- [Example_Line_SLO.xml](../../Objects/Line/Example_Line_SLO.xml) – Slovenian Profile example (bus + rail)
 
 </details>
 
@@ -172,6 +176,7 @@ Complete index of all XML examples in the repository.
 <summary>OperatingDay</summary>
 
 - [Example_OperatingDay.xml](../../Objects/OperatingDay/Example_OperatingDay.xml) – Single operating day with CalendarDate
+- [Example_OperatingDay_SLO.xml](../../Objects/OperatingDay/Example_OperatingDay_SLO.xml) – Slovenian Profile example
 
 </details>
 
@@ -179,6 +184,7 @@ Complete index of all XML examples in the repository.
 <summary>OperatingPeriod</summary>
 
 - [Example_OperatingPeriod.xml](../../Objects/OperatingPeriod/Example_OperatingPeriod.xml) – Operating period validity dates
+- [Example_OperatingPeriod_SLO.xml](../../Objects/OperatingPeriod/Example_OperatingPeriod_SLO.xml) – Slovenian Profile example
 
 </details>
 
@@ -187,6 +193,7 @@ Complete index of all XML examples in the repository.
 
 - [Example_Operator_MIN.xml](../../Objects/Operator/Example_Operator_MIN.xml) – Minimum profile example
 - [Example_Operator_NP.xml](../../Objects/Operator/Example_Operator_NP.xml) – Nordic Profile example
+- [Example_Operator_SLO.xml](../../Objects/Operator/Example_Operator_SLO.xml) – Slovenian Profile example (5 operators)
 
 </details>
 
@@ -203,6 +210,7 @@ Complete index of all XML examples in the repository.
 
 - [Example_PassengerStopAssignment_MIN.xml](../../Objects/PassengerStopAssignment/Example_PassengerStopAssignment_MIN.xml) – Minimum profile example
 - [Example_PassengerStopAssignment_NP.xml](../../Objects/PassengerStopAssignment/Example_PassengerStopAssignment_NP.xml) – Nordic Profile example
+- [Example_PassengerStopAssignment_SLO.xml](../../Objects/PassengerStopAssignment/Example_PassengerStopAssignment_SLO.xml) – Slovenian Profile example
 
 </details>
 
@@ -225,6 +233,7 @@ Complete index of all XML examples in the repository.
 
 - [Example_Quay_MIN.xml](../../Objects/Quay/Example_Quay_MIN.xml) – Minimum profile example
 - [Example_Quay_NP.xml](../../Objects/Quay/Example_Quay_NP.xml) – Nordic Profile example
+- [Example_Quay_SLO.xml](../../Objects/Quay/Example_Quay_SLO.xml) – Slovenian Profile example
 
 </details>
 
@@ -241,6 +250,7 @@ Complete index of all XML examples in the repository.
 
 - [Example_Route_MIN.xml](../../Objects/Route/Example_Route_MIN.xml) – Minimum profile example
 - [Example_Route_NP.xml](../../Objects/Route/Example_Route_NP.xml) – Nordic Profile example
+- [Example_Route_SLO.xml](../../Objects/Route/Example_Route_SLO.xml) – Slovenian Profile example
 
 </details>
 
@@ -257,6 +267,7 @@ Complete index of all XML examples in the repository.
 
 - [Example_ScheduledStopPoint_MIN.xml](../../Objects/ScheduledStopPoint/Example_ScheduledStopPoint_MIN.xml) – Minimum profile example
 - [Example_ScheduledStopPoint_NP.xml](../../Objects/ScheduledStopPoint/Example_ScheduledStopPoint_NP.xml) – Nordic Profile example
+- [Example_ScheduledStopPoint_SLO.xml](../../Objects/ScheduledStopPoint/Example_ScheduledStopPoint_SLO.xml) – Slovenian Profile example
 
 </details>
 
@@ -265,6 +276,7 @@ Complete index of all XML examples in the repository.
 
 - [Example_ServiceJourney_MIN.xml](../../Objects/ServiceJourney/Example_ServiceJourney_MIN.xml) – Minimum profile example
 - [Example_ServiceJourney_NP.xml](../../Objects/ServiceJourney/Example_ServiceJourney_NP.xml) – Nordic Profile example
+- [Example_ServiceJourney_SLO.xml](../../Objects/ServiceJourney/Example_ServiceJourney_SLO.xml) – Slovenian Profile example
 
 </details>
 
@@ -281,6 +293,14 @@ Complete index of all XML examples in the repository.
 
 - [Example_StopPlace_MIN.xml](../../Objects/StopPlace/Example_StopPlace_MIN.xml) – Minimum profile example
 - [Example_StopPlace_NP.xml](../../Objects/StopPlace/Example_StopPlace_NP.xml) – Nordic Profile example
+- [Example_StopPlace_SLO.xml](../../Objects/StopPlace/Example_StopPlace_SLO.xml) – Slovenian Profile example (with PostalAddress)
+
+</details>
+
+<details open>
+<summary>StopPointInJourneyPattern</summary>
+
+- [Example_StopPointInJourneyPattern_SLO.xml](../../Objects/StopPointInJourneyPattern/Example_StopPointInJourneyPattern_SLO.xml) – Slovenian Profile example (ForAlighting/ForBoarding flags)
 
 </details>
 

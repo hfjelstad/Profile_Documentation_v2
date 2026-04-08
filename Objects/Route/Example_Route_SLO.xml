@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SLO Profile: Route example from Slovenian NAP data -->
+<PublicationDelivery xmlns="http://www.netex.org.uk/netex" version="1.0">
+  <PublicationTimestamp>2026-04-07T17:17:26Z</PublicationTimestamp>
+  <ParticipantRef>NAP</ParticipantRef>
+  <dataObjects>
+    <ServiceFrame id="SI:SI0:ServiceFrame:1" version="any">
+      <routes>
+        <Route id="SI:SI0:Route:00000000-1177-0008-0000-00000004ef9f:IJPP" created="2024-02-23T14:18:38Z" version="1">
+          <Name>Sl.Bistrica</Name>
+          <LineRef ref="SI:SI0:Line:00000000-1177-0007-0000-00000000d5ce:IJPP" />
+          <pointsInSequence>
+            <PointOnRoute id="SI:SI0:PointOnRoute:00000000-1177-0009-0000-000000773eeb:IJPP" created="2024-02-23T14:18:38Z" version="1" order="1">
+              <RoutePointRef ref="SI:SI0:RoutePoint:00000000-1177-0003-0000-00000011439a:IJPP" />
+            </PointOnRoute>
+            <PointOnRoute id="SI:SI0:PointOnRoute:00000000-1177-0009-0000-000000773eec:IJPP" created="2024-02-23T14:18:38Z" version="1" order="2">
+              <RoutePointRef ref="SI:SI0:RoutePoint:00000000-1177-0003-0000-000000114319:IJPP" />
+            </PointOnRoute>
+            <PointOnRoute id="SI:SI0:PointOnRoute:00000000-1177-0009-0000-000000773eed:IJPP" created="2024-02-23T14:18:38Z" version="1" order="3">
+              <RoutePointRef ref="SI:SI0:RoutePoint:00000000-1177-0003-0000-00000011474a:IJPP" />
+            </PointOnRoute>
+          </pointsInSequence>
+        </Route>
+      </routes>
+    </ServiceFrame>
+  </dataObjects>
+</PublicationDelivery>

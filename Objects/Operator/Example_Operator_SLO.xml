@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SLO Profile: Operator example from Slovenian NAP data -->
+<PublicationDelivery xmlns="http://www.netex.org.uk/netex" version="1.0">
+  <PublicationTimestamp>2026-04-07T17:17:26Z</PublicationTimestamp>
+  <ParticipantRef>NAP</ParticipantRef>
+  <dataObjects>
+    <ResourceFrame id="SI:SI0:ResourceFrame:1" version="any">
+      <organisations>
+        <Operator id="SI:SI0:Operator:00000000-1177-0001-0000-000000000460:IJPP" created="2023-10-06T04:51:58Z" version="1">
+          <Name>LPP d.o.o.</Name>
+        </Operator>
+        <Operator id="SI:SI0:Operator:00000000-1177-0001-0000-00000000045f:IJPP" created="2023-10-06T04:51:58Z" version="1">
+          <Name>Nomago d.o.o.</Name>
+        </Operator>
+        <Operator id="SI:SI0:Operator:00000000-1177-0001-0000-000000000461:IJPP" created="2023-10-06T04:51:58Z" version="1">
+          <Name>APMS d.o.o.</Name>
+        </Operator>
+        <Operator id="SI:SI0:Operator:00000000-1177-0001-0000-000000000463:IJPP" created="2023-10-06T04:51:58Z" version="1">
+          <Name>Arriva d.o.o.</Name>
+        </Operator>
+        <Operator id="SI:SI0:Operator:00000000-1177-0001-0000-000000000489:IJPP" created="2023-10-06T04:51:58Z" version="1">
+          <Name>SŽ-Potniški promet, d.o.o.</Name>
+        </Operator>
+      </organisations>
+    </ResourceFrame>
+  </dataObjects>
+</PublicationDelivery>

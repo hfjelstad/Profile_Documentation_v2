@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SLO Profile: OperatingPeriod examples from Slovenian NAP data -->
+<PublicationDelivery xmlns="http://www.netex.org.uk/netex" version="1.0">
+  <PublicationTimestamp>2026-04-07T17:17:26Z</PublicationTimestamp>
+  <ParticipantRef>NAP</ParticipantRef>
+  <dataObjects>
+    <ServiceCalendarFrame id="SI:SI0:ServiceCalendarFrame:1" version="any">
+      <operatingPeriods>
+        <OperatingPeriod id="SI:SI0:OperatingPeriod:000007ea-1177-0006-0000-0869000008ff:IJPP" created="2025-01-01T05:36:26Z" version="1">
+          <FromDate>2026-11-01T00:00:00+01:00</FromDate>
+          <ToDate>2026-12-31T00:00:00+01:00</ToDate>
+        </OperatingPeriod>
+        <OperatingPeriod id="SI:SI0:OperatingPeriod:000007eb-1177-0006-0000-0077000001b8:IJPP" created="2026-01-01T07:02:13Z" version="1">
+          <FromDate>2027-07-01T00:00:00+02:00</FromDate>
+          <ToDate>2027-08-31T00:00:00+02:00</ToDate>
+        </OperatingPeriod>
+        <OperatingPeriod id="SI:SI0:OperatingPeriod:000007ea-1177-0006-0000-08c80000092f:IJPP" created="2025-02-26T20:42:16Z" version="1">
+          <FromDate>2026-01-01T00:00:00+01:00</FromDate>
+          <ToDate>2026-03-31T00:00:00+02:00</ToDate>
+        </OperatingPeriod>
+      </operatingPeriods>
+    </ServiceCalendarFrame>
+  </dataObjects>
+</PublicationDelivery>

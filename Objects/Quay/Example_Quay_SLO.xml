@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SLO Profile: Quay examples from Slovenian NAP data -->
+<PublicationDelivery xmlns="http://www.netex.org.uk/netex" version="1.0">
+  <PublicationTimestamp>2026-04-07T17:17:26Z</PublicationTimestamp>
+  <ParticipantRef>NAP</ParticipantRef>
+  <dataObjects>
+    <SiteFrame id="SI:SI0:SiteFrame:1" version="any">
+      <stopPlaces>
+        <StopPlace id="SI:SI0:StopPlace:00000000-1177-0002-0000-000000028622:IJPP" version="1">
+          <Name>Ljubljana Remiza</Name>
+          <quays>
+            <Quay id="SI:SI0:Quay:00000000-1177-0003-0000-00000011c95e:IJPP" created="2023-10-06T04:51:58Z" version="1">
+              <Name>Ljubljana Remiza 04</Name>
+              <PrivateCode>1165662</PrivateCode>
+              <Centroid>
+                <Location>
+                  <Longitude>14.4854820440677</Longitude>
+                  <Latitude>46.074293183063</Latitude>
+                </Location>
+              </Centroid>
+              <Covered>unknown</Covered>
+              <QuayType>busStop</QuayType>
+            </Quay>
+          </quays>
+        </StopPlace>
+      </stopPlaces>
+    </SiteFrame>
+  </dataObjects>
+</PublicationDelivery>

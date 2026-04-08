@@ -23,6 +23,7 @@ How-to guides, conceptual overviews, and reference material:
 - [NetworkTimetable](../../Guides/NetworkTimetable/NetworkTimetable_Guide.md) – Producing and consuming NeTEx timetable datasets (shared + line file split, reference linking, versioning)
 - [ExtendedSales_and_DeviationHandling](../../Guides/ExtendedSales_and_DeviationHandling/ExtendedSales_and_DeviationHandling_Guide.md) – Extended sales window beyond IM approval, DatedServiceJourney.id as sales key, deviation handling (cancellations, replacements, reinforcements, supplementary journeys)
 - [Calendar](../../Guides/Calendar/Calendar_Guide.md) – DayType, OperatingPeriod, DayTypeAssignment, OperatingDay — when services operate, exception handling, pattern-based vs date-based scheduling
+- [SlovenianProfile](../../Guides/SlovenianProfile/SlovenianProfile_Analysis.md) – Deep analysis of the Slovenian NAP NeTEx data delivery, SLO profile mapping, codespace patterns, and object coverage
 
 ## Frames
 

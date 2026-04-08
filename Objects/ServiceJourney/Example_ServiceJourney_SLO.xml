@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SLO Profile: ServiceJourney example from Slovenian NAP data -->
+<PublicationDelivery xmlns="http://www.netex.org.uk/netex" version="1.0">
+  <PublicationTimestamp>2026-04-07T17:17:26Z</PublicationTimestamp>
+  <ParticipantRef>NAP</ParticipantRef>
+  <dataObjects>
+    <TimetableFrame id="SI:SI0:TimetableFrame:1" version="any">
+      <vehicleJourneys>
+        <ServiceJourney id="SI:SI0:ServiceJourney:00000000-1177-0008-0000-00000006cdcf:IJPP" created="2025-10-15T01:49:32Z" version="1">
+          <Name>Ribnica/Dol. 3</Name>
+          <TransportMode>bus</TransportMode>
+          <dayTypes>
+            <DayTypeRef ref="SI:SI0:DayType:00000000-1177-0004-0000-080b0000077d:IJPP" />
+            <DayTypeRef ref="SI:SI0:DayType:00000000-1177-0004-0000-080c0000077d:IJPP" />
+          </dayTypes>
+          <ServiceJourneyPatternRef ref="SI:SI0:ServiceJourneyPattern:00000000-1177-0008-0000-00000006cdcf:IJPP" />
+          <OperatorRef ref="SI:SI0:Operator:00000000-1177-0001-0000-00000000045f:IJPP" />
+          <passingTimes>
+            <TimetabledPassingTime id="SI:SI0:TimetabledPassingTime:00000000-1177-0009-0000-0000009d4bfd:IJPP" version="1">
+              <StopPointInJourneyPatternRef version="1" ref="SI:SI0:StopPointInJourneyPattern:00000000-1177-0009-0000-0000009d4bfd:IJPP" />
+              <DepartureTime>13:45:00</DepartureTime>
+            </TimetabledPassingTime>
+            <TimetabledPassingTime id="SI:SI0:TimetabledPassingTime:00000000-1177-0009-0000-0000009d4bfe:IJPP" version="1">
+              <StopPointInJourneyPatternRef version="1" ref="SI:SI0:StopPointInJourneyPattern:00000000-1177-0009-0000-0000009d4bfe:IJPP" />
+              <ArrivalTime>13:48:00</ArrivalTime>
+              <DepartureTime>13:48:00</DepartureTime>
+            </TimetabledPassingTime>
+            <TimetabledPassingTime id="SI:SI0:TimetabledPassingTime:00000000-1177-0009-0000-0000009d4c07:IJPP" version="1">
+              <StopPointInJourneyPatternRef version="1" ref="SI:SI0:StopPointInJourneyPattern:00000000-1177-0009-0000-0000009d4c07:IJPP" />
+              <ArrivalTime>14:10:00</ArrivalTime>
+            </TimetabledPassingTime>
+          </passingTimes>
+        </ServiceJourney>
+      </vehicleJourneys>
+    </TimetableFrame>
+  </dataObjects>
+</PublicationDelivery>

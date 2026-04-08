@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SLO Profile: ScheduledStopPoint examples from Slovenian NAP data -->
+<PublicationDelivery xmlns="http://www.netex.org.uk/netex" version="1.0">
+  <PublicationTimestamp>2026-04-07T17:17:26Z</PublicationTimestamp>
+  <ParticipantRef>NAP</ParticipantRef>
+  <dataObjects>
+    <ServiceFrame id="SI:SI0:ServiceFrame:1" version="any">
+      <scheduledStopPoints>
+        <ScheduledStopPoint id="SI:SI0:ScheduledStopPoint:00000000-1177-0003-0000-000000111ae1:IJPP" created="2023-10-06T04:51:58Z" version="1">
+          <Name>Idrija 01</Name>
+        </ScheduledStopPoint>
+        <ScheduledStopPoint id="SI:SI0:ScheduledStopPoint:00000000-1177-0003-0000-000000111bd5:IJPP" created="2023-10-06T04:51:58Z" version="1">
+          <Name>Kranj AP 01</Name>
+        </ScheduledStopPoint>
+        <ScheduledStopPoint id="SI:SI0:ScheduledStopPoint:00000000-1177-0003-0000-000000111e26:IJPP" created="2023-10-06T04:51:58Z" version="1">
+          <Name>Ljubljana Tivolska 02</Name>
+        </ScheduledStopPoint>
+      </scheduledStopPoints>
+    </ServiceFrame>
+  </dataObjects>
+</PublicationDelivery>

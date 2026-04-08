@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SLO Profile: ServiceJourneyPattern example from Slovenian NAP data -->
+<PublicationDelivery xmlns="http://www.netex.org.uk/netex" version="1.0">
+  <PublicationTimestamp>2026-04-07T17:17:26Z</PublicationTimestamp>
+  <ParticipantRef>NAP</ParticipantRef>
+  <dataObjects>
+    <ServiceFrame id="SI:SI0:ServiceFrame:1" version="any">
+      <serviceJourneyPatterns>
+        <ServiceJourneyPattern id="SI:SI0:ServiceJourneyPattern:00000000-1177-0008-0000-00000004ed9f:IJPP" created="2024-03-02T10:53:27Z" version="1">
+          <Name />
+          <PrivateCode>322975</PrivateCode>
+          <RouteRef ref="SI:SI0:Route:00000000-1177-0008-0000-00000004ed9f:IJPP" />
+          <pointsInSequence>
+            <StopPointInJourneyPattern id="SI:SI0:StopPointInJourneyPattern:00000000-1177-0009-0000-0000007720cd:IJPP" version="1" order="1">
+              <ScheduledStopPointRef ref="SI:SI0:ScheduledStopPoint:00000000-1177-0003-0000-0000001132ed:IJPP" />
+              <ForAlighting>false</ForAlighting>
+            </StopPointInJourneyPattern>
+            <StopPointInJourneyPattern id="SI:SI0:StopPointInJourneyPattern:00000000-1177-0009-0000-0000007720ce:IJPP" version="1" order="2">
+              <ScheduledStopPointRef ref="SI:SI0:ScheduledStopPoint:00000000-1177-0003-0000-00000011407f:IJPP" />
+            </StopPointInJourneyPattern>
+            <StopPointInJourneyPattern id="SI:SI0:StopPointInJourneyPattern:00000000-1177-0009-0000-0000007720d6:IJPP" version="1" order="10">
+              <ScheduledStopPointRef ref="SI:SI0:ScheduledStopPoint:00000000-1177-0003-0000-00000011235b:IJPP" />
+              <ForBoarding>false</ForBoarding>
+            </StopPointInJourneyPattern>
+          </pointsInSequence>
+        </ServiceJourneyPattern>
+      </serviceJourneyPatterns>
+    </ServiceFrame>
+  </dataObjects>
+</PublicationDelivery>
