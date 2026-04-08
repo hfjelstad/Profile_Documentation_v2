@@ -1,5 +1,7 @@
 # Vehicle
 
+> *→ [Glossary definition](../../Guides/Glossary/Glossary.md#vehicle)*
+
 ## 1. Purpose
 
 A **Vehicle** represents a specific physical vehicle in the fleet used to operate public transport services. It links to a VehicleType that defines general characteristics (capacity, dimensions) and optionally to the Operator responsible for the vehicle. Vehicles are defined in the ResourceFrame and may be referenced from DatedServiceJourney or Block assignments to indicate which physical vehicle operates a service.
@@ -40,8 +42,9 @@ A **Vehicle** represents a specific physical vehicle in the fleet used to operat
 
 ### 5c. Common Pitfalls
 
-- **Vehicle vs. VehicleType confusion**: Vehicle is a specific physical unit (identified by registration number); VehicleType is a reusable template defining characteristics shared across many vehicles.
-- **Missing VehicleTypeRef**: A Vehicle without a type reference cannot provide capacity or dimensional information.
+> [!WARNING]
+> - **Vehicle vs. VehicleType confusion**: Vehicle is a specific physical unit (identified by registration number); VehicleType is a reusable template defining characteristics shared across many vehicles.
+> - **Missing VehicleTypeRef**: A Vehicle without a type reference cannot provide capacity or dimensional information.
 
 ## 6. Additional Information
 

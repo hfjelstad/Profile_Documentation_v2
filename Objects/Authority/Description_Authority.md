@@ -1,5 +1,7 @@
 # Authority
 
+> *→ [Glossary definition](../../Guides/Glossary/Glossary.md#authority)*
+
 ## 1. Purpose
 
 An **Authority** is a public transport organization responsible for planning, organizing, and managing public transport services within a specific geographical area. It defines service requirements, manages contracts with Operators, oversees fare structures, and ensures compliance with regulations and service standards.
@@ -50,10 +52,11 @@ Authority
 
 ### 5c. Common Pitfalls
 
-- **Mistake:** Assuming an Authority directly operates services.  
-  **Correction:** Authorities plan and manage services; Operators are contracted to provide them.
-- **Mistake:** Confusing Authority with Operator roles.  
-  **Correction:** Authority = regulatory/planning body; Operator = service provider.
+> [!WARNING]
+> - **Mistake:** Assuming an Authority directly operates services.  
+>   **Correction:** Authorities plan and manage services; Operators are contracted to provide them.
+> - **Mistake:** Confusing Authority with Operator roles.  
+>   **Correction:** Authority = regulatory/planning body; Operator = service provider.
 
 ## 6. Additional Information
 

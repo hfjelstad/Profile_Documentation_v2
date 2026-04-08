@@ -1,5 +1,7 @@
 # Codespace
 
+> *→ [Glossary definition](../../Guides/Glossary/Glossary.md#codespace)*
+
 ## 1. Purpose
 
 The **Codespace** defines the namespace used for all NeTEx `@id` and `@ref` values within a dataset. It ensures global uniqueness across deliveries by scoping identifiers with a short prefix (e.g., `ERP`, `NSR`), preventing collisions when data from multiple producers is exchanged or merged.
@@ -39,10 +41,11 @@ The **Codespace** defines the namespace used for all NeTEx `@id` and `@ref` valu
 
 ### 5c. Common Pitfalls
 
-- **Treating "ERP" as mandatory**: "ERP" is an example codespace; the actual value is designated by the data receiver.
-- **ParticipantRef mismatch**: The `ParticipantRef` must equal the primary codespace prefix — do not include a trailing colon.
-- **Changing LocalId across deliveries**: Use the `version` attribute for change tracking; keep `LocalId` stable.
-- **Mixing codespaces without agreement**: Do not use multiple codespaces unless the receiver explicitly requires it.
+> [!WARNING]
+> - **Treating "ERP" as mandatory**: "ERP" is an example codespace; the actual value is designated by the data receiver.
+> - **ParticipantRef mismatch**: The `ParticipantRef` must equal the primary codespace prefix — do not include a trailing colon.
+> - **Changing LocalId across deliveries**: Use the `version` attribute for change tracking; keep `LocalId` stable.
+> - **Mixing codespaces without agreement**: Do not use multiple codespaces unless the receiver explicitly requires it.
 
 ## 6. Additional Information
 

@@ -1,5 +1,7 @@
 # WaitingRoomEquipment
 
+> *→ [Glossary definition](../../Guides/Glossary/Glossary.md#waitingroomequipment)*
+
 ## 1. Purpose
 
 The **WaitingRoomEquipment** describes enclosed indoor waiting room facilities available at a stop place or station. It communicates the presence and availability of heated or sheltered indoor waiting areas for passengers.
@@ -42,8 +44,9 @@ The **WaitingRoomEquipment** describes enclosed indoor waiting room facilities a
 
 ### 5c. Common Pitfalls
 
-- **Confusing with ShelterEquipment**: WaitingRoomEquipment is for enclosed indoor waiting rooms; ShelterEquipment is for open or semi-enclosed outdoor shelters.
-- **Omitting validity periods during renovation**: Use ValidBetween when the waiting room is temporarily closed.
+> [!WARNING]
+> - **Confusing with ShelterEquipment**: WaitingRoomEquipment is for enclosed indoor waiting rooms; ShelterEquipment is for open or semi-enclosed outdoor shelters.
+> - **Omitting validity periods during renovation**: Use ValidBetween when the waiting room is temporarily closed.
 
 ## 6. Additional Information
 

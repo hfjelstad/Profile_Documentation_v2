@@ -10,7 +10,7 @@
 set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-SCHEMA_DIR="$REPO_ROOT/XSD 2.0/xsd"
+SCHEMA_DIR="$REPO_ROOT/netex-xsd/xsd"
 SCHEMA_FILE="$SCHEMA_DIR/NeTEx_publication.xsd"
 
 # ── Check xmllint ──
@@ -24,17 +24,16 @@ fi
 
 # ── Ensure schema is available ──
 if [ ! -f "$SCHEMA_FILE" ]; then
-  echo "Schema not found locally. Fetching from origin/main..."
+  echo "Schema not found locally. Cloning from official NeTEx repo..."
   (
     cd "$REPO_ROOT"
-    git fetch origin main --depth=1 2>/dev/null
-    git checkout origin/main -- "XSD 2.0/xsd/" 2>/dev/null
+    git clone --depth=1 https://github.com/NeTEx-CEN/NeTEx.git netex-xsd 2>/dev/null
   )
   if [ ! -f "$SCHEMA_FILE" ]; then
     echo "ERROR: Could not obtain schema at: $SCHEMA_FILE"
     exit 2
   fi
-  echo "Schema loaded from origin/main."
+  echo "Schema cloned from https://github.com/NeTEx-CEN/NeTEx"
   echo ""
 fi
 
@@ -64,7 +63,7 @@ elif [ "$1" = "--changed" ]; then
   else
     while IFS= read -r -d '' f; do
       [[ "${f,,}" == *.xml ]] || continue
-      [[ "$f" == "XSD 2.0/"* ]] && continue
+      [[ "$f" == "netex-xsd/"* ]] && continue
       [ -f "$REPO_ROOT/$f" ] || continue
       FILES+=("$REPO_ROOT/$f")
     done < <(git diff --name-only -z "$MB" HEAD)

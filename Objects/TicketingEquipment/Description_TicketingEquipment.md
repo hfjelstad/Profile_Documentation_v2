@@ -1,5 +1,7 @@
 # TicketingEquipment
 
+> *→ [Glossary definition](../../Guides/Glossary/Glossary.md#ticketingequipment)*
+
 ## 1. Purpose
 
 The **TicketingEquipment** describes ticket machines, validators, or other ticketing infrastructure available at a stop place or station. It communicates the availability and validity of ticketing facilities to passengers and journey planners.
@@ -46,8 +48,9 @@ The **TicketingEquipment** describes ticket machines, validators, or other ticke
 
 ### 5c. Common Pitfalls
 
-- **Confusing equipment types**: TicketingEquipment is specifically for ticket machines and validators; do not use it for general passenger information displays.
-- **Omitting validity periods during maintenance**: Use ValidBetween when equipment is temporarily out of service.
+> [!WARNING]
+> - **Confusing equipment types**: TicketingEquipment is specifically for ticket machines and validators; do not use it for general passenger information displays.
+> - **Omitting validity periods during maintenance**: Use ValidBetween when equipment is temporarily out of service.
 
 ## 6. Additional Information
 

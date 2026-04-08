@@ -1,5 +1,7 @@
 # Notice
 
+> *→ [Glossary definition](../../Guides/Glossary/Glossary.md#notice)*
+
 ## 1. Purpose
 
 A **Notice** provides informational or regulatory text associated with public transport services. Notices are used to communicate special conditions, booking requirements, or service alerts to passengers. They are defined centrally and assigned to specific objects (e.g., passing times, journeys) via NoticeAssignment.
@@ -26,7 +28,9 @@ A **Notice** provides informational or regulatory text associated with public tr
 - Notice is defined once in ServiceFrame/notices and then referenced via NoticeAssignment in TimetableFrame
 
 ### 5c. Common Pitfalls
-- Defining notices inline on journeys instead of using the central notices collection with NoticeAssignment references
+
+> [!WARNING]
+> - Defining notices inline on journeys instead of using the central notices collection with NoticeAssignment references
 
 ## 6. Additional Information
 

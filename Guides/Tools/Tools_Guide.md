@@ -20,7 +20,14 @@ The NeTEx XML Schema is the authoritative source for validating NeTEx documents.
 |----------|------|
 | Official NeTEx XSD (GitHub) | [NeTEx-CEN/NeTEx](https://github.com/NeTEx-CEN/NeTEx) |
 | CEN standard page | [CEN TC 278 WG 3](https://www.netex-cen.eu/) |
-| This repo's XSD copy | `XSD 2.0/xsd/` on the `main` branch |
+
+Clone the official schema locally:
+
+```bash
+git clone --depth=1 https://github.com/NeTEx-CEN/NeTEx.git netex-xsd
+```
+
+The entry point is then `netex-xsd/xsd/NeTEx_publication.xsd`.
 
 ### Schema Entry Points
 
@@ -64,7 +71,7 @@ After installing the Red Hat XML extension, you can enable schema-aware validati
   "xml.fileAssociations": [
     {
       "pattern": "**/*.xml",
-      "systemId": "XSD 2.0/xsd/NeTEx_publication.xsd"
+      "systemId": "netex-xsd/xsd/NeTEx_publication.xsd"
     }
   ]
 }
@@ -72,7 +79,7 @@ After installing the Red Hat XML extension, you can enable schema-aware validati
 
 This gives you real-time validation, auto-completion of NeTEx elements, and hover documentation directly in the editor.
 
-> ⚠️ **Note:** The XSD must be available locally. On this repo's feature branches, fetch it from `main` first — see the [Validation Guide](../Validation/Validation.md) for details.
+> ⚠️ **Note:** The XSD must be available locally. Clone it from the [official repo](https://github.com/NeTEx-CEN/NeTEx) — see the [Validation Guide](../Validation/Validation.md) for details.
 
 ---
 
@@ -90,14 +97,14 @@ This gives you real-time validation, auto-completion of NeTEx elements, and hove
 
 **xmllint:**
 ```bash
-xmllint --noout --schema "XSD 2.0/xsd/NeTEx_publication.xsd" my_file.xml
+xmllint --noout --schema "netex-xsd/xsd/NeTEx_publication.xsd" my_file.xml
 ```
 
 **Python lxml:**
 ```python
 from lxml import etree
 
-schema = etree.XMLSchema(etree.parse("XSD 2.0/xsd/NeTEx_publication.xsd"))
+schema = etree.XMLSchema(etree.parse("netex-xsd/xsd/NeTEx_publication.xsd"))
 doc = etree.parse("my_file.xml")
 
 if schema.validate(doc):

@@ -1,5 +1,7 @@
 # FlexibleServiceProperties
 
+> *→ [Glossary definition](../../Guides/Glossary/Glossary.md#flexibleserviceproperties)*
+
 ## 1. Purpose
 
 The **FlexibleServiceProperties** defines the scheduling and operational characteristics of a flexible (demand-responsive) transport service. It specifies validity periods and service parameters for journeys that do not follow fixed routes or timetables, such as dial-a-ride or on-demand services.
@@ -42,8 +44,9 @@ The **FlexibleServiceProperties** defines the scheduling and operational charact
 
 ### 5c. Common Pitfalls
 
-- **Applying to fixed-route services**: FlexibleServiceProperties should not be used for regular scheduled services with fixed routes and timetables.
-- **Overlapping validity periods**: Avoid assigning multiple FlexibleServiceProperties with overlapping ValidBetween ranges to the same service.
+> [!WARNING]
+> - **Applying to fixed-route services**: FlexibleServiceProperties should not be used for regular scheduled services with fixed routes and timetables.
+> - **Overlapping validity periods**: Avoid assigning multiple FlexibleServiceProperties with overlapping ValidBetween ranges to the same service.
 
 ## 6. Additional Information
 

@@ -52,10 +52,13 @@ Use a mix of:
 - **Images** for complex visual models (reference from `images/` folder)
 
 **Tips:**
-- Use `> 💡 **Tip:**` blockquotes for practical advice
-- Use `> ⚠️ **Note:**` for important caveats
+- Use `> [!TIP]` callouts for practical advice
+- Use `> [!NOTE]` for important caveats
+- Use `> [!WARNING]` for common mistakes or pitfalls
 - Use tables to compare approaches with pros/cons columns
 - Use collapsible `<details>` sections for advanced topics that might overwhelm newcomers
+- Use **Mermaid diagrams** for relationships, flows, and tree structures (apply the blue palette — see LLM/README.md section 7c)
+- **Do not use** emoji-based callouts (`> 💡 **Tip:**`, `> ⚠️ **Note:**`) — use flexible-alerts syntax instead
 
 ### 3. How It Works in NeTEx (required)
 
@@ -91,12 +94,12 @@ For inline snippets, keep them focused — show only the relevant fragment, not 
 
 ### 5. Best Practices (recommended)
 
-**What:** Actionable recommendations. Use a checklist or numbered list.
+**What:** Actionable recommendations. Use a `> [!TIP]` callout with bullet points.
 
 Format options:
+- `> [!TIP]` with bulleted best-practice rules
 - ✅ / ❌ do/don't lists
-- Numbered best-practice rules
-- Decision flowcharts (ASCII)
+- Decision flowcharts (Mermaid)
 
 ### 6. Related Resources (required)
 
@@ -135,8 +138,10 @@ Format options:
 | ASCII diagrams | Simple relationships, flows | Monospace code blocks |
 | Images | Complex visual models | `![Alt text](images/name.png)` |
 | Code blocks | XML examples, snippets | Fenced with `xml` language tag |
-| Blockquotes | Tips, warnings, key insights | `> 💡 **Tip:**` |
+| Blockquotes | Tips, warnings, key insights | `> [!TIP]`, `> [!WARNING]`, `> [!NOTE]` |
 | Collapsible sections | Advanced/optional content | `<details><summary>` |
+| Mermaid diagrams | Relationships, flows, trees | ` ```mermaid ` with blue palette |
+| Docsify tabs | Multi-profile examples | `<!-- tabs:start -->` blocks |
 
 ### Cross-References
 - Use **relative markdown links** to existing files in the repository

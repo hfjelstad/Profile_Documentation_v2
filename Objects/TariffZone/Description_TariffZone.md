@@ -1,5 +1,7 @@
 # TariffZone
 
+> *→ [Glossary definition](../../Guides/Glossary/Glossary.md#tariffzone)*
+
 ## 1. Purpose
 
 The **TariffZone** defines a geographic fare zone used for ticketing and pricing in public transport. It groups stops and areas into zones that determine ticket prices, enabling zone-based fare calculation for passenger journeys.
@@ -44,9 +46,10 @@ TariffZone
 
 ### 5c. Common Pitfalls
 
-- **Inconsistent zone assignment**: Ensure all stops within a geographic area reference the same TariffZone to avoid fare calculation errors.
-- **Missing zone coverage**: Verify that all stop points used in journeys are assigned to at least one TariffZone if zone-based fares are in use.
-- **Duplicate zone names**: Avoid creating multiple TariffZone entries with the same name but different `@id` values.
+> [!WARNING]
+> - **Inconsistent zone assignment**: Ensure all stops within a geographic area reference the same TariffZone to avoid fare calculation errors.
+> - **Missing zone coverage**: Verify that all stop points used in journeys are assigned to at least one TariffZone if zone-based fares are in use.
+> - **Duplicate zone names**: Avoid creating multiple TariffZone entries with the same name but different `@id` values.
 
 ## 6. Additional Information
 

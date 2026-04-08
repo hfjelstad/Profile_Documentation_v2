@@ -1,5 +1,7 @@
 # Parking
 
+> *→ [Glossary definition](../../Guides/Glossary/Glossary.md#parking)*
+
 ## 1. Purpose
 
 The **Parking** represents a parking facility associated with public transport, such as a park-and-ride lot, a bike parking area, or a car park at a station. It is used within a SiteFrame to describe the type, location, and characteristics of parking infrastructure that supports multimodal transport.
@@ -59,8 +61,9 @@ Parking
 
 ### 5c. Common Pitfalls
 
-- **Wrong ParkingType**: Ensure the type matches the actual facility — `parkAndRide` is for transit-adjacent parking, not general urban parking.
-- **Missing link to StopPlace**: While not structurally required, parking facilities should be logically associated with the stop or station they serve.
+> [!WARNING]
+> - **Wrong ParkingType**: Ensure the type matches the actual facility — `parkAndRide` is for transit-adjacent parking, not general urban parking.
+> - **Missing link to StopPlace**: While not structurally required, parking facilities should be logically associated with the stop or station they serve.
 
 ## 6. Additional Information
 

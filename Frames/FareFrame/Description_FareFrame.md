@@ -1,4 +1,6 @@
-# FareFrame
+﻿# FareFrame
+
+> *→ [Glossary definition](../../Guides/Glossary/Glossary.md#fareframe)*
 
 ## 1. Purpose
 

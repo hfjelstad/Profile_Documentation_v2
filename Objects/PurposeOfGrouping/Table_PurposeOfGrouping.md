@@ -11,8 +11,8 @@ PurposeOfGrouping
 
 ## Table
 
-| Element | Type | MIN | Description | Path |
-|---------|------|-----|-------------|------|
-| @id | ID | 1..1 | Unique identifier for the purpose of grouping | PurposeOfGrouping/@id |
-| @version | String | 1..1 | Version number for change tracking | PurposeOfGrouping/@version |
-| Name | String | 1..1 | Descriptive name of the grouping purpose | PurposeOfGrouping/Name |
+| Element | Type | XSD | ERP | Description | Path |
+|---------|------|-----|-----|-------------|------|
+| @id | ID | 1..1 | 1..1 | Unique identifier for the purpose of grouping | PurposeOfGrouping/@id |
+| @version | String | 1..1 | 1..1 | Version number for change tracking | PurposeOfGrouping/@version |
+| Name | String | 0..1 | 1..1 | Descriptive name of the grouping purpose | PurposeOfGrouping/Name |

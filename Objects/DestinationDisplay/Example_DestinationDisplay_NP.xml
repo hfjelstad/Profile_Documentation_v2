@@ -1,11 +1,18 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <PublicationDelivery xmlns="http://www.netex.org.uk/netex" version="2.0">
   <PublicationTimestamp>2026-03-17T12:00:00Z</PublicationTimestamp>
   <ParticipantRef>EuPro</ParticipantRef>
   <dataObjects>
-    <ServiceFrame id="NP:ServiceFrame:dd:1" version="1">
+    <ServiceFrame id="NP:ServiceFrame:MANDATORY" version="1">
       <destinationDisplays>
         <DestinationDisplay id="NP:DestinationDisplay:3950001_1" version="1">
+          <FrontText>Kristiansand via Baneheitunnelen</FrontText>
+        </DestinationDisplay>
+      </destinationDisplays>
+    </ServiceFrame>
+    <ServiceFrame id="NP:ServiceFrame:OPTIONAL" version="1">
+      <destinationDisplays>
+        <DestinationDisplay id="NP:DestinationDisplay:3950001_1" version="2">
           <Name>Kristiansand via Baneheitunnelen</Name>
           <SideText>Kristiansand via Baneheitunnelen</SideText>
           <FrontText>Kristiansand via Baneheitunnelen</FrontText>

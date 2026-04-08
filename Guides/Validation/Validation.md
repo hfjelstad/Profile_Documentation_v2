@@ -27,18 +27,35 @@ In this guide you will learn:
 
 ### Getting the Schema
 
-The XSD lives on the `main` branch of this repository under `XSD 2.0/xsd/`. On feature branches, fetch it:
+Clone (or shallow-clone) the official NeTEx XSD directly from the source:
 
 ```bash
-git fetch origin main --depth=1
-git checkout origin/main -- "XSD 2.0/xsd/"
+git clone --depth=1 https://github.com/NeTEx-CEN/NeTEx.git netex-xsd
 ```
 
-> ⚠️ **Note:** After validation, clean up the checkout so the XSD doesn't pollute your branch:
-> ```bash
-> git reset HEAD "XSD 2.0/"
-> rm -rf "XSD 2.0/"
-> ```
+The entry point is then `netex-xsd/xsd/NeTEx_publication.xsd`.
+
+> 💡 **Tip:** This always gives you the latest official schema. Re-run the clone (or `git -C netex-xsd pull`) to pick up updates.
+
+> ⚠️ **Note:** The `netex-xsd/` folder is a working copy, not part of your project. Add it to `.gitignore` if needed.
+
+### Using a Specific Version
+
+To validate against a particular NeTEx release instead of the latest, check out the corresponding tag after cloning:
+
+```bash
+git clone https://github.com/NeTEx-CEN/NeTEx.git netex-xsd
+cd netex-xsd
+git tag -l            # list available versions
+git checkout v1.15    # switch to a specific release
+```
+
+To switch back to the latest:
+
+```bash
+git checkout main
+git pull
+```
 
 ---
 
@@ -63,7 +80,7 @@ The easiest way to validate:
 
 ```bash
 xmllint --noout \
-  --schema "XSD 2.0/xsd/NeTEx_publication.xsd" \
+  --schema "netex-xsd/xsd/NeTEx_publication.xsd" \
   Objects/Line/Example_Line_MIN.xml
 ```
 
@@ -72,7 +89,7 @@ xmllint --noout \
 ```python
 from lxml import etree
 
-schema = etree.XMLSchema(etree.parse("XSD 2.0/xsd/NeTEx_publication.xsd"))
+schema = etree.XMLSchema(etree.parse("netex-xsd/xsd/NeTEx_publication.xsd"))
 doc = etree.parse("Objects/Line/Example_Line_MIN.xml")
 
 if schema.validate(doc):
@@ -177,7 +194,7 @@ Element 'PropulsionType': 'diesel' is not a valid value.
 
 | Problem | Solution |
 |---------|----------|
-| "Cannot find schema" | Ensure the XSD is available locally — fetch from `origin/main` (see section 2) |
+| "Cannot find schema" | Ensure the XSD is available locally — clone from the official repo (see section 2) |
 | Schema loads but nothing validates | Check you're using the correct entry point (`NeTEx_publication.xsd`) |
 | Many errors cascade from one issue | Fix the **first** error only, then re-validate — later errors are often caused by the first |
 | Validation passes locally, fails in CI | Ensure you've committed all changed files and pushed |

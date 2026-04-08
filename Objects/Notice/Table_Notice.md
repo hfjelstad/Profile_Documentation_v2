@@ -11,8 +11,8 @@ Notice
 
 ## Table
 
-| Element | Type | NP | Description | Path |
-|---------|------|-----|-------------|------|
-| @id | ID | 1..1 | Unique identifier for the Notice | Notice/@id |
-| @version | String | 1..1 | Version number for change tracking | Notice/@version |
-| Text | String | 1..1 | The notice text content displayed to passengers | Notice/Text |
+| Element | Type | XSD | NP | Description | Path |
+|---------|------|-----|-----|-------------|------|
+| @id | ID | 1..1 | 1..1 | Unique identifier for the Notice | Notice/@id |
+| @version | String | 1..1 | 1..1 | Version number for change tracking | Notice/@version |
+| Text | String | 0..1 | 1..1 | The notice text content displayed to passengers | Notice/Text |

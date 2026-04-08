@@ -1,0 +1,55 @@
+/* Glossary tooltip — subtle underline + floating card */
+
+.glossary-tip {
+  border-bottom: 1.5px dotted #1976D2;
+  cursor: help;
+}
+
+.glossary-tip:hover {
+  border-bottom-style: solid;
+}
+
+/* Single floating tooltip element, positioned by JS */
+#glossary-tooltip {
+  display: none;
+  position: fixed;
+  background: #0D47A1;
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: 6px;
+  font-size: 0.85em;
+  line-height: 1.45;
+  max-width: 380px;
+  z-index: 100000;
+  white-space: normal;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  pointer-events: none;
+}
+
+#glossary-tooltip.visible {
+  display: block;
+}
+
+/* Arrow pointing down (tooltip above term — default) */
+#glossary-tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 16px;
+  border: 6px solid transparent;
+  border-top-color: #0D47A1;
+}
+
+/* Arrow pointing up (tooltip below term — fallback) */
+#glossary-tooltip[style*="--arrow: bottom"]::after {
+  top: auto;
+  bottom: 100%;
+  border-top-color: transparent;
+  border-bottom-color: #0D47A1;
+}
+
+@media (max-width: 768px) {
+  #glossary-tooltip {
+    max-width: 260px;
+  }
+}

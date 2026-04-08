@@ -1,5 +1,7 @@
 # PurposeOfGrouping
 
+> *→ [Glossary definition](../../Guides/Glossary/Glossary.md#purposeofgrouping)*
+
 ## 1. Purpose
 
 The **PurposeOfGrouping** classifies the reason why NeTEx objects are grouped together. It is a type-of-value element used within a ResourceFrame to define categories such as marketing, operational planning, or administrative grouping, enabling consumers to understand and filter groups by their intended purpose.
@@ -39,8 +41,9 @@ The **PurposeOfGrouping** classifies the reason why NeTEx objects are grouped to
 
 ### 5c. Common Pitfalls
 
-- **Overly generic names**: Use specific purpose descriptions (e.g., "Marketing display grouping") rather than vague labels (e.g., "Group 1").
-- **Creating duplicates**: Reuse existing PurposeOfGrouping entries via reference rather than creating new ones with identical names.
+> [!WARNING]
+> - **Overly generic names**: Use specific purpose descriptions (e.g., "Marketing display grouping") rather than vague labels (e.g., "Group 1").
+> - **Creating duplicates**: Reuse existing PurposeOfGrouping entries via reference rather than creating new ones with identical names.
 
 ## 6. Additional Information
 

@@ -1,4 +1,6 @@
-# TimetableFrame
+﻿# TimetableFrame
+
+> *→ [Glossary definition](../../Guides/Glossary/Glossary.md#timetableframe)*
 
 ## 1. Purpose
 

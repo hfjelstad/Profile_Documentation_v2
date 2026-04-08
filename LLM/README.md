@@ -29,8 +29,7 @@ The agent must always consult this folder when reading, validating, or generatin
 
 | ProfileCode | Profile Description |
 | -- | -- |
-| MIN | Minimum profile | 
-| ERP | European Recomended Profile |
+| ERP | European Recommended Profile |
 | NP | Nordic Profile |
 
 ---
@@ -44,11 +43,11 @@ The agent must always consult this folder when reading, validating, or generatin
 
 **Reference Materials:**
 
-- [AgentGuides/](AgentGuides/) – Operational guides for LLM agents (validation, setup, workflows)
-- [Templates/](Templates/) – Templates for creating new documentation
-- [../../Objects/](../../Objects/) – All Object documentation
-- [../../Frames/](../../Frames/) – All Frame documentation
-- [../../Guides/](../../Guides/) – Guidelines and best practices
+- [AgentGuides/](AgentGuides/README.md) – Operational guides for LLM agents (validation, setup, workflows)
+- [Templates/](Templates/Object_Struture_and_Table_Template.md) – Templates for creating new documentation
+- [Objects](../../Objects/Line/Description_Line.md) – All Object documentation
+- [Frames](../../Frames/CompositeFrame/Description_CompositeFrame.md) – All Frame documentation
+- [Guides](../../Guides/GetStarted/GetStarted_Guide.md) – Guidelines and best practices
 
 Use these files to quickly locate documentation, explore examples, and understand the overall structure of the NeTEx profile.
 
@@ -61,6 +60,15 @@ Every object under `Objects/<ObjectName>/` must contain the following files:
 ### 4.1. Example_<ObjectName>_<ProfileCode>.xml (at least one required)
 - A XML example validated against the current XSD.
 - All XML examples that use a ProfileCode and validate against the current XSD act as authoritative sources for determining the element order used in both the Structure Overview and the Table. Other XML files may appear for guidance or illustration but must not influence structural ordering.
+
+#### MANDATORY/OPTIONAL Frame Convention
+Profile XML examples may use a two-frame structure to distinguish mandatory from optional elements. The frame identifier may use any relevant frame type (for example, `ServiceFrame`, `SiteFrame`, `ResourceFrame`, or `TimetableFrame`):
+
+- **`<ProfileCode>:<FrameType>:MANDATORY`** — Contains only the elements that the profile requires. Every element present in this frame maps to **1..1** in the profile column.
+- **`<ProfileCode>:<FrameType>:OPTIONAL`** — Contains all recognized elements (mandatory + optional). Elements present here but absent from the MANDATORY frame map to **0..1** in the profile column.
+- Elements absent from both frames are left empty in the profile column.
+
+This convention is the authoritative source for deriving profile cardinality values in the table, regardless of which frame type is used.
 
 ### 4.2. `Table_<ObjectName>.md` (mandatory)
 
@@ -155,13 +163,90 @@ Frames/
 - Use relative markdown links to reference object tables: `[ObjectName](../ObjectName/Table_ObjectName.md)`
 - Use consistent capitalization matching the NeTEx element names
 - Always link from descriptions to examples and table files
+- Every Description file must include a glossary crosslink at the top: `> *→ [Glossary definition](../../Guides/Glossary/Glossary.md#objectname)*`
 
 ---
 
-## 7. Validation & Quality Assurance
+## 7. Docsify Interactive Features
+
+The documentation site uses Docsify with several plugins that should be used consistently:
+
+### 7a. Flexible Alerts
+
+Use blockquote callouts for tips, warnings, and notes. **Do not use emoji-based callouts** (`> 💡 **Tip:**`); use the flexible-alerts syntax:
+
+```markdown
+> [!TIP]
+> Advice or best practice.
+
+> [!WARNING]
+> - **Pitfall one**: description.
+> - **Pitfall two**: description.
+
+> [!NOTE]
+> Important but non-critical information.
+```
+
+- Use `> [!WARNING]` with bullet points for grouped Common Pitfalls (section 5c)
+- Use `> [!TIP]` for best practices and recommendations
+- Use `> [!NOTE]` for informational callouts
+
+### 7b. Docsify Tabs
+
+Use tabs to show profile-specific XML examples side by side:
+
+```markdown
+<!-- tabs:start -->
+
+#### **MIN (ERP)**
+
+\`\`\`xml
+<Line id="ERP:Line:1" version="1">...</Line>
+\`\`\`
+
+#### **NP (Nordic)**
+
+\`\`\`xml
+<Line id="NP:Line:100" version="1">...</Line>
+\`\`\`
+
+<!-- tabs:end -->
+```
+
+Tabs are configured with `persist: true` and `sync: true` (selection persists across pages).
+
+### 7c. Mermaid Diagrams
+
+Use Mermaid for relationship graphs, tree structures, and flowcharts. Always apply the **blue palette**:
+
+| Level | Color | Usage |
+|-------|-------|-------|
+| Darkest | `#0D47A1` | Top-level / root nodes |
+| | `#1565C0` | Primary containers / frames |
+| | `#1976D2` | Collections / groups |
+| | `#1E88E5` | Intermediate elements |
+| | `#42A5F5` | Leaf objects |
+| | `#64B5F6` | Sub-elements |
+| Lightest | `#90CAF9` | External / secondary refs |
+
+Apply colors using `style NodeId fill:#color,stroke:#color,color:#fff`.
+
+### 7d. Glossary Tooltips
+
+A custom plugin (`assets/docsify-glossary-tooltip.js`) parses the 52-term Glossary and adds hover tooltips on first occurrence of each term. The Glossary contains three-layer definitions: Profile, NeTEx XSD, and Transmodel.
+
+### 7e. Copy-Code
+
+All code blocks and XML snippets automatically get a "Copy" button via `docsify-copy-code`.
+
+---
+
+## 8. Validation & Quality Assurance
 
 - All XML examples must validate against the current NeTEx XSD
 - Tables must stay synchronized with their corresponding XML examples
+- Tables must include an **XSD** column as the first cardinality column, reflecting the schema-level minOccurs/maxOccurs values
+- Profile cardinality columns follow after XSD and reflect profile-level requirements (which may be stricter than XSD)
 - Descriptions must reference actual elements from the table
 - Cross-reference links must be relative and point to existing files
 - ProfileCode examples are authoritative for element ordering

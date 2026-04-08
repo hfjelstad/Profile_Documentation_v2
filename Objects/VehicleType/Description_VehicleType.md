@@ -1,5 +1,7 @@
 # VehicleType
 
+> *→ [Glossary definition](../../Guides/Glossary/Glossary.md#vehicletype)*
+
 ## 1. Purpose
 
 A **VehicleType** represents a typified vehicle configuration (model or series) defining reusable characteristics such as capacity, dimensions, propulsion, and accessibility features. It is not an individual vehicle but a template referenced by multiple Vehicle instances. VehicleTypes are defined in the ResourceFrame and referenced via VehicleTypeRef from Vehicle elements or ServiceJourneys.
@@ -12,14 +14,14 @@ A **VehicleType** represents a typified vehicle configuration (model or series) 
   ├─ 📄 @version (1..1)
   ├─ 📄 Name (1..1)
   ├─ 📄 Description (0..1)
-  ├─ 📄 Length (0..1)
-  ├─ 📄 Width (0..1)
-  ├─ 📄 Height (0..1)
+  ├─ 📄 PropulsionType (0..1)
   ├─ 📁 PassengerCapacity (0..1)
   │  ├─ 📄 SeatedCapacity (0..1)
   │  ├─ 📄 StandingCapacity (0..1)
   │  └─ 📄 WheelchairCapacity (0..1)
-  └─ 📄 PropulsionType (0..1)
+  ├─ 📄 Length (0..1)
+  ├─ 📄 Width (0..1)
+  └─ 📄 Height (0..1)
 ```
 
 ## 3. Key Elements
@@ -47,8 +49,9 @@ A **VehicleType** represents a typified vehicle configuration (model or series) 
 
 ### 5c. Common Pitfalls
 
-- **VehicleType vs. Vehicle confusion**: VehicleType is a reusable template (shared characteristics); Vehicle is a specific physical unit. Define the type once and reference it from multiple vehicles.
-- **Including infrastructure data**: Platform gaps and stop-specific measurements belong to StopPlace/Quay objects, not VehicleType.
+> [!WARNING]
+> - **VehicleType vs. Vehicle confusion**: VehicleType is a reusable template (shared characteristics); Vehicle is a specific physical unit. Define the type once and reference it from multiple vehicles.
+> - **Including infrastructure data**: Platform gaps and stop-specific measurements belong to StopPlace/Quay objects, not VehicleType.
 
 ## 6. Additional Information
 

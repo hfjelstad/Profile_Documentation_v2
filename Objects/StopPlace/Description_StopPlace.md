@@ -1,4 +1,6 @@
-# StopPlace
+﻿# StopPlace
+
+> *→ [Glossary definition](../../Guides/Glossary/Glossary.md#stopplace)*
 
 ## 1. Purpose
 The **StopPlace** represents a named physical or virtual location where passengers can board or alight from public transport. It is a core organizational entity that models the full spatial and administrative context of a passenger exchange point, from simple street-side bus stops to complex multimodal transport hubs. StopPlaces support both monomodal configurations (single transport mode) and multimodal hierarchies (multiple transport modes), enabling flexible modeling of diverse transport infrastructure.
@@ -70,11 +72,15 @@ StopPlace (Multimodal Parent)
 - **Quay containment** – Multimodal parents must have zero Quays (cardinality 0); monomodal StopPlaces must have at least one Quay (cardinality 1..n).
 
 ### 5c. Common Pitfalls
-- **Monomodal/multimodal confusion**: Mistakenly adding Quays to a multimodal parent or omitting TransportMode from monomodal stops. Create separate child StopPlaces for each transport mode under a multimodal parent.
-- **Missing TransportMode**: StopPlaces with Quays require TransportMode; omission is a critical validation error. Do not leave this blank.
-- **Incorrect Centroid positioning**: Placing the parent's Centroid at a single Quay instead of centrally between all Quays; use a position equidistant from serving points.
-- **ParentSiteRef to non-parent**: Referencing a monomodal StopPlace (with Quays) as a parent instead of a true multimodal parent (without Quays). Verify parent is multimodal first.
-- **Mixed navigation elements in wrong context**: Placing pathLinks, navigationPaths, or accessSpaces under Quays instead of under the parent StopPlace; these are stop-level, not quay-level constructs.
+
+> [!WARNING]
+> - **Monomodal/multimodal confusion**: Mistakenly adding Quays to a multimodal parent or omitting TransportMode from monomodal stops. Create separate child StopPlaces for each transport mode under a multimodal parent.
+> - **Missing TransportMode**: StopPlaces with Quays require TransportMode; omission is a critical validation error. Do not leave this blank.
+> - **ParentSiteRef to non-parent**: Referencing a monomodal StopPlace (with Quays) as a parent instead of a true multimodal parent (without Quays). Verify parent is multimodal first.
+> - **Mixed navigation elements in wrong context**: Placing pathLinks, navigationPaths, or accessSpaces under Quays instead of under the parent StopPlace; these are stop-level, not quay-level constructs.
+
+> [!TIP]
+> **Centroid positioning**: For monomodal stops, place the Centroid centrally between all serving Quays. For multimodal parents, position it at the hub center — not at a single Quay.
 
 ## 6. Additional Information
 See [Table_StopPlace.md](Table_StopPlace.md) for detailed attribute specifications, cardinality rules, and the complete element structure. See [Example_StopPlace.xml](Example_StopPlace.xml) for examples of monomodal and multimodal StopPlace configurations with embedded Quays.

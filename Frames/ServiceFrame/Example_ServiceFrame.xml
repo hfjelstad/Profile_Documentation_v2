@@ -13,6 +13,26 @@
           </organisations>
         </ResourceFrame>
         <ServiceFrame id="ERP:ServiceFrame:1" version="1">
+          <Network id="ERP:Network:Main" version="1">
+            <Name>Example Network</Name>
+          </Network>
+
+          <routes>
+            <Route id="ERP:Route:21:outbound" version="1">
+              <Name>Line 21 Outbound</Name>
+              <LineRef ref="ERP:Line:1001"/>
+              <DirectionType>outbound</DirectionType>
+              <pointsInSequence>
+                <PointOnRoute id="ERP:PointOnRoute:21:1" version="1" order="1">
+                  <ScheduledStopPointRef ref="ERP:ScheduledStopPoint:1001"/>
+                </PointOnRoute>
+                <PointOnRoute id="ERP:PointOnRoute:21:2" version="1" order="2">
+                  <ScheduledStopPointRef ref="ERP:ScheduledStopPoint:1002"/>
+                </PointOnRoute>
+              </pointsInSequence>
+            </Route>
+          </routes>
+
           <lines>
             <Line id="ERP:Line:1001" version="1">
               <Name>Line 21</Name>
@@ -20,6 +40,77 @@
               <OperatorRef ref="ERP:Operator:EuPro"/>
             </Line>
           </lines>
+
+          <groupsOfLines>
+            <GroupOfLines id="ERP:GroupOfLines:21" version="1">
+              <Name>Example Group of Lines</Name>
+              <members>
+                <LineRef ref="ERP:Line:1001"/>
+              </members>
+            </GroupOfLines>
+          </groupsOfLines>
+
+          <destinationDisplays>
+            <DestinationDisplay id="ERP:DestinationDisplay:1001" version="1">
+              <Name>Stop B</Name>
+              <FrontText>Stop B</FrontText>
+            </DestinationDisplay>
+          </destinationDisplays>
+
+          <scheduledStopPoints>
+            <ScheduledStopPoint id="ERP:ScheduledStopPoint:1001" version="1">
+              <Name>Stop A</Name>
+            </ScheduledStopPoint>
+            <ScheduledStopPoint id="ERP:ScheduledStopPoint:1002" version="1">
+              <Name>Stop B</Name>
+            </ScheduledStopPoint>
+          </scheduledStopPoints>
+
+          <serviceLinks>
+            <ServiceLink id="ERP:ServiceLink:1001_1002" version="1">
+              <FromPointRef ref="ERP:ScheduledStopPoint:1001"/>
+              <ToPointRef ref="ERP:ScheduledStopPoint:1002"/>
+            </ServiceLink>
+          </serviceLinks>
+
+          <stopAssignments>
+            <PassengerStopAssignment id="ERP:PassengerStopAssignment:1001" version="1" order="1">
+              <ScheduledStopPointRef ref="ERP:ScheduledStopPoint:1001"/>
+              <StopPlaceRef ref="NSR:StopPlace:1001" versionRef="EXTERNAL"/>
+            </PassengerStopAssignment>
+            <PassengerStopAssignment id="ERP:PassengerStopAssignment:1002" version="1" order="2">
+              <ScheduledStopPointRef ref="ERP:ScheduledStopPoint:1002"/>
+              <StopPlaceRef ref="NSR:StopPlace:1002" versionRef="EXTERNAL"/>
+            </PassengerStopAssignment>
+          </stopAssignments>
+
+          <journeyPatterns>
+            <JourneyPattern id="ERP:JourneyPattern:21:outbound" version="1">
+              <Name>Line 21 JourneyPattern</Name>
+              <RouteRef ref="ERP:Route:21:outbound"/>
+              <pointsInSequence>
+                <StopPointInJourneyPattern id="ERP:SPJP:21:1" version="1" order="1">
+                  <ScheduledStopPointRef ref="ERP:ScheduledStopPoint:1001"/>
+                  <ForAlighting>false</ForAlighting>
+                </StopPointInJourneyPattern>
+                <StopPointInJourneyPattern id="ERP:SPJP:21:2" version="1" order="2">
+                  <ScheduledStopPointRef ref="ERP:ScheduledStopPoint:1002"/>
+                  <ForBoarding>false</ForBoarding>
+                </StopPointInJourneyPattern>
+              </pointsInSequence>
+              <linksInSequence>
+                <ServiceLinkInJourneyPattern id="ERP:SLJP:21:1" version="1" order="1">
+                  <ServiceLinkRef ref="ERP:ServiceLink:1001_1002"/>
+                </ServiceLinkInJourneyPattern>
+              </linksInSequence>
+            </JourneyPattern>
+          </journeyPatterns>
+
+          <notices>
+            <Notice id="ERP:Notice:1001" version="1">
+              <Text>Example notice for Line 21.</Text>
+            </Notice>
+          </notices>
         </ServiceFrame>
       </frames>
     </CompositeFrame>

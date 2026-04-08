@@ -1,5 +1,7 @@
 # AlternativeText
 
+> *→ [Glossary definition](../../Guides/Glossary/Glossary.md#alternativetext)*
+
 ## 1. Purpose
 
 The **AlternativeText** provides supplementary textual descriptions for a NeTEx object. Unlike AlternativeName which supplies name variants, AlternativeText is used for longer descriptive texts such as marketing descriptions, official statements, or translated descriptions attached to frames or other containers.
@@ -38,8 +40,9 @@ The **AlternativeText** provides supplementary textual descriptions for a NeTEx 
 
 ### 5c. Common Pitfalls
 
-- **Confusing with AlternativeName**: AlternativeText is for descriptive texts, not name variants. Use AlternativeName for name translations or abbreviations.
-- **Missing @id**: Unlike AlternativeName, AlternativeText requires its own `@id` and `@version` attributes.
+> [!WARNING]
+> - **Confusing with AlternativeName**: AlternativeText is for descriptive texts, not name variants. Use AlternativeName for name translations or abbreviations.
+> - **Missing @id**: Unlike AlternativeName, AlternativeText requires its own `@id` and `@version` attributes.
 
 ## 6. Additional Information
 

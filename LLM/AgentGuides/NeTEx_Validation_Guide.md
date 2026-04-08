@@ -6,13 +6,19 @@ This guide explains how to validate NeTEx XML example files against the official
 
 ## 1. Schema Location
 
-The NeTEx XSD schema lives on the `main` branch at:
+The NeTEx XSD schema is maintained at the official [NeTEx-CEN/NeTEx](https://github.com/NeTEx-CEN/NeTEx) repository. Clone it locally:
+
+```bash
+git clone --depth=1 https://github.com/NeTEx-CEN/NeTEx.git netex-xsd
+```
+
+The root schema file is then:
 
 ```
-XSD 2.0/xsd/NeTEx_publication.xsd
+netex-xsd/xsd/NeTEx_publication.xsd
 ```
 
-This is the root schema file. It imports all NeTEx sub-schemas. **It is not stored on feature branches** — it must be fetched from `origin/main`.
+This is the root schema file. It imports all NeTEx sub-schemas.
 
 ---
 
@@ -48,7 +54,7 @@ pip install lxml
 ```python
 from lxml import etree
 
-schema_doc = etree.parse("XSD 2.0/xsd/NeTEx_publication.xsd")
+schema_doc = etree.parse("netex-xsd/xsd/NeTEx_publication.xsd")
 schema = etree.XMLSchema(schema_doc)
 
 doc = etree.parse("Objects/Quay/Example_Quay_NP.xml")
@@ -59,16 +65,9 @@ else:
         print(err)
 ```
 
-To fetch the schema first:
+To fetch the schema:
 ```bash
-git fetch origin main --depth=1
-git checkout origin/main -- "XSD 2.0/xsd/"
-```
-
-**Important:** After validation, clean up the XSD checkout so it doesn't pollute your branch:
-```bash
-git reset HEAD "XSD 2.0/"
-rm -rf "XSD 2.0/"
+git clone --depth=1 https://github.com/NeTEx-CEN/NeTEx.git netex-xsd
 ```
 
 ### 2.3 Batch validation (Python)
@@ -77,7 +76,7 @@ rm -rf "XSD 2.0/"
 import glob
 from lxml import etree
 
-schema = etree.XMLSchema(etree.parse("XSD 2.0/xsd/NeTEx_publication.xsd"))
+schema = etree.XMLSchema(etree.parse("netex-xsd/xsd/NeTEx_publication.xsd"))
 
 for f in sorted(set(
     glob.glob("Objects/**/Example_*.xml", recursive=True) +
@@ -107,7 +106,7 @@ Two GitHub Actions workflows handle validation:
 
 Both call the reusable `INT_NeTEx_Validator.yml` workflow which:
 1. Checks out the code
-2. Fetches `XSD 2.0/xsd/` from `origin/main`
+2. Clones the official NeTEx XSD from [NeTEx-CEN/NeTEx](https://github.com/NeTEx-CEN/NeTEx)
 3. Installs `xmllint`
 4. Diffs changed XML files against the base branch
 5. Validates each changed XML file against `NeTEx_publication.xsd`

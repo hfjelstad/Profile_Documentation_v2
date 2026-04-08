@@ -16,13 +16,13 @@ Contract
 
 ## Table
 
-| Element | Type | Description | Path |
-|---------|------|-------------|------|
-| @id | ID | Unique identifier for the Contract | Contract/@id |
-| @version | String | Version label | Contract/@version |
-| Name | String | Human-readable name of the contract | Contract/Name |
-| ContractType | Enum | Form of contract (written, oral, formal) | Contract/ContractType |
-| LegalStatus | String | Legal standing of the contract | Contract/LegalStatus |
-| ContractGoverningLaw | String | Jurisdiction or legal code governing the contract | Contract/ContractGoverningLaw |
-| [Authority](../Authority/Table_Authority.md)@ref | Reference | Client-side organisation (contractee) | Contract/contractees/OrganisationRef/@ref |
-| [Operator](../Operator/Table_Operator.md)@ref | Reference | Supplier-side organisation (contractor) | Contract/contractors/OrganisationRef/@ref |
+| Element | Type | XSD | Description | Path |
+|---------|------|-----|-------------|------|
+| @id | ID | 1..1 | Unique identifier for the Contract | Contract/@id |
+| @version | String | 1..1 | Version label | Contract/@version |
+| Name | String | 0..1 | Human-readable name of the contract | Contract/Name |
+| ContractType | Enum | 0..1 | Form of contract (written, oral, formal) | Contract/ContractType |
+| LegalStatus | String | 0..1 | Legal standing of the contract | Contract/LegalStatus |
+| ContractGoverningLaw | String | 0..1 | Jurisdiction or legal code governing the contract | Contract/ContractGoverningLaw |
+| [Authority](../Authority/Table_Authority.md)@ref | Reference | 0..1 | Client-side organisation (contractee) | Contract/contractees/OrganisationRef/@ref |
+| [Operator](../Operator/Table_Operator.md)@ref | Reference | 0..1 | Supplier-side organisation (contractor) | Contract/contractors/OrganisationRef/@ref |

@@ -1,5 +1,7 @@
 # DatedServiceJourney
 
+> *→ [Glossary definition](../../Guides/Glossary/Glossary.md#datedservicejourney)*
+
 ## 1. Purpose
 
 A **DatedServiceJourney** represents a specific operational instance of a `ServiceJourney` on a particular calendar day. Where `ServiceJourney` describes the reusable template (planned schedule), `DatedServiceJourney` is the concrete instance that actually operates on a given date, including day-specific modifications such as reinforcements, replacements, or cancellations.
@@ -50,10 +52,11 @@ A **DatedServiceJourney** represents a specific operational instance of a `Servi
 
 ### 5c. Common Pitfalls
 
-- **Confusing DatedServiceJourney with ServiceJourney** – ServiceJourney is template/planned (recurring across days); DatedServiceJourney is dated/operational (specific to one day).
-- **Expecting stop times in DatedServiceJourney** – Stop times are defined only in ServiceJourney and TimetabledPassingTime. A DatedServiceJourney inherits them via its ServiceJourneyRef.
-- **Mixing OperatingDay and DayType** – OperatingDay is a **specific calendar date**; DayType is a **set of dates** (e.g., weekdays). DatedServiceJourney uses OperatingDay.
-- **Unclear hierarchy with replacements** – replacedJourneys does not mean the current journey is cancelled. It means this journey reinforces or replaces the referenced journeys on this date.
+> [!WARNING]
+> - **Confusing DatedServiceJourney with ServiceJourney** – ServiceJourney is template/planned (recurring across days); DatedServiceJourney is dated/operational (specific to one day).
+> - **Expecting stop times in DatedServiceJourney** – Stop times are defined only in ServiceJourney and TimetabledPassingTime. A DatedServiceJourney inherits them via its ServiceJourneyRef.
+> - **Mixing OperatingDay and DayType** – OperatingDay is a **specific calendar date**; DayType is a **set of dates** (e.g., weekdays). DatedServiceJourney uses OperatingDay.
+> - **Unclear hierarchy with replacements** – replacedJourneys does not mean the current journey is cancelled. It means this journey reinforces or replaces the referenced journeys on this date.
 
 ### 5d. Profile-Specific Notes
 

@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<PublicationDelivery xmlns="http://www.netex.org.uk/netex" version="2.0">
+  <PublicationTimestamp>2026-04-08T12:00:00Z</PublicationTimestamp>
+  <ParticipantRef>EuPro</ParticipantRef>
+  <dataObjects>
+    <SiteFrame id="ERP:SiteFrame:MANDATORY" version="1">
+      <alternativeTexts>
+        <AlternativeText id="ERP:AlternativeText:1" version="1">
+          <Text>Official description of the site frame.</Text>
+        </AlternativeText>
+      </alternativeTexts>
+      <Name>AlternativeText example</Name>
+    </SiteFrame>
+    <SiteFrame id="ERP:SiteFrame:OPTIONAL" version="1">
+      <alternativeTexts>
+        <AlternativeText id="ERP:AlternativeText:1" version="2">
+          <Text>Official description of the site frame.</Text>
+        </AlternativeText>
+      </alternativeTexts>
+      <Name>AlternativeText example</Name>
+    </SiteFrame>
+  </dataObjects>
+</PublicationDelivery>

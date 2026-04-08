@@ -1,5 +1,7 @@
 # Route
 
+> *→ [Glossary definition](../../Guides/Glossary/Glossary.md#route)*
+
 ## 1. Purpose
 The **Route** represents the logical geographic path definition for a Line with a specific direction. It defines the canonical sequence of scheduled stops that a line follows, serving as the authoritative reference for all JourneyPattern variants and ServiceJourney instances. By separating logical routing (Route) from operational variation (JourneyPattern) and specific departures (ServiceJourney), NeTEx enables flexible modeling of complex transport networks while maintaining data consistency.
 
@@ -50,11 +52,13 @@ The **Route** represents the logical geographic path definition for a Line with 
 - **ScheduledStopPointRef must be present in each PointOnRoute** – Every stop reference is mandatory; missing references break the stop sequence.
 
 ### 5c. Common Pitfalls
-- **Route vs JourneyPattern confusion**: Route defines the logical path topology; JourneyPattern defines the operational variation (some stops may be skipped). Do not conflate them or duplicate stop sequences.
-- **Missing or orphaned ScheduledStopPointRef**: Each PointOnRoute must reference a valid ScheduledStopPoint; missing or broken references cause journey planning to fail.
-- **Non-sequential order attributes**: Using order values like 1, 3, 5 (with gaps) or unordered integers breaks stop sequence logic. Always use sequential 1, 2, 3, ... ordering.
-- **Conflicting DirectionType**: Using DirectionType="inbound" while stop sequence runs geographically outbound; consistency between metadata and actual sequence is critical.
-- **Multiple routes with identical stop sequences under one Line**: Unnecessarily creating separate Routes that differ only in DirectionType or naming; consolidate where possible and distinguish via DirectionType and PublicCode.
+
+> [!WARNING]
+> - **Route vs JourneyPattern confusion**: Route defines the logical path topology; JourneyPattern defines the operational variation (some stops may be skipped). Do not conflate them or duplicate stop sequences.
+> - **Missing or orphaned ScheduledStopPointRef**: Each PointOnRoute must reference a valid ScheduledStopPoint; missing or broken references cause journey planning to fail.
+> - **Non-sequential order attributes**: Using order values like 1, 3, 5 (with gaps) or unordered integers breaks stop sequence logic. Always use sequential 1, 2, 3, ... ordering.
+> - **Conflicting DirectionType**: Using DirectionType="inbound" while stop sequence runs geographically outbound; consistency between metadata and actual sequence is critical.
+> - **Multiple routes with identical stop sequences under one Line**: Unnecessarily creating separate Routes that differ only in DirectionType or naming; consolidate where possible and distinguish via DirectionType and PublicCode.
 
 ## 6. Additional Information
 See [Table_Route.md](Table_Route.md) for detailed attribute specifications, cardinality rules, and the complete PointsInSequence structure. See [Example_Route.xml](Example_Route.xml) for a complete, validated XML instance showing Route with ordered PointOnRoute elements.

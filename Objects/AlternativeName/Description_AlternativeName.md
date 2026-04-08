@@ -1,5 +1,7 @@
 # AlternativeName
 
+> *→ [Glossary definition](../../Guides/Glossary/Glossary.md#alternativename)*
+
 ## 1. Purpose
 
 The **AlternativeName** provides additional name variants for a NeTEx object, such as official registrations, translations, or abbreviations. It is used as an inline child element within objects like Authority, StopPlace, or Line to supply alternative names alongside the primary `Name` element.
@@ -38,8 +40,9 @@ The **AlternativeName** provides additional name variants for a NeTEx object, su
 
 ### 5c. Common Pitfalls
 
-- **Using AlternativeName instead of Name**: The parent object's `Name` element is the primary name; AlternativeName is for supplementary variants only.
-- **Duplicate qualifiers**: Avoid multiple AlternativeName entries with the same `QualifierName` on the same parent object.
+> [!WARNING]
+> - **Using AlternativeName instead of Name**: The parent object's `Name` element is the primary name; AlternativeName is for supplementary variants only.
+> - **Duplicate qualifiers**: Avoid multiple AlternativeName entries with the same `QualifierName` on the same parent object.
 
 ## 6. Additional Information
 

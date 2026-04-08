@@ -1,5 +1,7 @@
 # TopographicPlace
 
+> *→ [Glossary definition](../../Guides/Glossary/Glossary.md#topographicplace)*
+
 ## 1. Purpose
 
 The **TopographicPlace** represents a named geographic area such as a city, municipality, county, or region. It is used within a SiteFrame to provide geographic context for stop places and other site elements, enabling location-based search and hierarchical geographic classification.
@@ -49,9 +51,10 @@ TopographicPlace
 
 ### 5c. Common Pitfalls
 
-- **Wrong TopographicPlaceType**: Ensure the type matches the administrative level — a city is not a county.
-- **Missing CountryRef**: Always include the country reference for unambiguous geographic identification.
-- **Inconsistent naming**: The Name in Descriptor should match official geographic names used by national authorities.
+> [!WARNING]
+> - **Wrong TopographicPlaceType**: Ensure the type matches the administrative level — a city is not a county.
+> - **Missing CountryRef**: Always include the country reference for unambiguous geographic identification.
+> - **Inconsistent naming**: The Name in Descriptor should match official geographic names used by national authorities.
 
 ## 6. Additional Information
 

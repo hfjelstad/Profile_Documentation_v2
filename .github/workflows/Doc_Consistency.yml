@@ -1,0 +1,38 @@
+name: Documentation Consistency Check
+
+on:
+  push:
+    branches: [EnStandardBranch, main]
+    paths:
+      - "Frames/**"
+      - "scripts/check-doc-consistency.py"
+  pull_request:
+    paths:
+      - "Frames/**"
+      - "scripts/check-doc-consistency.py"
+
+# Initial scope: Frames/ only (all clean).
+# Expand to Objects/ once Object description mismatches are resolved.
+
+jobs:
+  consistency:
+    name: Check Frames doc consistency
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install lxml
+
+      - name: Table-vs-XML order check (Frames)
+        run: python scripts/check-doc-consistency.py --order-only --target Frames
+
+      - name: Description-vs-Table check (Frames)
+        run: python scripts/check-doc-consistency.py --desc-only --target Frames

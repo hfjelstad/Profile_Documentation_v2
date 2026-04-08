@@ -1,11 +1,18 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <PublicationDelivery xmlns="http://www.netex.org.uk/netex" version="2.0">
   <PublicationTimestamp>2026-03-17T12:00:00Z</PublicationTimestamp>
   <ParticipantRef>EuPro</ParticipantRef>
   <dataObjects>
-    <SiteFrame id="NSR:SiteFrame:parking:1" version="1">
+    <SiteFrame id="NP:SiteFrame:MANDATORY" version="1">
       <parkings>
         <Parking id="NSR:Parking:1001" version="1">
+          <Name lang="nor">Innfartsparkering Oslo S</Name>
+        </Parking>
+      </parkings>
+    </SiteFrame>
+    <SiteFrame id="NP:SiteFrame:OPTIONAL" version="1">
+      <parkings>
+        <Parking id="NSR:Parking:1001" version="2">
           <Name lang="nor">Innfartsparkering Oslo S</Name>
           <Centroid>
             <Location>

@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<PublicationDelivery xmlns="http://www.netex.org.uk/netex" version="2.0">
+  <PublicationTimestamp>2026-04-08T12:00:00Z</PublicationTimestamp>
+  <ParticipantRef>EuPro</ParticipantRef>
+  <dataObjects>
+    <TimetableFrame id="ERP:TimetableFrame:MANDATORY" version="1">
+      <vehicleJourneys>
+        <ServiceJourney id="ERP:ServiceJourney:FSP1" version="1">
+          <JourneyPatternRef ref="ERP:JourneyPattern:1"/>
+          <passingTimes>
+            <TimetabledPassingTime id="ERP:TimetabledPassingTime:FSP1" version="1">
+              <StopPointInJourneyPatternRef ref="ERP:StopPointInJourneyPattern:1"/>
+              <DepartureTime>08:00:00</DepartureTime>
+            </TimetabledPassingTime>
+          </passingTimes>
+          <FlexibleServiceProperties id="ERP:FlexibleServiceProperties:1" version="1"/>
+        </ServiceJourney>
+      </vehicleJourneys>
+    </TimetableFrame>
+    <TimetableFrame id="ERP:TimetableFrame:OPTIONAL" version="1">
+      <vehicleJourneys>
+        <ServiceJourney id="ERP:ServiceJourney:FSP1" version="2">
+          <JourneyPatternRef ref="ERP:JourneyPattern:1"/>
+          <passingTimes>
+            <TimetabledPassingTime id="ERP:TimetabledPassingTime:FSP2" version="1">
+              <StopPointInJourneyPatternRef ref="ERP:StopPointInJourneyPattern:1"/>
+              <DepartureTime>08:00:00</DepartureTime>
+            </TimetabledPassingTime>
+          </passingTimes>
+          <FlexibleServiceProperties id="ERP:FlexibleServiceProperties:1" version="2"/>
+        </ServiceJourney>
+      </vehicleJourneys>
+    </TimetableFrame>
+  </dataObjects>
+</PublicationDelivery>

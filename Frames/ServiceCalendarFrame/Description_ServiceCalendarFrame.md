@@ -1,4 +1,6 @@
-# ServiceCalendarFrame
+﻿# ServiceCalendarFrame
+
+> *→ [Glossary definition](../../Guides/Glossary/Glossary.md#servicecalendarframe)*
 
 ## 1. Purpose
 

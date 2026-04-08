@@ -1,4 +1,6 @@
-# SalesTransactionFrame
+﻿# SalesTransactionFrame
+
+> *→ [Glossary definition](../../Guides/Glossary/Glossary.md#salestransactionframe)*
 
 ## 1. Purpose
 

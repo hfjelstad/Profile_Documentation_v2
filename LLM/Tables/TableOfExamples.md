@@ -12,6 +12,8 @@ Complete index of all XML examples in the repository.
 - [Example_VehicleScheduling.xml](../../Guides/VehicleScheduling/Example_VehicleScheduling.xml) – Blocks, VehicleType, Vehicle, and fleet assignment
 - [Example_Accessibility.xml](../../Guides/Accessibility/Example_Accessibility.xml) – AccessibilityAssessment, equipment, and indoor navigation
 - [Example_FareModelling.xml](../../Guides/FareModelling/Example_FareModelling.xml) – Products, zones, tariffs, and sales offer packages
+- [Example_ExtendedSales_and_DeviationHandling.xml](../../Guides/ExtendedSales_and_DeviationHandling/Example_ExtendedSales_and_DeviationHandling.xml) – 3-day track closure with cancelled originals and replacement bus services
+- [Example_Calendar.xml](../../Guides/Calendar/Example_Calendar.xml) – DayType patterns, OperatingPeriod, DayTypeAssignment with holiday exceptions, and OperatingDay for dated journeys
 
 ## Frames
 
@@ -86,6 +88,13 @@ Complete index of all XML examples in the repository.
 </details>
 
 <details open>
+<summary>DayTypeAssignment</summary>
+
+- [Example_DayTypeAssignment.xml](../../Objects/DayTypeAssignment/Example_DayTypeAssignment.xml) – Baseline assignment with holiday exception
+
+</details>
+
+<details open>
 <summary>DestinationDisplay</summary>
 
 - [Example_DestinationDisplay_MIN.xml](../../Objects/DestinationDisplay/Example_DestinationDisplay_MIN.xml) – Minimum profile example
@@ -146,9 +155,23 @@ Complete index of all XML examples in the repository.
 </details>
 
 <details open>
+<summary>LinkSequenceProjection</summary>
+
+- [Example_LinkSequenceProjection.xml](../../Objects/LinkSequenceProjection/Example_LinkSequenceProjection.xml) – ServiceLink with GML LineString projection
+
+</details>
+
+<details open>
 <summary>Notice</summary>
 
 - [Example_Notice_NP.xml](../../Objects/Notice/Example_Notice_NP.xml) – Nordic Profile example
+
+</details>
+
+<details open>
+<summary>OperatingDay</summary>
+
+- [Example_OperatingDay.xml](../../Objects/OperatingDay/Example_OperatingDay.xml) – Single operating day with CalendarDate
 
 </details>
 
@@ -180,6 +203,13 @@ Complete index of all XML examples in the repository.
 
 - [Example_PassengerStopAssignment_MIN.xml](../../Objects/PassengerStopAssignment/Example_PassengerStopAssignment_MIN.xml) – Minimum profile example
 - [Example_PassengerStopAssignment_NP.xml](../../Objects/PassengerStopAssignment/Example_PassengerStopAssignment_NP.xml) – Nordic Profile example
+
+</details>
+
+<details open>
+<summary>placeEquipments</summary>
+
+- [Example_placeEquipments.xml](../../Objects/placeEquipments/Example_placeEquipments.xml) – StopPlace with shelter and waiting room equipment
 
 </details>
 

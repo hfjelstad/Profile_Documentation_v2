@@ -104,10 +104,13 @@ Include which frames it depends on and which frames depend on it.
 
 **Optional.** Any additional guidance on how to use the frame correctly.
 Include only when there are non-obvious constraints, ordering requirements, or common mistakes.
+Use `> [!NOTE]` or `> [!WARNING]` callouts for important points.
 
 **Example:**
-> - The ServiceFrame must always appear after ResourceFrame in the CompositeFrame when Operators are referenced by Lines.
-> - A single delivery may contain multiple ServiceFrames if they cover different codespaces.
+```markdown
+> [!NOTE]
+> The ServiceFrame must always appear after ResourceFrame in the CompositeFrame when Operators are referenced by Lines.
+```
 
 ---
 

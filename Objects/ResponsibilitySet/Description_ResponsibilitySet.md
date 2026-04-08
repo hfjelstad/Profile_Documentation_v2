@@ -1,5 +1,7 @@
 # ResponsibilitySet
 
+> *→ [Glossary definition](../../Guides/Glossary/Glossary.md#responsibilityset)*
+
 ## 1. Purpose
 
 A **ResponsibilitySet** defines the set of roles and organisations responsible for managing data, operations, or contractual obligations within a defined scope. It associates responsibility roles with specific organisations (typically an Authority or Operator) and optionally links them to a governing Contract. ResponsibilitySets are defined in the ResourceFrame and referenced across the dataset to express governance and accountability.
@@ -49,8 +51,9 @@ A **ResponsibilitySet** defines the set of roles and organisations responsible f
 
 ### 5c. Common Pitfalls
 
-- **Empty ResponsibilitySet**: A set without any ResponsibilityRoleAssignment entries provides no governance value and should be removed.
-- **Missing organisation reference**: A role assignment without a ResponsibleOrganisationRef leaves accountability undefined.
+> [!WARNING]
+> - **Empty ResponsibilitySet**: A set without any ResponsibilityRoleAssignment entries provides no governance value and should be removed.
+> - **Missing organisation reference**: A role assignment without a ResponsibleOrganisationRef leaves accountability undefined.
 
 ## 6. Additional Information
 

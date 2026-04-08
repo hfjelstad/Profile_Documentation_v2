@@ -1,5 +1,7 @@
 # GroupOfLines
 
+> *→ [Glossary definition](../../Guides/Glossary/Glossary.md#groupoflines)*
+
 ## 1. Purpose
 
 A **GroupOfLines** organizes multiple Line objects into a logical set within a ServiceFrame for common management, branding, distribution, or filtering. It does not create new Lines — it only references existing ones, providing a grouping mechanism for administrative and presentation purposes.
@@ -44,8 +46,9 @@ A **GroupOfLines** organizes multiple Line objects into a logical set within a S
 
 ### 5c. Common Pitfalls
 
-- **Creating Lines through GroupOfLines**: GroupOfLines only references existing Lines; it does not define them. Lines must be created separately in the ServiceFrame.
-- **Empty members container**: A GroupOfLines without any LineRef entries serves no purpose and should be removed.
+> [!WARNING]
+> - **Creating Lines through GroupOfLines**: GroupOfLines only references existing Lines; it does not define them. Lines must be created separately in the ServiceFrame.
+> - **Empty members container**: A GroupOfLines without any LineRef entries serves no purpose and should be removed.
 
 ## 6. Additional Information
 

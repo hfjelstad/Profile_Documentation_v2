@@ -1,5 +1,7 @@
 # PassengerStopAssignment
 
+> *→ [Glossary definition](../../Guides/Glossary/Glossary.md#passengerstopassignment)*
+
 ## 1. Purpose
 
 A **PassengerStopAssignment** links a logical ScheduledStopPoint to a physical Quay within a StopPlace, bridging the gap between timetable planning and physical infrastructure. It determines which platform passengers should use for a given stop, and can be overridden for specific dated journeys to handle operational changes such as platform reassignments.
@@ -11,6 +13,7 @@ A **PassengerStopAssignment** links a logical ScheduledStopPoint to a physical Q
   ├─ 📄 @id (1..1)
   ├─ 📄 @version (1..1)
   ├─ 📄 @order (1..1)
+  ├─ 📄 ValidBetween (0..1)
   ├─ 🔗 ScheduledStopPointRef/@ref (1..1)
   ├─ 🔗 StopPlaceRef/@ref (0..1)
   └─ 🔗 QuayRef/@ref (1..1)
@@ -43,8 +46,9 @@ A **PassengerStopAssignment** links a logical ScheduledStopPoint to a physical Q
 
 ### 5c. Common Pitfalls
 
-- **Missing assignments**: A ScheduledStopPoint without a PassengerStopAssignment cannot be resolved to a physical platform, breaking journey planning and passenger information.
-- **QuayRef not belonging to StopPlaceRef**: If both are specified, the Quay must be contained within the referenced StopPlace; mismatches create data integrity errors.
+> [!WARNING]
+> - **Missing assignments**: A ScheduledStopPoint without a PassengerStopAssignment cannot be resolved to a physical platform, breaking journey planning and passenger information.
+> - **QuayRef not belonging to StopPlaceRef**: If both are specified, the Quay must be contained within the referenced StopPlace; mismatches create data integrity errors.
 
 ## 6. Additional Information
 

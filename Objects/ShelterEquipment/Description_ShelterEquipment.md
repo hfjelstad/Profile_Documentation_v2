@@ -1,5 +1,7 @@
 # ShelterEquipment
 
+> *→ [Glossary definition](../../Guides/Glossary/Glossary.md#shelterequipment)*
+
 ## 1. Purpose
 
 The **ShelterEquipment** describes weather shelter facilities available at a stop place or quay. It communicates the presence of shelters that protect passengers from rain, wind, and sun while waiting for public transport.
@@ -41,8 +43,9 @@ The **ShelterEquipment** describes weather shelter facilities available at a sto
 
 ### 5c. Common Pitfalls
 
-- **Confusing with WaitingRoomEquipment**: ShelterEquipment is for open or semi-enclosed shelters; WaitingRoomEquipment is for enclosed indoor waiting rooms.
-- **Omitting validity periods for temporary shelters**: Use ValidBetween for shelters that are seasonal or under maintenance.
+> [!WARNING]
+> - **Confusing with WaitingRoomEquipment**: ShelterEquipment is for open or semi-enclosed shelters; WaitingRoomEquipment is for enclosed indoor waiting rooms.
+> - **Omitting validity periods for temporary shelters**: Use ValidBetween for shelters that are seasonal or under maintenance.
 
 ## 6. Additional Information
 

@@ -1,4 +1,6 @@
-# CompositeFrame
+﻿# CompositeFrame
+
+> *→ [Glossary definition](../../Guides/Glossary/Glossary.md#compositeframe)*
 
 ## 1. Purpose
 

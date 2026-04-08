@@ -1,5 +1,7 @@
 # Contract
 
+> *→ [Glossary definition](../../Guides/Glossary/Glossary.md#contract)*
+
 ## 1. Purpose
 
 A **Contract** defines the legal or commercial agreement that governs responsibilities, rights, and obligations between parties — typically an Authority (as contractee) and an Operator (as contractor) — for providing public transport services. It captures the form, legal status, and governing law of the agreement, and serves as a governance anchor referenced by ResponsibilitySet elements.
@@ -48,8 +50,9 @@ A **Contract** defines the legal or commercial agreement that governs responsibi
 
 ### 5c. Common Pitfalls
 
-- **Contract vs. FareContract confusion**: Contract is an administrative/legal agreement between organisations; FareContract is a customer-facing agreement for the right to travel. They serve different purposes.
-- **Missing organisation references**: A Contract without any contractees or contractors provides no governance value.
+> [!WARNING]
+> - **Contract vs. FareContract confusion**: Contract is an administrative/legal agreement between organisations; FareContract is a customer-facing agreement for the right to travel. They serve different purposes.
+> - **Missing organisation references**: A Contract without any contractees or contractors provides no governance value.
 
 ## 6. Additional Information
 

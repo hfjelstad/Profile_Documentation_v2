@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<PublicationDelivery xmlns="http://www.netex.org.uk/netex" version="2.0">
+  <PublicationTimestamp>2026-04-08T12:00:00Z</PublicationTimestamp>
+  <ParticipantRef>EuPro</ParticipantRef>
+  <dataObjects>
+    <ServiceFrame id="ERP:ServiceFrame:MANDATORY" version="1">
+      <destinationDisplays>
+        <DestinationDisplay id="ERP:DestinationDisplay:1" version="1">
+          <FrontText>Oslo S</FrontText>
+        </DestinationDisplay>
+      </destinationDisplays>
+    </ServiceFrame>
+    <ServiceFrame id="ERP:ServiceFrame:OPTIONAL" version="1">
+      <destinationDisplays>
+        <DestinationDisplay id="ERP:DestinationDisplay:1" version="2">
+          <FrontText>Oslo S</FrontText>
+        </DestinationDisplay>
+      </destinationDisplays>
+    </ServiceFrame>
+  </dataObjects>
+</PublicationDelivery>

@@ -1,17 +1,21 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <PublicationDelivery xmlns="http://www.netex.org.uk/netex" version="2.0">
   <PublicationTimestamp>2026-03-17T12:00:00Z</PublicationTimestamp>
   <ParticipantRef>EuPro</ParticipantRef>
   <dataObjects>
-    <ServiceFrame id="NSR:ServiceFrame:ssp:1" version="1">
+    <ServiceFrame id="NP:ServiceFrame:MANDATORY" version="1">
       <scheduledStopPoints>
-        <ScheduledStopPoint id="NSR:ScheduledStopPoint:S59977" version="1">
+        <ScheduledStopPoint id="NSR:ScheduledStopPoint:S59977" version="1"/>
+      </scheduledStopPoints>
+    </ServiceFrame>
+    <ServiceFrame id="NP:ServiceFrame:OPTIONAL" version="1">
+      <scheduledStopPoints>
+        <ScheduledStopPoint id="NSR:ScheduledStopPoint:S59977" version="2">
           <ValidBetween>
             <FromDate>2026-01-15T10:22:00.000</FromDate>
           </ValidBetween>
           <Name>Oslo S</Name>
         </ScheduledStopPoint>
-        <ScheduledStopPoint id="NP:ScheduledStopPoint:9060006_1" version="1"/>
       </scheduledStopPoints>
     </ServiceFrame>
   </dataObjects>

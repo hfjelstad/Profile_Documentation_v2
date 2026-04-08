@@ -142,13 +142,16 @@ List critical checks or cardinality rules that must be validated.
 
 #### 5c. Common Pitfalls / Anti-Patterns (optional)
 
-Describe common mistakes and how to avoid them.
+Describe common mistakes and how to avoid them. Use a `> [!WARNING]` callout with bullet points:
 
 **Example:**
-> - **Mistake:** Confusing DatedServiceJourney with ServiceJourney.  
->   **Correction:** ServiceJourney is a reusable template; DatedServiceJourney is a concrete instance on a specific date.
-> - **Mistake:** Assuming DatedServiceJourney defines stop times.  
->   **Correction:** Stop times come from the ServiceJourney's passingTimes, which reference the JourneyPattern's stops.
+```markdown
+> [!WARNING]
+> - **Confusing DatedServiceJourney with ServiceJourney**: ServiceJourney is a reusable template; DatedServiceJourney is a concrete instance on a specific date.
+> - **Assuming DatedServiceJourney defines stop times**: Stop times come from the ServiceJourney's passingTimes, which reference the JourneyPattern's stops.
+```
+
+When there is only a single pitfall, still wrap it in `> [!WARNING]` with a bullet point.
 
 #### 5d. Profile-Specific Notes (optional)
 

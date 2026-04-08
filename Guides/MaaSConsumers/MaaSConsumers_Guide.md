@@ -27,7 +27,8 @@ Producers (operators, authorities) create NeTEx data following profile rules. Co
 | Versioning | Publishes new versions | Detects and processes changes |
 | Tooling | XML editors, validators | Parsers, mappers, data pipelines |
 
-> 💡 **Tip:** Even as a consumer, understanding the producer's constraints helps you anticipate data quality. Read the [Get Started](../GetStarted/GetStarted_Guide.md) guide to understand the structural rules producers follow.
+> [!TIP]
+> Even as a consumer, understanding the producer's constraints helps you anticipate data quality. Read the [Get Started](../GetStarted/GetStarted_Guide.md) guide to understand the structural rules producers follow.
 
 ---
 
@@ -52,7 +53,8 @@ PublicationDelivery
 
 Not every delivery contains all frames. A stop-only delivery may contain just SiteFrame. A timetable update may skip SiteFrame entirely.
 
-> ⚠️ **Note:** Never assume a frame is present. Your parser should handle deliveries with any subset of frames.
+> [!WARNING]
+> Never assume a frame is present. Your parser should handle deliveries with any subset of frames.
 
 See the [Get Started](../GetStarted/GetStarted_Guide.md) guide for a full explanation of the document anatomy.
 
@@ -97,7 +99,8 @@ XML document
 | Best for | Full dataset imports | Targeted extraction (e.g. only stops) |
 | Risk | Misses objects in unexpected frames | May find duplicate objects across frames |
 
-> 💡 **Tip:** Frame-first is the recommended approach for full dataset consumption. It respects NeTEx's domain architecture and makes reference resolution predictable. See [Separation of Concerns](../SeparationOfConcerns/SeparationOfConcerns.md) for why frames are organized this way.
+> [!TIP]
+> Frame-first is the recommended approach for full dataset consumption. It respects NeTEx's domain architecture and makes reference resolution predictable. See [Separation of Concerns](../SeparationOfConcerns/SeparationOfConcerns.md) for why frames are organized this way.
 
 ---
 
@@ -135,7 +138,8 @@ What this means for consumers:
 - Design your data model with nullable fields for anything not universally mandatory
 - If you ingest from multiple sources, expect different levels of completeness
 
-> 💡 **Tip:** Check which profile a delivery was produced under. The `ParticipantRef` and codespace conventions can give you hints. See [Decision Makers](../DecisionMakers/DecisionMakers_Guide.md) for a profile overview.
+> [!TIP]
+> Check which profile a delivery was produced under. The `ParticipantRef` and codespace conventions can give you hints. See [Decision Makers](../DecisionMakers/DecisionMakers_Guide.md) for a profile overview.
 
 ---
 
@@ -162,13 +166,18 @@ Key decisions you will face:
 
 3. **Merge or keep profiles separate?** If you ingest from multiple sources using different profiles, decide whether to normalize to a common model or preserve source-specific fields.
 
-> ⚠️ **Note:** Do not flatten the hierarchy prematurely. The separation exists for good reasons (see [Separation of Concerns](../SeparationOfConcerns/SeparationOfConcerns.md)). If you merge Line and Route at import, you lose the ability to model routes that share the same line.
+> [!WARNING]
+> Do not flatten the hierarchy prematurely. The separation exists for good reasons (see [Separation of Concerns](../SeparationOfConcerns/SeparationOfConcerns.md)). If you merge Line and Route at import, you lose the ability to model routes that share the same line.
 
 ---
 
 ## 8. 📡 Relationship to SIRI for Real-Time
 
-NeTEx provides **planned data** (what should happen). SIRI provides **real-time data** (what is actually happening). Both are built on Transmodel, so their references are compatible:
+NeTEx provides **planned data** (what should happen). SIRI provides **real-time data** (what is actually happening). Both are built on Transmodel, so their references are compatible.
+
+A journey planner like OpenTripPlanner shows how these standards come together in practice:
+
+![NeTEx, SIRI, GTFS, GBFS and OSM flowing into OpenTripPlanner](../../assets/images/OTP_Ecosystem.png)
 
 ```text
 NeTEx (planned)                      SIRI (real-time)

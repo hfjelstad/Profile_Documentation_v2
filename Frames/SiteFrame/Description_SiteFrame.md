@@ -1,4 +1,6 @@
-# SiteFrame
+﻿# SiteFrame
+
+> *→ [Glossary definition](../../Guides/Glossary/Glossary.md#siteframe)*
 
 ## 1. Purpose
 

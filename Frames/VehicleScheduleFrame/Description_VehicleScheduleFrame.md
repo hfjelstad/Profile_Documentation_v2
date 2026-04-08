@@ -1,4 +1,6 @@
-# VehicleScheduleFrame
+﻿# VehicleScheduleFrame
+
+> *→ [Glossary definition](../../Guides/Glossary/Glossary.md#vehiclescheduleframe)*
 
 ## 1. Purpose
 

@@ -164,15 +164,11 @@ Two different mechanisms control *when* journeys run:
 | **Pattern-based** | DayType | ServiceJourney | "Weekdays", "Saturdays" |
 | **Date-based** | OperatingDay | DatedServiceJourney | "2026-03-18" |
 
-```text
-DayType "Weekdays"  ──>  DayTypeAssignment  ──>  Calendar dates
-                         (maps abstract to concrete)
+**DayType** defines a recurring pattern (e.g., "Weekdays"). It needs a **DayTypeAssignment** to bind it to actual calendar dates via an **OperatingPeriod**. Without this binding, ServiceJourneys referencing the DayType will have no operating days.
 
-OperatingDay "2026-03-18"  ──>  DatedServiceJourney
-                                (concrete instance)
-```
+**OperatingDay** defines a single calendar date. It is referenced by **DatedServiceJourney** for date-specific operations: cancellations, replacements, reinforcements, and block assignments.
 
-> ⚠️ **Note:** DayType alone does not specify dates. It needs a **DayTypeAssignment** to be mapped to concrete calendar dates or OperatingPeriods. Without this mapping, ServiceJourneys referencing the DayType have no operating days.
+> 📖 **Full coverage:** The [Calendar Guide](../Calendar/Calendar_Guide.md) covers all four calendar objects in depth — including the `isAvailable=false` exception pattern for holidays, a decision flowchart, and worked XML examples.
 
 ---
 
@@ -215,6 +211,7 @@ OperatingDay "2026-03-18"  ──>  DatedServiceJourney
 ## 8. 🔗 Related Resources
 
 ### Guides
+- [Calendar](../Calendar/Calendar_Guide.md) -- DayType, OperatingPeriod, DayTypeAssignment, OperatingDay — when services operate
 - [Organisational Governance](../OrganisationalGovernance/OrganisationalGovernance_Guide.md) -- Authority and Operator (required before defining Lines)
 - [Stop Infrastructure](../StopInfrastructure/StopInfrastructure_Guide.md) -- ScheduledStopPoint and physical stop mapping
 - [Interchange](../InterchangeOnly/Interchange_Guide.md) -- Planned transfers between ServiceJourneys

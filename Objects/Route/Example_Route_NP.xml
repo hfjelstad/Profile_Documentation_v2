@@ -3,18 +3,34 @@
   <PublicationTimestamp>2026-03-17T12:00:00Z</PublicationTimestamp>
   <ParticipantRef>EuPro</ParticipantRef>
   <dataObjects>
-    <ServiceFrame id="NP:ServiceFrame:routes:1" version="1">
+    <ServiceFrame id="NP:ServiceFrame:MANDATORY" version="1">
       <routes>
         <Route id="NP:Route:49747_1" version="1">
-          <Name>Arendal bussterminal -&gt; Kristiansand rutebilstasjon</Name>
-          <ShortName>Arendal -&gt; Kristiansand</ShortName>
+          <Name>Arendal bussterminal -> Kristiansand rutebilstasjon</Name>
           <LineRef ref="NP:Line:100"/>
-          <DirectionType>outbound</DirectionType>
           <pointsInSequence>
             <PointOnRoute order="1" version="1" id="NP:PointOnRoute:3555907">
               <RoutePointRef ref="NP:RoutePoint:9060006_1"/>
             </PointOnRoute>
             <PointOnRoute order="2" version="1" id="NP:PointOnRoute:3555908">
+              <RoutePointRef ref="NP:RoutePoint:10013457_1"/>
+            </PointOnRoute>
+          </pointsInSequence>
+        </Route>
+      </routes>
+    </ServiceFrame>
+    <ServiceFrame id="NP:ServiceFrame:OPTIONAL" version="1">
+      <routes>
+        <Route id="NP:Route:49747_1" version="2">
+          <Name>Arendal bussterminal -> Kristiansand rutebilstasjon</Name>
+          <ShortName>Arendal -> Kristiansand</ShortName>
+          <LineRef ref="NP:Line:100"/>
+          <DirectionType>outbound</DirectionType>
+          <pointsInSequence>
+            <PointOnRoute order="1" version="2" id="NP:PointOnRoute:3555907">
+              <RoutePointRef ref="NP:RoutePoint:9060006_1"/>
+            </PointOnRoute>
+            <PointOnRoute order="2" version="2" id="NP:PointOnRoute:3555908">
               <RoutePointRef ref="NP:RoutePoint:10013457_1"/>
             </PointOnRoute>
           </pointsInSequence>

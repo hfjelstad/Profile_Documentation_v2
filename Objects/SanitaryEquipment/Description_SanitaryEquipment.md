@@ -1,5 +1,7 @@
 # SanitaryEquipment
 
+> *→ [Glossary definition](../../Guides/Glossary/Glossary.md#sanitaryequipment)*
+
 ## 1. Purpose
 
 The **SanitaryEquipment** describes sanitary facilities (toilets, washrooms) available at a stop place, station, or onboard a vehicle. It is used to communicate the presence and validity of sanitary facilities to passengers and journey planners.
@@ -42,8 +44,9 @@ The **SanitaryEquipment** describes sanitary facilities (toilets, washrooms) ava
 
 ### 5c. Common Pitfalls
 
-- **Omitting validity periods**: If sanitary facilities are temporarily unavailable (e.g., during renovation), use ValidBetween rather than removing the entry.
-- **Confusing with other equipment types**: SanitaryEquipment is specifically for toilet/washroom facilities; use ShelterEquipment, WaitingRoomEquipment, or TicketingEquipment for other facility types.
+> [!WARNING]
+> - **Omitting validity periods**: If sanitary facilities are temporarily unavailable (e.g., during renovation), use ValidBetween rather than removing the entry.
+> - **Confusing with other equipment types**: SanitaryEquipment is specifically for toilet/washroom facilities; use ShelterEquipment, WaitingRoomEquipment, or TicketingEquipment for other facility types.
 
 ## 6. Additional Information
 

@@ -1,5 +1,7 @@
 # TrainBlock
 
+> *→ [Glossary definition](../../Guides/Glossary/Glossary.md#trainblock)*
+
 ## 1. Purpose
 
 A **TrainBlock** is a rail-specific specialisation of Block that represents an operational grouping for a single train on a given operating day. It may consist of one or more DatedServiceJourneys that are operated as a continuous run by the same physical train. DatedServiceJourneys reference a TrainBlock via BlockRef to indicate vehicle continuity across consecutive journeys.
@@ -12,6 +14,7 @@ A **TrainBlock** is a rail-specific specialisation of Block that represents an o
   ├─ 📄 @version (1..1)
   ├─ 📄 Name (0..1)
   ├─ 📄 Description (0..1)
+  ├─ 🔗 OperatorRef/@ref (0..1)
   └─ 📁 journeys (0..1)
 ```
 
@@ -41,9 +44,10 @@ A **TrainBlock** is a rail-specific specialisation of Block that represents an o
 
 ### 5c. Common Pitfalls
 
-- **TrainBlock vs. Duty confusion**: TrainBlock groups journeys by vehicle (operational); Duty groups by crew assignment (roster). They are separate concepts.
-- **Multi-day blocks**: Use distinct TrainBlock instances per operating day; avoid mixing dates within a single block.
-- **Creating too many blocks**: Reuse the same TrainBlock for contiguous runs of the same train on the same day.
+> [!WARNING]
+> - **TrainBlock vs. Duty confusion**: TrainBlock groups journeys by vehicle (operational); Duty groups by crew assignment (roster). They are separate concepts.
+> - **Multi-day blocks**: Use distinct TrainBlock instances per operating day; avoid mixing dates within a single block.
+> - **Creating too many blocks**: Reuse the same TrainBlock for contiguous runs of the same train on the same day.
 
 ## 6. Additional Information
 

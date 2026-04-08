@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<PublicationDelivery xmlns="http://www.netex.org.uk/netex" version="2.0">
+  <PublicationTimestamp>2026-04-08T12:00:00Z</PublicationTimestamp>
+  <ParticipantRef>EuPro</ParticipantRef>
+  <dataObjects>
+    <TimetableFrame id="ERP:TimetableFrame:MANDATORY" version="1">
+      <journeyInterchanges>
+        <ServiceJourneyInterchange id="ERP:ServiceJourneyInterchange:1" version="1">
+          <FromJourneyRef ref="ERP:ServiceJourney:1"/>
+          <ToJourneyRef ref="ERP:ServiceJourney:2"/>
+        </ServiceJourneyInterchange>
+      </journeyInterchanges>
+    </TimetableFrame>
+    <TimetableFrame id="ERP:TimetableFrame:OPTIONAL" version="1">
+      <journeyInterchanges>
+        <ServiceJourneyInterchange id="ERP:ServiceJourneyInterchange:1" version="2">
+          <FromJourneyRef ref="ERP:ServiceJourney:1"/>
+          <ToJourneyRef ref="ERP:ServiceJourney:2"/>
+        </ServiceJourneyInterchange>
+      </journeyInterchanges>
+    </TimetableFrame>
+  </dataObjects>
+</PublicationDelivery>

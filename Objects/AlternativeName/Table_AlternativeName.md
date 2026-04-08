@@ -11,8 +11,8 @@ AlternativeName
 
 ## Table
 
-| Element | Type | MIN | NP | Description | Path |
-|---------|------|-----|-----|-------------|------|
-| NameType | Enum |  | 0..1 | Classification of the alternative name (e.g., alias, translation, copy) | AlternativeName/NameType |
-| Name | String | 1..1 | 1..1 | The alternative name text | AlternativeName/Name |
-| QualifierName | String | 0..1 |  | Type or purpose of the alternative name (e.g., official, translation) | AlternativeName/QualifierName |
+| Element | Type | XSD | ERP | NP | Description | Path |
+|---------|------|-----|-----|-----|-------------|------|
+| NameType | Enum | 0..1 |  | 0..1 | Classification of the alternative name (e.g., alias, translation, copy) | AlternativeName/NameType |
+| Name | String | 1..1 | 1..1 | 1..1 | The alternative name text | AlternativeName/Name |
+| QualifierName | String | 0..1 | 0..1 |  | Type or purpose of the alternative name (e.g., official, translation) | AlternativeName/QualifierName |

@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<PublicationDelivery xmlns="http://www.netex.org.uk/netex" version="2.0">
+  <PublicationTimestamp>2026-04-08T12:00:00Z</PublicationTimestamp>
+  <ParticipantRef>EuPro</ParticipantRef>
+  <dataObjects>
+    <SiteFrame id="ERP:SiteFrame:MANDATORY" version="1">
+      <stopPlaces>
+        <StopPlace id="ERP:StopPlace:1" version="1">
+          <quays>
+            <Quay id="ERP:Quay:1" version="1">
+              <Name>Platform 1</Name>
+              <Centroid>
+                <Location>
+                  <Longitude>10.75</Longitude>
+                  <Latitude>59.91</Latitude>
+                </Location>
+              </Centroid>
+            </Quay>
+          </quays>
+        </StopPlace>
+      </stopPlaces>
+    </SiteFrame>
+    <SiteFrame id="ERP:SiteFrame:OPTIONAL" version="1">
+      <stopPlaces>
+        <StopPlace id="ERP:StopPlace:1" version="2">
+          <quays>
+            <Quay id="ERP:Quay:1" version="2">
+              <Name>Platform 1</Name>
+              <Description>Main boarding platform</Description>
+              <Centroid>
+                <Location>
+                  <Longitude>10.75</Longitude>
+                  <Latitude>59.91</Latitude>
+                </Location>
+              </Centroid>
+              <PublicCode>1</PublicCode>
+            </Quay>
+          </quays>
+        </StopPlace>
+      </stopPlaces>
+    </SiteFrame>
+  </dataObjects>
+</PublicationDelivery>
+

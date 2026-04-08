@@ -1,5 +1,7 @@
 # Interchange
 
+> *→ [Glossary definition](../../Guides/Glossary/Glossary.md#interchange)*
+
 ## 1. Purpose
 
 An **Interchange** (modelled as `ServiceJourneyInterchange` in XML) represents a planned transfer opportunity between two ServiceJourneys. It defines the conditions under which passengers can transfer from one service to another, including whether the connection is guaranteed, required transfer times, and whether passengers can remain seated. Interchanges support both operational coordination and passenger information.
@@ -48,9 +50,10 @@ An **Interchange** (modelled as `ServiceJourneyInterchange` in XML) represents a
 
 ### 5c. Common Pitfalls
 
-- **Confusing element name**: The XML element is `ServiceJourneyInterchange`, not `Interchange`. Using the wrong element name causes validation failures.
-- **One-directional**: Each interchange defines a transfer in one direction only (From → To). For bidirectional transfers, create two separate interchange elements.
-- **Guaranteed without MaximumWaitTime**: Marking a transfer as guaranteed without specifying MaximumWaitTime leaves operational wait limits undefined.
+> [!WARNING]
+> - **Confusing element name**: The XML element is `ServiceJourneyInterchange`, not `Interchange`. Using the wrong element name causes validation failures.
+> - **One-directional**: Each interchange defines a transfer in one direction only (From → To). For bidirectional transfers, create two separate interchange elements.
+> - **Guaranteed without MaximumWaitTime**: Marking a transfer as guaranteed without specifying MaximumWaitTime leaves operational wait limits undefined.
 
 ## 6. Additional Information
 

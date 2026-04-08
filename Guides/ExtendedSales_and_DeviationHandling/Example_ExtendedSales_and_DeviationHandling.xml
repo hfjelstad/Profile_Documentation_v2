@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Example_DeviationHandling.xml
+  Scenario: 3-day track closure with cancellations and replacement bus services.
+
+  OperatingDays:  2026-06-04, 2026-06-05, 2026-06-06
+  Planned SJ:     ERP:ServiceJourney:100_0730 (train, Drammen-Asker-Oslo)
+  Replacement SJ: ERP:ServiceJourney:BUS_100_0745 (bus, same corridor)
+
+  For each closure day:
+    - The original DatedServiceJourney is marked as replaced (ServiceAlteration=replaced)
+    - A replacing DatedServiceJourney is created with replacedJourneys referencing the original
+      (no ServiceAlteration needed on the replacing journey)
+-->
+<PublicationDelivery xmlns="http://www.netex.org.uk/netex"
+                     xmlns:gml="http://www.opengis.net/gml/3.2"
+                     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                     xmlns:siri="http://www.siri.org.uk/siri"
+                     version="1.0">
+    <PublicationTimestamp>2026-05-20T08:00:00Z</PublicationTimestamp>
+    <ParticipantRef>ERP:publisher:1</ParticipantRef>
+    <dataObjects>
+        <CompositeFrame id="ERP:CompositeFrame:DeviationHandling" version="1">
+            <frames>
+
+                <!-- Calendar: specific dates for the track closure -->
+                <ServiceCalendarFrame id="ERP:ServiceCalendarFrame:Deviation" version="1">
+                    <operatingDays>
+                        <OperatingDay id="ERP:OperatingDay:2026-06-04" version="1">
+                            <CalendarDate>2026-06-04</CalendarDate>
+                        </OperatingDay>
+                        <OperatingDay id="ERP:OperatingDay:2026-06-05" version="1">
+                            <CalendarDate>2026-06-05</CalendarDate>
+                        </OperatingDay>
+                        <OperatingDay id="ERP:OperatingDay:2026-06-06" version="1">
+                            <CalendarDate>2026-06-06</CalendarDate>
+                        </OperatingDay>
+                    </operatingDays>
+                </ServiceCalendarFrame>
+
+                <!-- Timetable: cancelled originals + replacement buses -->
+                <TimetableFrame id="ERP:TimetableFrame:Deviation" version="1">
+                    <vehicleJourneys>
+
+                        <!-- === 2026-06-04 === -->
+
+                        <!-- Planned train cancelled due to track work -->
+                        <DatedServiceJourney id="ERP:DatedServiceJourney:100_0730_20260604" version="2">
+                            <ServiceAlteration>replaced</ServiceAlteration>
+                            <ServiceJourneyRef ref="ERP:ServiceJourney:100_0730"/>
+                            <OperatingDayRef ref="ERP:OperatingDay:2026-06-04"/>
+                        </DatedServiceJourney>
+
+                        <!-- Replacement bus for the cancelled train -->
+                        <DatedServiceJourney id="ERP:DatedServiceJourney:BUS_100_0745_20260604" version="1">
+                            <ServiceJourneyRef ref="ERP:ServiceJourney:BUS_100_0745"/>
+                            <replacedJourneys>
+                                <DatedVehicleJourneyRef ref="ERP:DatedServiceJourney:100_0730_20260604"/>
+                            </replacedJourneys>
+                            <OperatingDayRef ref="ERP:OperatingDay:2026-06-04"/>
+                        </DatedServiceJourney>
+
+                        <!-- === 2026-06-05 === -->
+
+                        <DatedServiceJourney id="ERP:DatedServiceJourney:100_0730_20260605" version="2">
+                            <ServiceAlteration>replaced</ServiceAlteration>
+                            <ServiceJourneyRef ref="ERP:ServiceJourney:100_0730"/>
+                            <OperatingDayRef ref="ERP:OperatingDay:2026-06-05"/>
+                        </DatedServiceJourney>
+
+                        <DatedServiceJourney id="ERP:DatedServiceJourney:BUS_100_0745_20260605" version="1">
+                            <ServiceJourneyRef ref="ERP:ServiceJourney:BUS_100_0745"/>
+                            <replacedJourneys>
+                                <DatedVehicleJourneyRef ref="ERP:DatedServiceJourney:100_0730_20260605"/>
+                            </replacedJourneys>
+                            <OperatingDayRef ref="ERP:OperatingDay:2026-06-05"/>
+                        </DatedServiceJourney>
+
+                        <!-- === 2026-06-06 === -->
+
+                        <DatedServiceJourney id="ERP:DatedServiceJourney:100_0730_20260606" version="2">
+                            <ServiceAlteration>replaced</ServiceAlteration>
+                            <ServiceJourneyRef ref="ERP:ServiceJourney:100_0730"/>
+                            <OperatingDayRef ref="ERP:OperatingDay:2026-06-06"/>
+                        </DatedServiceJourney>
+
+                        <DatedServiceJourney id="ERP:DatedServiceJourney:BUS_100_0745_20260606" version="1">
+                            <ServiceJourneyRef ref="ERP:ServiceJourney:BUS_100_0745"/>
+                            <replacedJourneys>
+                                <DatedVehicleJourneyRef ref="ERP:DatedServiceJourney:100_0730_20260606"/>
+                            </replacedJourneys>
+                            <OperatingDayRef ref="ERP:OperatingDay:2026-06-06"/>
+                        </DatedServiceJourney>
+
+                    </vehicleJourneys>
+                </TimetableFrame>
+
+            </frames>
+        </CompositeFrame>
+    </dataObjects>
+</PublicationDelivery>

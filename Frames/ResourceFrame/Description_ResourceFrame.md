@@ -1,4 +1,6 @@
-# ResourceFrame
+﻿# ResourceFrame
+
+> *→ [Glossary definition](../../Guides/Glossary/Glossary.md#resourceframe)*
 
 ## 1. Purpose
 
