@@ -13,6 +13,7 @@
   - [Interchange](/Guides/InterchangeOnly/Interchange_Guide.md)
   - [Passenger Information](/Guides/PassengerInformation/PassengerInformation_Guide.md)
   - [Vehicle Scheduling](/Guides/VehicleScheduling/VehicleScheduling_Guide.md)
+  - [Seating Reservation & Booking](/Guides/SeatingReservation/SeatingReservation_Guide.md)
   - [Network Timetable](/Guides/NetworkTimetable/NetworkTimetable_Guide.md)
   - [Network Timetable (split)](/Guides/NetworkTimetable/netex-guide-split.md)
   - [Separation of Concerns](/Guides/SeparationOfConcerns/SeparationOfConcerns.md)

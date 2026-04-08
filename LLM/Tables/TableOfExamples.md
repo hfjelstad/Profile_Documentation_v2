@@ -14,6 +14,7 @@ Complete index of all XML examples in the repository.
 - [Example_FareModelling.xml](../../Guides/FareModelling/Example_FareModelling.xml) – Products, zones, tariffs, and sales offer packages
 - [Example_ExtendedSales_and_DeviationHandling.xml](../../Guides/ExtendedSales_and_DeviationHandling/Example_ExtendedSales_and_DeviationHandling.xml) – 3-day track closure with cancelled originals and replacement bus services
 - [Example_Calendar.xml](../../Guides/Calendar/Example_Calendar.xml) – DayType patterns, OperatingPeriod, DayTypeAssignment with holiday exceptions, and OperatingDay for dated journeys
+- [Example_SeatingReservation_NP.xml](../../Guides/SeatingReservation/Example_SeatingReservation_NP.xml) – Reservation policies (recommended/compulsory), accommodation types (sleeper, family), and train formations for day and night trains
 
 ## Frames
 

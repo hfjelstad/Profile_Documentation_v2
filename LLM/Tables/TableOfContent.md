@@ -14,6 +14,7 @@ How-to guides, conceptual overviews, and reference material:
 - [StopInfrastructure](../../Guides/StopInfrastructure/StopInfrastructure_Guide.md) – Logical stops, physical platforms, and the PassengerStopAssignment bridge
 - [JourneyLifecycle](../../Guides/JourneyLifecycle/JourneyLifecycle_Guide.md) – Line → Route → JourneyPattern → ServiceJourney → DatedServiceJourney
 - [VehicleScheduling](../../Guides/VehicleScheduling/VehicleScheduling_Guide.md) – Blocks, VehicleType, Vehicle, and fleet assignment
+- [SeatingReservation](../../Guides/SeatingReservation/SeatingReservation_Guide.md) – Reservation policies, accommodation types, and train formations for booking
 - [PassengerInformation](../../Guides/PassengerInformation/PassengerInformation_Guide.md) – DestinationDisplay, Notice, and FlexibleServiceProperties
 - [Accessibility](../../Guides/Accessibility/Accessibility_Guide.md) – AccessibilityAssessment, equipment, and indoor navigation paths
 - [FareModelling](../../Guides/FareModelling/FareModelling_Guide.md) – Products, zones, tariffs, and sales offer packages

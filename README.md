@@ -68,6 +68,7 @@ Each guide lives in its own folder under `Guides/` and can include supporting fi
 | [Interchange](Guides/InterchangeOnly/Interchange_Guide.md) | Planned transfers, guaranteed connections, and interchangeOnly stops |
 | [PassengerInformation](Guides/PassengerInformation/PassengerInformation_Guide.md) | DestinationDisplay, Notice, and FlexibleServiceProperties |
 | [VehicleScheduling](Guides/VehicleScheduling/VehicleScheduling_Guide.md) | Blocks, VehicleType, Vehicle, and fleet assignment |
+| [SeatingReservation](Guides/SeatingReservation/SeatingReservation_Guide.md) | Reservation policies, accommodation types, and train formations |
 | [NetworkTimetable](Guides/NetworkTimetable/NetworkTimetable_Guide.md) | Producing and consuming NeTEx timetable datasets |
 | [SeparationOfConcerns](Guides/SeparationOfConcerns/SeparationOfConcerns.md) | Domain separation, coupling strategies, and cross-frame patterns |
 | [ExtendedSales & DeviationHandling](Guides/ExtendedSales_and_DeviationHandling/ExtendedSales_and_DeviationHandling_Guide.md) | Extended sales window, DatedServiceJourney.id as sales key, deviation handling |

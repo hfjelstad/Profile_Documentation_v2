@@ -1,0 +1,738 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Example: Seat Reservation and Booking — Nordic Profile
+  
+  Demonstrates the data elements required to express seat reservation
+  policies for long-distance rail services in NeTEx.
+  
+  Scenario: Two train services on the Oslo–Bergen line (Bergensbanen):
+    1. Day train 601 (Oslo S → Bergen) — reservations recommended
+    2. Night train 605 (Oslo S → Bergen) — reservations compulsory (sleeper)
+  
+  Key reservation concepts shown:
+    - ServiceFacilitySet with ServiceReservationFacilityList
+    - AccommodationFacilityList for sleeper/family carriages
+    - JourneyPart → ServiceFacilitySetRef linkage
+    - DatedServiceJourney → TrainBlockRef for formation assignment
+    - TrainBlock → CompoundTrainRef for physical train composition
+    - Train/CompoundTrain for vehicle formation details
+-->
+<PublicationDelivery xmlns="http://www.netex.org.uk/netex"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  version="1.13:NO-NeTEx-networktimetable:1.3">
+  <PublicationTimestamp>2026-04-08T12:00:00Z</PublicationTimestamp>
+  <ParticipantRef>EuPro</ParticipantRef>
+  <Description>Seat reservation and booking example — Oslo S to Bergen</Description>
+  <dataObjects>
+    <CompositeFrame id="NP:CompositeFrame:SeatingReservation" version="1">
+      <validityConditions>
+        <AvailabilityCondition id="NP:AvailabilityCondition:SeatingReservation" version="1">
+          <FromDate>2026-06-15T00:00:00</FromDate>
+          <ToDate>2026-08-15T00:00:00</ToDate>
+        </AvailabilityCondition>
+      </validityConditions>
+      <codespaces>
+        <Codespace id="np">
+          <Xmlns>NP</Xmlns>
+          <XmlnsUrl>http://www.rutebanken.org/ns/np</XmlnsUrl>
+        </Codespace>
+        <Codespace id="nsr">
+          <Xmlns>NSR</Xmlns>
+          <XmlnsUrl>http://www.rutebanken.org/ns/nsr</XmlnsUrl>
+        </Codespace>
+      </codespaces>
+      <FrameDefaults>
+        <DefaultLocale>
+          <TimeZone>Europe/Oslo</TimeZone>
+          <DefaultLanguage>no</DefaultLanguage>
+        </DefaultLocale>
+      </FrameDefaults>
+      <frames>
+
+        <!-- ======================================================================
+             ResourceFrame — Operator and Train compositions
+             ====================================================================== -->
+        <ResourceFrame id="NP:ResourceFrame:SeatingReservation" version="1">
+          <organisations>
+            <Authority id="NP:Authority:VYT" version="1">
+              <Name>Vy Tog AS</Name>
+            </Authority>
+            <Operator id="NP:Operator:VYT" version="1">
+              <Name>Vy Tog AS</Name>
+              <OrganisationType>operator</OrganisationType>
+            </Operator>
+          </organisations>
+          <vehicleTypes>
+
+            <!-- ── Locomotive ── -->
+            <Train id="NP:Train:Lok18" version="1">
+              <Name>Locomotive EL 18</Name>
+              <TypeOfFuel>electricity</TypeOfFuel>
+              <components>
+                <TrainComponent id="NP:TrainComponent:Lok18-1" version="1" order="1">
+                  <TrainElementRef ref="NP:TrainElement:EL18" versionRef="1"/>
+                  <OperationalOrientation>backwards</OperationalOrientation>
+                </TrainComponent>
+              </components>
+            </Train>
+
+            <!-- ── Day train carriages ── -->
+            <!-- First-class (Komfort) coach -->
+            <Train id="NP:Train:A7-1" version="1">
+              <Name>A7 First Class Coach</Name>
+              <Description>Komfort class open saloon</Description>
+              <components>
+                <TrainComponent id="NP:TrainComponent:A7-1-1" version="1" order="1">
+                  <Label>1</Label>
+                  <TrainElementRef ref="NP:TrainElement:A7-Komfort" versionRef="1"/>
+                  <OperationalOrientation>backwards</OperationalOrientation>
+                </TrainComponent>
+              </components>
+            </Train>
+
+            <!-- Standard-class coach (no animals) -->
+            <Train id="NP:Train:B7-NoAnimals" version="1">
+              <Name>B7 Standard Coach (animal-free)</Name>
+              <Description>Standard class, animal-free zone</Description>
+              <components>
+                <TrainComponent id="NP:TrainComponent:B7-NA-1" version="1" order="1">
+                  <Label>2</Label>
+                  <TrainElementRef ref="NP:TrainElement:B7-NoAnimals" versionRef="1"/>
+                  <OperationalOrientation>backwards</OperationalOrientation>
+                </TrainComponent>
+              </components>
+            </Train>
+
+            <!-- Family coach -->
+            <Train id="NP:Train:BC7-Family" version="1">
+              <Name>BC7 Family Coach</Name>
+              <Description>Standard class with family compartment</Description>
+              <components>
+                <TrainComponent id="NP:TrainComponent:BC7-1" version="1" order="1">
+                  <Label>3</Label>
+                  <TrainElementRef ref="NP:TrainElement:BC7-Family" versionRef="1"/>
+                  <OperationalOrientation>backwards</OperationalOrientation>
+                </TrainComponent>
+              </components>
+            </Train>
+
+            <!-- Standard-class coach -->
+            <Train id="NP:Train:B7-Std" version="1">
+              <Name>B7 Standard Coach</Name>
+              <components>
+                <TrainComponent id="NP:TrainComponent:B7-Std-1" version="1" order="1">
+                  <Label>4</Label>
+                  <TrainElementRef ref="NP:TrainElement:B7-Standard" versionRef="1"/>
+                  <OperationalOrientation>backwards</OperationalOrientation>
+                </TrainComponent>
+              </components>
+            </Train>
+
+            <!-- Bistro/luggage coach -->
+            <Train id="NP:Train:FR7-Bistro" version="1">
+              <Name>FR7 Bistro and Luggage Coach</Name>
+              <components>
+                <TrainComponent id="NP:TrainComponent:FR7-1" version="1" order="1">
+                  <Label>5</Label>
+                  <TrainElementRef ref="NP:TrainElement:FR7-Bistro" versionRef="1"/>
+                  <OperationalOrientation>backwards</OperationalOrientation>
+                </TrainComponent>
+              </components>
+            </Train>
+
+            <!-- ── Night train carriages ── -->
+            <!-- Sleeping wagon (WLAB) -->
+            <Train id="NP:Train:WLAB-1" version="1">
+              <Name>WLAB Sleeping Wagon</Name>
+              <Description>Sleeper compartments (single/double)</Description>
+              <components>
+                <TrainComponent id="NP:TrainComponent:WLAB-1-1" version="1" order="1">
+                  <Label>2</Label>
+                  <TrainElementRef ref="NP:TrainElement:WLAB-Sleeper" versionRef="1"/>
+                  <OperationalOrientation>backwards</OperationalOrientation>
+                </TrainComponent>
+              </components>
+            </Train>
+
+            <Train id="NP:Train:WLAB-2" version="1">
+              <Name>WLAB Sleeping Wagon</Name>
+              <Description>Sleeper compartments (single/double)</Description>
+              <components>
+                <TrainComponent id="NP:TrainComponent:WLAB-2-1" version="1" order="1">
+                  <Label>3</Label>
+                  <TrainElementRef ref="NP:TrainElement:WLAB-Sleeper" versionRef="1"/>
+                  <OperationalOrientation>backwards</OperationalOrientation>
+                </TrainComponent>
+              </components>
+            </Train>
+
+            <!-- Seated coach for night train -->
+            <Train id="NP:Train:B7-Night" version="1">
+              <Name>B7 Night Seated Coach</Name>
+              <components>
+                <TrainComponent id="NP:TrainComponent:B7-Night-1" version="1" order="1">
+                  <Label>4</Label>
+                  <TrainElementRef ref="NP:TrainElement:B7-Standard" versionRef="1"/>
+                  <OperationalOrientation>backwards</OperationalOrientation>
+                </TrainComponent>
+              </components>
+            </Train>
+
+            <!-- ── Day train formation (CompoundTrain) ──
+                 Locomotive + first class + standard (no animals) + family + standard + bistro
+                 This is the physical train composition for day service 601 -->
+            <CompoundTrain id="NP:CompoundTrain:DayTrain-601" version="1">
+              <Description>Day train: Lok + A7 + B7 + BC7 + B7 + FR7</Description>
+              <components>
+                <TrainInCompoundTrain id="NP:TrainInCompoundTrain:Day601-1" version="1" order="1">
+                  <TrainRef ref="NP:Train:Lok18" version="1"/>
+                </TrainInCompoundTrain>
+                <TrainInCompoundTrain id="NP:TrainInCompoundTrain:Day601-2" version="1" order="2">
+                  <TrainRef ref="NP:Train:A7-1" version="1"/>
+                </TrainInCompoundTrain>
+                <TrainInCompoundTrain id="NP:TrainInCompoundTrain:Day601-3" version="1" order="3">
+                  <TrainRef ref="NP:Train:B7-NoAnimals" version="1"/>
+                </TrainInCompoundTrain>
+                <TrainInCompoundTrain id="NP:TrainInCompoundTrain:Day601-4" version="1" order="4">
+                  <TrainRef ref="NP:Train:BC7-Family" version="1"/>
+                </TrainInCompoundTrain>
+                <TrainInCompoundTrain id="NP:TrainInCompoundTrain:Day601-5" version="1" order="5">
+                  <TrainRef ref="NP:Train:B7-Std" version="1"/>
+                </TrainInCompoundTrain>
+                <TrainInCompoundTrain id="NP:TrainInCompoundTrain:Day601-6" version="1" order="6">
+                  <TrainRef ref="NP:Train:FR7-Bistro" version="1"/>
+                </TrainInCompoundTrain>
+              </components>
+            </CompoundTrain>
+
+            <!-- ── Night train formation (CompoundTrain) ──
+                 Locomotive + 2x sleeping wagon + seated coach + bistro
+                 This is the physical train composition for night service 605 -->
+            <CompoundTrain id="NP:CompoundTrain:NightTrain-605" version="1">
+              <Description>Night train: Lok + WLAB + WLAB + B7 + FR7</Description>
+              <components>
+                <TrainInCompoundTrain id="NP:TrainInCompoundTrain:Night605-1" version="1" order="1">
+                  <TrainRef ref="NP:Train:Lok18" version="1"/>
+                </TrainInCompoundTrain>
+                <TrainInCompoundTrain id="NP:TrainInCompoundTrain:Night605-2" version="1" order="2">
+                  <TrainRef ref="NP:Train:WLAB-1" version="1"/>
+                </TrainInCompoundTrain>
+                <TrainInCompoundTrain id="NP:TrainInCompoundTrain:Night605-3" version="1" order="3">
+                  <TrainRef ref="NP:Train:WLAB-2" version="1"/>
+                </TrainInCompoundTrain>
+                <TrainInCompoundTrain id="NP:TrainInCompoundTrain:Night605-4" version="1" order="4">
+                  <TrainRef ref="NP:Train:B7-Night" version="1"/>
+                </TrainInCompoundTrain>
+                <TrainInCompoundTrain id="NP:TrainInCompoundTrain:Night605-5" version="1" order="5">
+                  <TrainRef ref="NP:Train:FR7-Bistro" version="1"/>
+                </TrainInCompoundTrain>
+              </components>
+            </CompoundTrain>
+
+          </vehicleTypes>
+        </ResourceFrame>
+
+        <!-- ======================================================================
+             ServiceFrame — Line, Routes, JourneyPatterns, ScheduledStopPoints
+             ====================================================================== -->
+        <ServiceFrame id="NP:ServiceFrame:SeatingReservation" version="1">
+          <Network id="NP:Network:VYT" version="1">
+            <Name>Vy Tog</Name>
+          </Network>
+          <routePoints>
+            <RoutePoint id="NP:RoutePoint:OSL" version="1">
+              <Name>Oslo S</Name>
+            </RoutePoint>
+            <RoutePoint id="NP:RoutePoint:DRM" version="1">
+              <Name>Drammen</Name>
+            </RoutePoint>
+            <RoutePoint id="NP:RoutePoint:HOK" version="1">
+              <Name>Hokksund</Name>
+            </RoutePoint>
+            <RoutePoint id="NP:RoutePoint:HFS" version="1">
+              <Name>Hønefoss</Name>
+            </RoutePoint>
+            <RoutePoint id="NP:RoutePoint:GOL" version="1">
+              <Name>Gol</Name>
+            </RoutePoint>
+            <RoutePoint id="NP:RoutePoint:AaL" version="1">
+              <Name>Ål</Name>
+            </RoutePoint>
+            <RoutePoint id="NP:RoutePoint:FIN" version="1">
+              <Name>Finse</Name>
+            </RoutePoint>
+            <RoutePoint id="NP:RoutePoint:VOS" version="1">
+              <Name>Voss</Name>
+            </RoutePoint>
+            <RoutePoint id="NP:RoutePoint:BRG" version="1">
+              <Name>Bergen</Name>
+            </RoutePoint>
+          </routePoints>
+          <routes>
+            <Route id="NP:Route:Bergensbanen-F" version="1">
+              <Name>Bergensbanen (Oslo S → Bergen)</Name>
+              <LineRef ref="NP:Line:F4" version="1"/>
+              <DirectionType>outbound</DirectionType>
+              <pointsInSequence>
+                <PointOnRoute id="NP:PointOnRoute:F-1" version="1" order="1">
+                  <RoutePointRef ref="NP:RoutePoint:OSL" version="1"/>
+                </PointOnRoute>
+                <PointOnRoute id="NP:PointOnRoute:F-2" version="1" order="2">
+                  <RoutePointRef ref="NP:RoutePoint:DRM" version="1"/>
+                </PointOnRoute>
+                <PointOnRoute id="NP:PointOnRoute:F-3" version="1" order="3">
+                  <RoutePointRef ref="NP:RoutePoint:HOK" version="1"/>
+                </PointOnRoute>
+                <PointOnRoute id="NP:PointOnRoute:F-4" version="1" order="4">
+                  <RoutePointRef ref="NP:RoutePoint:HFS" version="1"/>
+                </PointOnRoute>
+                <PointOnRoute id="NP:PointOnRoute:F-5" version="1" order="5">
+                  <RoutePointRef ref="NP:RoutePoint:GOL" version="1"/>
+                </PointOnRoute>
+                <PointOnRoute id="NP:PointOnRoute:F-6" version="1" order="6">
+                  <RoutePointRef ref="NP:RoutePoint:AaL" version="1"/>
+                </PointOnRoute>
+                <PointOnRoute id="NP:PointOnRoute:F-7" version="1" order="7">
+                  <RoutePointRef ref="NP:RoutePoint:FIN" version="1"/>
+                </PointOnRoute>
+                <PointOnRoute id="NP:PointOnRoute:F-8" version="1" order="8">
+                  <RoutePointRef ref="NP:RoutePoint:VOS" version="1"/>
+                </PointOnRoute>
+                <PointOnRoute id="NP:PointOnRoute:F-9" version="1" order="9">
+                  <RoutePointRef ref="NP:RoutePoint:BRG" version="1"/>
+                </PointOnRoute>
+              </pointsInSequence>
+            </Route>
+          </routes>
+          <lines>
+            <Line id="NP:Line:F4" version="1">
+              <Name>Bergensbanen</Name>
+              <TransportMode>rail</TransportMode>
+              <PublicCode>F4</PublicCode>
+              <OperatorRef ref="NP:Operator:VYT" version="1"/>
+              <RepresentedByGroupRef ref="NP:Network:VYT" version="1"/>
+            </Line>
+          </lines>
+
+          <!-- ── Scheduled stop points ── -->
+          <scheduledStopPoints>
+            <ScheduledStopPoint id="NP:ScheduledStopPoint:OSL" version="1">
+              <Name>Oslo S</Name>
+            </ScheduledStopPoint>
+            <ScheduledStopPoint id="NP:ScheduledStopPoint:DRM" version="1">
+              <Name>Drammen</Name>
+            </ScheduledStopPoint>
+            <ScheduledStopPoint id="NP:ScheduledStopPoint:HOK" version="1">
+              <Name>Hokksund</Name>
+            </ScheduledStopPoint>
+            <ScheduledStopPoint id="NP:ScheduledStopPoint:HFS" version="1">
+              <Name>Hønefoss</Name>
+            </ScheduledStopPoint>
+            <ScheduledStopPoint id="NP:ScheduledStopPoint:GOL" version="1">
+              <Name>Gol</Name>
+            </ScheduledStopPoint>
+            <ScheduledStopPoint id="NP:ScheduledStopPoint:AaL" version="1">
+              <Name>Ål</Name>
+            </ScheduledStopPoint>
+            <ScheduledStopPoint id="NP:ScheduledStopPoint:FIN" version="1">
+              <Name>Finse</Name>
+            </ScheduledStopPoint>
+            <ScheduledStopPoint id="NP:ScheduledStopPoint:VOS" version="1">
+              <Name>Voss</Name>
+            </ScheduledStopPoint>
+            <ScheduledStopPoint id="NP:ScheduledStopPoint:BRG" version="1">
+              <Name>Bergen</Name>
+            </ScheduledStopPoint>
+          </scheduledStopPoints>
+
+          <!-- ── Journey patterns ── -->
+          <journeyPatterns>
+            <!-- Day train pattern: Oslo S → Bergen (9 stops) -->
+            <JourneyPattern id="NP:JourneyPattern:F4-Day" version="1">
+              <Name>Oslo S – Bergen (day)</Name>
+              <RouteRef ref="NP:Route:Bergensbanen-F" version="1"/>
+              <pointsInSequence>
+                <StopPointInJourneyPattern id="NP:StopPointInJourneyPattern:Day-1" version="1" order="1">
+                  <ScheduledStopPointRef ref="NP:ScheduledStopPoint:OSL"/>
+                  <ForAlighting>false</ForAlighting>
+                </StopPointInJourneyPattern>
+                <StopPointInJourneyPattern id="NP:StopPointInJourneyPattern:Day-2" version="1" order="2">
+                  <ScheduledStopPointRef ref="NP:ScheduledStopPoint:DRM"/>
+                </StopPointInJourneyPattern>
+                <StopPointInJourneyPattern id="NP:StopPointInJourneyPattern:Day-3" version="1" order="3">
+                  <ScheduledStopPointRef ref="NP:ScheduledStopPoint:HOK"/>
+                </StopPointInJourneyPattern>
+                <StopPointInJourneyPattern id="NP:StopPointInJourneyPattern:Day-4" version="1" order="4">
+                  <ScheduledStopPointRef ref="NP:ScheduledStopPoint:HFS"/>
+                </StopPointInJourneyPattern>
+                <StopPointInJourneyPattern id="NP:StopPointInJourneyPattern:Day-5" version="1" order="5">
+                  <ScheduledStopPointRef ref="NP:ScheduledStopPoint:GOL"/>
+                </StopPointInJourneyPattern>
+                <StopPointInJourneyPattern id="NP:StopPointInJourneyPattern:Day-6" version="1" order="6">
+                  <ScheduledStopPointRef ref="NP:ScheduledStopPoint:AaL"/>
+                </StopPointInJourneyPattern>
+                <StopPointInJourneyPattern id="NP:StopPointInJourneyPattern:Day-7" version="1" order="7">
+                  <ScheduledStopPointRef ref="NP:ScheduledStopPoint:FIN"/>
+                </StopPointInJourneyPattern>
+                <StopPointInJourneyPattern id="NP:StopPointInJourneyPattern:Day-8" version="1" order="8">
+                  <ScheduledStopPointRef ref="NP:ScheduledStopPoint:VOS"/>
+                </StopPointInJourneyPattern>
+                <StopPointInJourneyPattern id="NP:StopPointInJourneyPattern:Day-9" version="1" order="9">
+                  <ScheduledStopPointRef ref="NP:ScheduledStopPoint:BRG"/>
+                  <ForBoarding>false</ForBoarding>
+                </StopPointInJourneyPattern>
+              </pointsInSequence>
+            </JourneyPattern>
+
+            <!-- Night train pattern: Oslo S → Bergen (9 stops, overnight) -->
+            <JourneyPattern id="NP:JourneyPattern:F4-Night" version="1">
+              <Name>Oslo S – Bergen (night)</Name>
+              <RouteRef ref="NP:Route:Bergensbanen-F" version="1"/>
+              <pointsInSequence>
+                <StopPointInJourneyPattern id="NP:StopPointInJourneyPattern:Night-1" version="1" order="1">
+                  <ScheduledStopPointRef ref="NP:ScheduledStopPoint:OSL"/>
+                  <ForAlighting>false</ForAlighting>
+                </StopPointInJourneyPattern>
+                <StopPointInJourneyPattern id="NP:StopPointInJourneyPattern:Night-2" version="1" order="2">
+                  <ScheduledStopPointRef ref="NP:ScheduledStopPoint:DRM"/>
+                </StopPointInJourneyPattern>
+                <StopPointInJourneyPattern id="NP:StopPointInJourneyPattern:Night-3" version="1" order="3">
+                  <ScheduledStopPointRef ref="NP:ScheduledStopPoint:HOK"/>
+                </StopPointInJourneyPattern>
+                <StopPointInJourneyPattern id="NP:StopPointInJourneyPattern:Night-4" version="1" order="4">
+                  <ScheduledStopPointRef ref="NP:ScheduledStopPoint:HFS"/>
+                </StopPointInJourneyPattern>
+                <StopPointInJourneyPattern id="NP:StopPointInJourneyPattern:Night-5" version="1" order="5">
+                  <ScheduledStopPointRef ref="NP:ScheduledStopPoint:GOL"/>
+                </StopPointInJourneyPattern>
+                <StopPointInJourneyPattern id="NP:StopPointInJourneyPattern:Night-6" version="1" order="6">
+                  <ScheduledStopPointRef ref="NP:ScheduledStopPoint:AaL"/>
+                </StopPointInJourneyPattern>
+                <StopPointInJourneyPattern id="NP:StopPointInJourneyPattern:Night-7" version="1" order="7">
+                  <ScheduledStopPointRef ref="NP:ScheduledStopPoint:FIN"/>
+                </StopPointInJourneyPattern>
+                <StopPointInJourneyPattern id="NP:StopPointInJourneyPattern:Night-8" version="1" order="8">
+                  <ScheduledStopPointRef ref="NP:ScheduledStopPoint:VOS"/>
+                </StopPointInJourneyPattern>
+                <StopPointInJourneyPattern id="NP:StopPointInJourneyPattern:Night-9" version="1" order="9">
+                  <ScheduledStopPointRef ref="NP:ScheduledStopPoint:BRG"/>
+                  <ForBoarding>false</ForBoarding>
+                </StopPointInJourneyPattern>
+              </pointsInSequence>
+            </JourneyPattern>
+          </journeyPatterns>
+        </ServiceFrame>
+
+        <!-- ======================================================================
+             ServiceCalendarFrame — Operating days for dated journeys
+             ====================================================================== -->
+        <ServiceCalendarFrame id="NP:ServiceCalendarFrame:SeatingReservation" version="1">
+          <operatingDays>
+            <OperatingDay id="NP:OperatingDay:2026-06-15" version="1">
+              <CalendarDate>2026-06-15</CalendarDate>
+            </OperatingDay>
+          </operatingDays>
+        </ServiceCalendarFrame>
+
+        <!-- ======================================================================
+             TimetableFrame — ServiceJourneys, DatedServiceJourneys, ServiceFacilitySets
+             ====================================================================== -->
+        <TimetableFrame id="NP:TimetableFrame:SeatingReservation" version="1">
+          <vehicleJourneys>
+
+            <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+                 SCENARIO 1: Day train 601 — reservations RECOMMENDED
+                 
+                 A regular day service with first-class and standard coaches.
+                 Passengers are encouraged to reserve seats but may board
+                 without reservation if space is available.
+                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+            <ServiceJourney id="NP:ServiceJourney:601" version="1">
+              <Name>601</Name>
+              <Description>Day train 601 Oslo S to Bergen</Description>
+              <PrivateCode>601</PrivateCode>
+              <TransportMode>rail</TransportMode>
+              <TransportSubmode>
+                <RailSubmode>regionalRail</RailSubmode>
+              </TransportSubmode>
+              <JourneyPatternRef ref="NP:JourneyPattern:F4-Day" version="1"/>
+              <OperatorRef ref="NP:Operator:VYT" version="1"/>
+              <LineRef ref="NP:Line:F4" version="1"/>
+              <passingTimes>
+                <TimetabledPassingTime id="NP:TimetabledPassingTime:601-OSL" version="1">
+                  <StopPointInJourneyPatternRef ref="NP:StopPointInJourneyPattern:Day-1" version="1"/>
+                  <DepartureTime>12:03:00</DepartureTime>
+                </TimetabledPassingTime>
+                <TimetabledPassingTime id="NP:TimetabledPassingTime:601-DRM" version="1">
+                  <StopPointInJourneyPatternRef ref="NP:StopPointInJourneyPattern:Day-2" version="1"/>
+                  <ArrivalTime>12:27:00</ArrivalTime>
+                  <DepartureTime>12:29:00</DepartureTime>
+                </TimetabledPassingTime>
+                <TimetabledPassingTime id="NP:TimetabledPassingTime:601-HOK" version="1">
+                  <StopPointInJourneyPatternRef ref="NP:StopPointInJourneyPattern:Day-3" version="1"/>
+                  <ArrivalTime>12:42:00</ArrivalTime>
+                  <DepartureTime>12:44:00</DepartureTime>
+                </TimetabledPassingTime>
+                <TimetabledPassingTime id="NP:TimetabledPassingTime:601-HFS" version="1">
+                  <StopPointInJourneyPatternRef ref="NP:StopPointInJourneyPattern:Day-4" version="1"/>
+                  <ArrivalTime>13:10:00</ArrivalTime>
+                  <DepartureTime>13:13:00</DepartureTime>
+                </TimetabledPassingTime>
+                <TimetabledPassingTime id="NP:TimetabledPassingTime:601-GOL" version="1">
+                  <StopPointInJourneyPatternRef ref="NP:StopPointInJourneyPattern:Day-5" version="1"/>
+                  <ArrivalTime>13:55:00</ArrivalTime>
+                  <DepartureTime>13:57:00</DepartureTime>
+                </TimetabledPassingTime>
+                <TimetabledPassingTime id="NP:TimetabledPassingTime:601-AaL" version="1">
+                  <StopPointInJourneyPatternRef ref="NP:StopPointInJourneyPattern:Day-6" version="1"/>
+                  <ArrivalTime>14:15:00</ArrivalTime>
+                  <DepartureTime>14:18:00</DepartureTime>
+                </TimetabledPassingTime>
+                <TimetabledPassingTime id="NP:TimetabledPassingTime:601-FIN" version="1">
+                  <StopPointInJourneyPatternRef ref="NP:StopPointInJourneyPattern:Day-7" version="1"/>
+                  <ArrivalTime>15:20:00</ArrivalTime>
+                  <DepartureTime>15:22:00</DepartureTime>
+                </TimetabledPassingTime>
+                <TimetabledPassingTime id="NP:TimetabledPassingTime:601-VOS" version="1">
+                  <StopPointInJourneyPatternRef ref="NP:StopPointInJourneyPattern:Day-8" version="1"/>
+                  <ArrivalTime>16:30:00</ArrivalTime>
+                  <DepartureTime>16:33:00</DepartureTime>
+                </TimetabledPassingTime>
+                <TimetabledPassingTime id="NP:TimetabledPassingTime:601-BRG" version="1">
+                  <StopPointInJourneyPatternRef ref="NP:StopPointInJourneyPattern:Day-9" version="1"/>
+                  <ArrivalTime>17:08:00</ArrivalTime>
+                </TimetabledPassingTime>
+              </passingTimes>
+              <!-- JourneyPart links this journey segment to its reservation policy
+                   via ServiceFacilitySetRef -->
+              <parts>
+                <JourneyPart id="NP:JourneyPart:601-1" version="1">
+                  <Description>Oslo S – Bergen</Description>
+                  <MainPartRef ref="NP:JourneyPart:601-1" version="1"/>
+                  <TrainNumberRef ref="NP:TrainNumber:601"/>
+                  <FromStopPointRef ref="NP:ScheduledStopPoint:OSL"/>
+                  <ToStopPointRef ref="NP:ScheduledStopPoint:BRG"/>
+                  <StartTime>12:03:00</StartTime>
+                  <EndTime>17:08:00</EndTime>
+                  <!-- The ServiceFacilitySetRef expresses what facilities and
+                       reservation policy apply to this journey segment -->
+                  <facilities>
+                    <ServiceFacilitySetRef ref="NP:ServiceFacilitySet:DayTrain" version="1"/>
+                  </facilities>
+                </JourneyPart>
+              </parts>
+            </ServiceJourney>
+
+            <!-- DatedServiceJourney ties the template ServiceJourney to a
+                 specific date AND to a specific TrainBlock (physical formation) -->
+            <DatedServiceJourney id="NP:DatedServiceJourney:601_2026-06-15" version="1">
+              <TrainBlockRef ref="NP:TrainBlock:601-Day" version="1"/>
+              <ServiceJourneyRef ref="NP:ServiceJourney:601" version="1"/>
+              <OperatingDayRef ref="NP:OperatingDay:2026-06-15" version="1"/>
+            </DatedServiceJourney>
+
+            <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+                 SCENARIO 2: Night train 605 — reservations COMPULSORY
+                 
+                 An overnight service with sleeping wagons (WLAB).
+                 Every passenger must have a reserved berth or seat.
+                 The nightRail submode indicates this is a night train.
+                 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+            <ServiceJourney id="NP:ServiceJourney:605" version="1">
+              <Name>605</Name>
+              <Description>Night train 605 Oslo S to Bergen</Description>
+              <PrivateCode>605</PrivateCode>
+              <TransportMode>rail</TransportMode>
+              <TransportSubmode>
+                <RailSubmode>nightRail</RailSubmode>
+              </TransportSubmode>
+              <JourneyPatternRef ref="NP:JourneyPattern:F4-Night" version="1"/>
+              <OperatorRef ref="NP:Operator:VYT" version="1"/>
+              <LineRef ref="NP:Line:F4" version="1"/>
+              <passingTimes>
+                <TimetabledPassingTime id="NP:TimetabledPassingTime:605-OSL" version="1">
+                  <StopPointInJourneyPatternRef ref="NP:StopPointInJourneyPattern:Night-1" version="1"/>
+                  <DepartureTime>23:03:00</DepartureTime>
+                </TimetabledPassingTime>
+                <TimetabledPassingTime id="NP:TimetabledPassingTime:605-DRM" version="1">
+                  <StopPointInJourneyPatternRef ref="NP:StopPointInJourneyPattern:Night-2" version="1"/>
+                  <ArrivalTime>23:36:00</ArrivalTime>
+                  <DepartureTime>23:38:00</DepartureTime>
+                </TimetabledPassingTime>
+                <TimetabledPassingTime id="NP:TimetabledPassingTime:605-HOK" version="1">
+                  <StopPointInJourneyPatternRef ref="NP:StopPointInJourneyPattern:Night-3" version="1"/>
+                  <ArrivalTime>23:55:00</ArrivalTime>
+                  <DepartureTime>23:56:00</DepartureTime>
+                </TimetabledPassingTime>
+                <TimetabledPassingTime id="NP:TimetabledPassingTime:605-HFS" version="1">
+                  <StopPointInJourneyPatternRef ref="NP:StopPointInJourneyPattern:Night-4" version="1"/>
+                  <ArrivalTime>00:39:00</ArrivalTime>
+                  <ArrivalDayOffset>1</ArrivalDayOffset>
+                  <DepartureTime>00:41:00</DepartureTime>
+                  <DepartureDayOffset>1</DepartureDayOffset>
+                </TimetabledPassingTime>
+                <TimetabledPassingTime id="NP:TimetabledPassingTime:605-GOL" version="1">
+                  <StopPointInJourneyPatternRef ref="NP:StopPointInJourneyPattern:Night-5" version="1"/>
+                  <ArrivalTime>02:08:00</ArrivalTime>
+                  <ArrivalDayOffset>1</ArrivalDayOffset>
+                  <DepartureTime>02:09:00</DepartureTime>
+                  <DepartureDayOffset>1</DepartureDayOffset>
+                </TimetabledPassingTime>
+                <TimetabledPassingTime id="NP:TimetabledPassingTime:605-AaL" version="1">
+                  <StopPointInJourneyPatternRef ref="NP:StopPointInJourneyPattern:Night-6" version="1"/>
+                  <ArrivalTime>02:28:00</ArrivalTime>
+                  <ArrivalDayOffset>1</ArrivalDayOffset>
+                  <DepartureTime>02:31:00</DepartureTime>
+                  <DepartureDayOffset>1</DepartureDayOffset>
+                </TimetabledPassingTime>
+                <TimetabledPassingTime id="NP:TimetabledPassingTime:605-FIN" version="1">
+                  <StopPointInJourneyPatternRef ref="NP:StopPointInJourneyPattern:Night-7" version="1"/>
+                  <ArrivalTime>03:47:00</ArrivalTime>
+                  <ArrivalDayOffset>1</ArrivalDayOffset>
+                  <DepartureTime>03:49:00</DepartureTime>
+                  <DepartureDayOffset>1</DepartureDayOffset>
+                </TimetabledPassingTime>
+                <TimetabledPassingTime id="NP:TimetabledPassingTime:605-VOS" version="1">
+                  <StopPointInJourneyPatternRef ref="NP:StopPointInJourneyPattern:Night-8" version="1"/>
+                  <ArrivalTime>05:05:00</ArrivalTime>
+                  <ArrivalDayOffset>1</ArrivalDayOffset>
+                  <DepartureTime>05:08:00</DepartureTime>
+                  <DepartureDayOffset>1</DepartureDayOffset>
+                </TimetabledPassingTime>
+                <TimetabledPassingTime id="NP:TimetabledPassingTime:605-BRG" version="1">
+                  <StopPointInJourneyPatternRef ref="NP:StopPointInJourneyPattern:Night-9" version="1"/>
+                  <ArrivalTime>06:23:00</ArrivalTime>
+                  <ArrivalDayOffset>1</ArrivalDayOffset>
+                </TimetabledPassingTime>
+              </passingTimes>
+              <!-- JourneyPart links to sleeper facilities with compulsory reservation -->
+              <parts>
+                <JourneyPart id="NP:JourneyPart:605-1" version="1">
+                  <Description>Oslo S – Bergen (night)</Description>
+                  <MainPartRef ref="NP:JourneyPart:605-1" version="1"/>
+                  <TrainNumberRef ref="NP:TrainNumber:605"/>
+                  <FromStopPointRef ref="NP:ScheduledStopPoint:OSL"/>
+                  <ToStopPointRef ref="NP:ScheduledStopPoint:BRG"/>
+                  <StartTime>23:03:00</StartTime>
+                  <EndTime>06:23:00</EndTime>
+                  <EndTimeDayOffset>1</EndTimeDayOffset>
+                  <facilities>
+                    <ServiceFacilitySetRef ref="NP:ServiceFacilitySet:NightTrain" version="1"/>
+                  </facilities>
+                </JourneyPart>
+              </parts>
+            </ServiceJourney>
+
+            <DatedServiceJourney id="NP:DatedServiceJourney:605_2026-06-15" version="1">
+              <TrainBlockRef ref="NP:TrainBlock:605-Night" version="1"/>
+              <ServiceJourneyRef ref="NP:ServiceJourney:605" version="1"/>
+              <OperatingDayRef ref="NP:OperatingDay:2026-06-15" version="1"/>
+            </DatedServiceJourney>
+
+          </vehicleJourneys>
+
+          <!-- ── Train numbers ── -->
+          <trainNumbers>
+            <TrainNumber id="NP:TrainNumber:601" version="1">
+              <ForAdvertisement>601</ForAdvertisement>
+              <ForProduction>601</ForProduction>
+            </TrainNumber>
+            <TrainNumber id="NP:TrainNumber:605" version="1">
+              <ForAdvertisement>605</ForAdvertisement>
+              <ForProduction>605</ForProduction>
+            </TrainNumber>
+          </trainNumbers>
+
+          <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+               ServiceFacilitySets — the CORE of reservation policy
+               
+               These define WHAT facilities are available on a service
+               and WHETHER reservation is required, recommended, or not.
+               
+               ServiceJourneys link to these via JourneyPart > facilities >
+               ServiceFacilitySetRef.
+               ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+          <serviceFacilitySets>
+
+            <!-- Day train: first + standard class, family carriage,
+                 reservation RECOMMENDED (not mandatory) -->
+            <ServiceFacilitySet id="NP:ServiceFacilitySet:DayTrain" version="1">
+              <!-- FacilitySetGroup elements (inherited) -->
+              <CateringFacilityList>snacks</CateringFacilityList>
+              <FareClasses>businessClass economyClass</FareClasses>
+              <MobilityFacilityList>suitableForPushchairs suitableForWheelchairs</MobilityFacilityList>
+              <NuisanceFacilityList>breastfeedingFriendly animalsAllowed</NuisanceFacilityList>
+              <PassengerCommsFacilityList>publicWifi</PassengerCommsFacilityList>
+              <!-- ServiceFacilityGroup elements -->
+              <AccommodationFacilityList>familyCarriage</AccommodationFacilityList>
+              <LuggageCarriageFacilityList>cyclesAllowed</LuggageCarriageFacilityList>
+              <ServiceReservationFacilityList>reservationsRecommended</ServiceReservationFacilityList>
+            </ServiceFacilitySet>
+
+            <!-- Night train: sleeper compartments (single + double),
+                 reservation COMPULSORY — passengers cannot board without booking -->
+            <ServiceFacilitySet id="NP:ServiceFacilitySet:NightTrain" version="1">
+              <!-- FacilitySetGroup elements (inherited) -->
+              <CateringFacilityList>snacks</CateringFacilityList>
+              <FareClasses>economyClass</FareClasses>
+              <MobilityFacilityList>suitableForWheelchairs</MobilityFacilityList>
+              <NuisanceFacilityList>animalsAllowed</NuisanceFacilityList>
+              <PassengerCommsFacilityList>publicWifi</PassengerCommsFacilityList>
+              <!-- ServiceFacilityGroup elements -->
+              <AccommodationFacilityList>doubleSleeper singleSleeper</AccommodationFacilityList>
+              <LuggageCarriageFacilityList>cyclesAllowed</LuggageCarriageFacilityList>
+              <ServiceReservationFacilityList>reservationsCompulsory</ServiceReservationFacilityList>
+            </ServiceFacilitySet>
+
+          </serviceFacilitySets>
+        </TimetableFrame>
+
+        <!-- ======================================================================
+             VehicleScheduleFrame — TrainBlocks linking journeys to formations
+             
+             Each TrainBlock connects a journey (via JourneyPartRef) to a
+             specific physical train formation (via CompoundTrainRef).
+             This tells the consumer: "on this date, this journey runs with
+             this exact set of carriages."
+             ====================================================================== -->
+        <VehicleScheduleFrame id="NP:VehicleScheduleFrame:SeatingReservation" version="1">
+          <blocks>
+            <!-- Day train block — uses CompoundTrain with standard coaches -->
+            <TrainBlock id="NP:TrainBlock:601-Day" version="1">
+              <StartTime>12:03:00</StartTime>
+              <EndTime>17:08:00</EndTime>
+              <StartPointRef ref="NP:ScheduledStopPoint:OSL"/>
+              <EndPointRef ref="NP:ScheduledStopPoint:BRG"/>
+              <blockParts>
+                <TrainBlockPart id="NP:TrainBlockPart:601-Day-1" version="1" order="1">
+                  <CompoundTrainRef ref="NP:CompoundTrain:DayTrain-601" version="1"/>
+                  <journeyParts>
+                    <JourneyPartRef ref="NP:JourneyPart:601-1" version="1"/>
+                  </journeyParts>
+                </TrainBlockPart>
+              </blockParts>
+            </TrainBlock>
+
+            <!-- Night train block — uses CompoundTrain with sleeping wagons -->
+            <TrainBlock id="NP:TrainBlock:605-Night" version="1">
+              <StartTime>23:03:00</StartTime>
+              <EndTime>06:23:00</EndTime>
+              <EndTimeDayOffset>1</EndTimeDayOffset>
+              <StartPointRef ref="NP:ScheduledStopPoint:OSL"/>
+              <EndPointRef ref="NP:ScheduledStopPoint:BRG"/>
+              <blockParts>
+                <TrainBlockPart id="NP:TrainBlockPart:605-Night-1" version="1" order="1">
+                  <CompoundTrainRef ref="NP:CompoundTrain:NightTrain-605" version="1"/>
+                  <journeyParts>
+                    <JourneyPartRef ref="NP:JourneyPart:605-1" version="1"/>
+                  </journeyParts>
+                </TrainBlockPart>
+              </blockParts>
+            </TrainBlock>
+          </blocks>
+        </VehicleScheduleFrame>
+
+      </frames>
+    </CompositeFrame>
+  </dataObjects>
+</PublicationDelivery>
