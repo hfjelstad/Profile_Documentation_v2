@@ -3,9 +3,18 @@
   <PublicationTimestamp>2026-03-17T12:00:00Z</PublicationTimestamp>
   <ParticipantRef>EuPro</ParticipantRef>
   <dataObjects>
-    <ServiceFrame id="NP:ServiceFrame:lines:1" version="1">
+    <ServiceFrame id="NP:ServiceFrame:MANDATORY" version="1">
       <lines>
         <Line id="NP:Line:100" version="1">
+          <Name>Arendal-Kristiansand</Name>
+          <TransportMode>bus</TransportMode>
+          <OperatorRef ref="NP:Operator:923"/>
+        </Line>
+      </lines>
+    </ServiceFrame>
+    <ServiceFrame id="NP:ServiceFrame:OPTIONAL" version="1">
+      <lines>
+        <Line id="NP:Line:100" version="2">
           <Name>Arendal-Kristiansand</Name>
           <TransportMode>bus</TransportMode>
           <TransportSubmode>

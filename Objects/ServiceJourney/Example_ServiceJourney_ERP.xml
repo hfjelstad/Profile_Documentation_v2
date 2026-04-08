@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<PublicationDelivery xmlns="http://www.netex.org.uk/netex" version="2.0">
+  <PublicationTimestamp>2026-04-08T12:00:00Z</PublicationTimestamp>
+  <ParticipantRef>EuPro</ParticipantRef>
+  <dataObjects>
+    <TimetableFrame id="ERP:TimetableFrame:MANDATORY" version="1">
+      <vehicleJourneys>
+        <ServiceJourney id="ERP:ServiceJourney:1" version="1">
+          <JourneyPatternRef ref="ERP:JourneyPattern:1"/>
+          <passingTimes>
+            <TimetabledPassingTime id="ERP:TimetabledPassingTime:M1" version="1">
+              <StopPointInJourneyPatternRef ref="ERP:StopPointInJourneyPattern:1"/>
+              <DepartureTime>08:00:00</DepartureTime>
+            </TimetabledPassingTime>
+            <TimetabledPassingTime id="ERP:TimetabledPassingTime:M2" version="1">
+              <StopPointInJourneyPatternRef ref="ERP:StopPointInJourneyPattern:2"/>
+              <ArrivalTime>08:30:00</ArrivalTime>
+            </TimetabledPassingTime>
+          </passingTimes>
+        </ServiceJourney>
+      </vehicleJourneys>
+    </TimetableFrame>
+    <TimetableFrame id="ERP:TimetableFrame:OPTIONAL" version="1">
+      <vehicleJourneys>
+        <ServiceJourney id="ERP:ServiceJourney:1" version="2">
+          <Name>Morning Express</Name>
+          <PrivateCode>ME01</PrivateCode>
+          <TransportMode>bus</TransportMode>
+          <TransportSubmode>
+            <BusSubmode>regionalBus</BusSubmode>
+          </TransportSubmode>
+          <dayTypes>
+            <DayTypeRef ref="ERP:DayType:WEEKDAYS"/>
+          </dayTypes>
+          <JourneyPatternRef ref="ERP:JourneyPattern:1"/>
+          <BlockRef ref="ERP:Block:1"/>
+          <OperatorRef ref="ERP:Operator:1"/>
+          <LineRef ref="ERP:Line:1"/>
+          <passingTimes>
+            <TimetabledPassingTime id="ERP:TimetabledPassingTime:1" version="1">
+              <StopPointInJourneyPatternRef ref="ERP:StopPointInJourneyPattern:1"/>
+              <DepartureTime>08:00:00</DepartureTime>
+              <EarliestDepartureTime>07:55:00</EarliestDepartureTime>
+            </TimetabledPassingTime>
+            <TimetabledPassingTime id="ERP:TimetabledPassingTime:2" version="1">
+              <StopPointInJourneyPatternRef ref="ERP:StopPointInJourneyPattern:2"/>
+              <ArrivalTime>08:30:00</ArrivalTime>
+              <ArrivalDayOffset>0</ArrivalDayOffset>
+              <LatestArrivalTime>08:35:00</LatestArrivalTime>
+            </TimetabledPassingTime>
+          </passingTimes>
+          <parts>
+            <JourneyPart id="ERP:JourneyPart:1" version="1">
+              <MainPartRef ref="ERP:JourneyPart:1"/>
+              <StartTime>08:00:00</StartTime>
+              <EndTime>08:30:00</EndTime>
+            </JourneyPart>
+          </parts>
+        </ServiceJourney>
+      </vehicleJourneys>
+    </TimetableFrame>
+  </dataObjects>
+</PublicationDelivery>

@@ -10,9 +10,9 @@ OperatingPeriod
 
 ## Table
 
-| Element | Type | Description | Path |
-|---------|------|-------------|------|
-| @id | ID | Unique identifier for the operating period | OperatingPeriod/@id |
-| @version | String | Version label | OperatingPeriod/@version |
-| FromDate | xsd:dateTime | Start of the period (inclusive) | OperatingPeriod/FromDate |
-| ToDate | xsd:dateTime | End of the period (inclusive) | OperatingPeriod/ToDate |
+| Element | Type | XSD | Description | Path |
+|---------|------|-----|-------------|------|
+| @id | ID | 1..1 | Unique identifier for the operating period | OperatingPeriod/@id |
+| @version | String | 1..1 | Version label | OperatingPeriod/@version |
+| FromDate | xsd:dateTime | 1..1 | Start of the period (inclusive) | OperatingPeriod/FromDate |
+| ToDate | xsd:dateTime | 1..1 | End of the period (inclusive) | OperatingPeriod/ToDate |

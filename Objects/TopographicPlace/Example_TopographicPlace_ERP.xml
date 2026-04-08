@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<PublicationDelivery xmlns="http://www.netex.org.uk/netex" version="2.0">
+  <PublicationTimestamp>2026-04-08T12:00:00Z</PublicationTimestamp>
+  <ParticipantRef>EuPro</ParticipantRef>
+  <dataObjects>
+    <SiteFrame id="ERP:SiteFrame:MANDATORY" version="1">
+      <topographicPlaces>
+        <TopographicPlace id="ERP:TopographicPlace:1" version="1">
+          <Descriptor>
+            <Name>Oslo</Name>
+          </Descriptor>
+        </TopographicPlace>
+      </topographicPlaces>
+    </SiteFrame>
+    <SiteFrame id="ERP:SiteFrame:OPTIONAL" version="1">
+      <topographicPlaces>
+        <TopographicPlace id="ERP:TopographicPlace:1" version="2">
+          <Descriptor>
+            <Name>Oslo</Name>
+            <ShortName>OSL</ShortName>
+          </Descriptor>
+          <TopographicPlaceType>municipality</TopographicPlaceType>
+          <CountryRef ref="no"/>
+        </TopographicPlace>
+      </topographicPlaces>
+    </SiteFrame>
+  </dataObjects>
+</PublicationDelivery>
+

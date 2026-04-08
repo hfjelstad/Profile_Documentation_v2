@@ -13,10 +13,10 @@ DestinationDisplay
 
 ## Table
 
-| Element | Type | MIN | NP | Description | Path |
-|---------|------|-----|-----|-------------|------|
-| @id | ID | 1..1 | 1..1 | Unique identifier for the destination display | DestinationDisplay/@id |
-| @version | String | 1..1 | 1..1 | Version number for change tracking | DestinationDisplay/@version |
-| Name | String |  | 0..1 | Internal name for the destination display definition | DestinationDisplay/Name |
-| FrontText | String | 1..1 | 1..1 | Text shown on the vehicle's destination display | DestinationDisplay/FrontText |
-| SideText | String |  | 0..1 | Text shown on the side display of a vehicle | DestinationDisplay/SideText |
+| Element | Type | XSD | ERP | NP | Description | Path |
+|---------|------|-----|-----|-----|-------------|------|
+| @id | ID | 1..1 | 1..1 | 1..1 | Unique identifier for the destination display | DestinationDisplay/@id |
+| @version | String | 1..1 | 1..1 | 1..1 | Version number for change tracking | DestinationDisplay/@version |
+| Name | String | 0..1 |  | 0..1 | Internal name for the destination display definition | DestinationDisplay/Name |
+| FrontText | String | 0..1 | 1..1 | 1..1 | Text shown on the vehicle's destination display | DestinationDisplay/FrontText |
+| SideText | String | 0..1 |  | 0..1 | Text shown on the side display of a vehicle | DestinationDisplay/SideText |

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PublicationDelivery xmlns="http://www.netex.org.uk/netex" version="2.0">
+  <PublicationTimestamp>2026-04-08T12:00:00Z</PublicationTimestamp>
+  <ParticipantRef>EuPro</ParticipantRef>
+  <dataObjects>
+    <ServiceFrame id="ERP:ServiceFrame:MANDATORY" version="1">
+      <lines>
+        <Line id="ERP:Line:5" version="1">
+          <Name>Central Line</Name>
+          <TransportMode>bus</TransportMode>
+          <OperatorRef ref="ERP:Operator:100"/>
+        </Line>
+      </lines>
+    </ServiceFrame>
+    <ServiceFrame id="ERP:ServiceFrame:OPTIONAL" version="1">
+      <lines>
+        <Line id="ERP:Line:5" version="2">
+          <Name>Central Line</Name>
+          <TransportMode>bus</TransportMode>
+          <OperatorRef ref="ERP:Operator:100"/>
+          <Presentation>
+            <Colour>005EB8</Colour>
+            <TextColour>FFFFFF</TextColour>
+          </Presentation>
+        </Line>
+      </lines>
+    </ServiceFrame>
+  </dataObjects>
+</PublicationDelivery>

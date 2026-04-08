@@ -29,8 +29,7 @@ The agent must always consult this folder when reading, validating, or generatin
 
 | ProfileCode | Profile Description |
 | -- | -- |
-| MIN | Minimum profile | 
-| ERP | European Recomended Profile |
+| ERP | European Recommended Profile |
 | NP | Nordic Profile |
 
 ---
@@ -61,6 +60,15 @@ Every object under `Objects/<ObjectName>/` must contain the following files:
 ### 4.1. Example_<ObjectName>_<ProfileCode>.xml (at least one required)
 - A XML example validated against the current XSD.
 - All XML examples that use a ProfileCode and validate against the current XSD act as authoritative sources for determining the element order used in both the Structure Overview and the Table. Other XML files may appear for guidance or illustration but must not influence structural ordering.
+
+#### MANDATORY/OPTIONAL Frame Convention
+Profile XML examples may use a two-frame structure to distinguish mandatory from optional elements. The frame identifier may use any relevant frame type (for example, `ServiceFrame`, `SiteFrame`, `ResourceFrame`, or `TimetableFrame`):
+
+- **`<ProfileCode>:<FrameType>:MANDATORY`** — Contains only the elements that the profile requires. Every element present in this frame maps to **1..1** in the profile column.
+- **`<ProfileCode>:<FrameType>:OPTIONAL`** — Contains all recognized elements (mandatory + optional). Elements present here but absent from the MANDATORY frame map to **0..1** in the profile column.
+- Elements absent from both frames are left empty in the profile column.
+
+This convention is the authoritative source for deriving profile cardinality values in the table, regardless of which frame type is used.
 
 ### 4.2. `Table_<ObjectName>.md` (mandatory)
 
@@ -237,6 +245,8 @@ All code blocks and XML snippets automatically get a "Copy" button via `docsify-
 
 - All XML examples must validate against the current NeTEx XSD
 - Tables must stay synchronized with their corresponding XML examples
+- Tables must include an **XSD** column as the first cardinality column, reflecting the schema-level minOccurs/maxOccurs values
+- Profile cardinality columns follow after XSD and reflect profile-level requirements (which may be stricter than XSD)
 - Descriptions must reference actual elements from the table
 - Cross-reference links must be relative and point to existing files
 - ProfileCode examples are authoritative for element ordering

@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<PublicationDelivery xmlns="http://www.netex.org.uk/netex" version="2.0">
+  <PublicationTimestamp>2026-04-08T12:00:00Z</PublicationTimestamp>
+  <ParticipantRef>EuPro</ParticipantRef>
+  <dataObjects>
+    <ResourceFrame id="ERP:ResourceFrame:MANDATORY" version="1">
+      <organisations>
+        <Operator id="ERP:Operator:1" version="1"/>
+      </organisations>
+    </ResourceFrame>
+    <ResourceFrame id="ERP:ResourceFrame:OPTIONAL" version="1">
+      <organisations>
+        <Operator id="ERP:Operator:1" version="2"/>
+      </organisations>
+    </ResourceFrame>
+  </dataObjects>
+</PublicationDelivery>

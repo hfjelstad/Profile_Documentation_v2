@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<PublicationDelivery xmlns="http://www.netex.org.uk/netex" version="2.0">
+  <PublicationTimestamp>2026-04-08T12:00:00Z</PublicationTimestamp>
+  <ParticipantRef>EuPro</ParticipantRef>
+  <dataObjects>
+    <ServiceFrame id="ERP:ServiceFrame:MANDATORY" version="1">
+      <routes>
+        <Route id="ERP:Route:1" version="1">
+          <Name>Main Route</Name>
+          <LineRef ref="ERP:Line:1"/>
+          <pointsInSequence>
+            <PointOnRoute id="ERP:PointOnRoute:1" version="1" order="1">
+              <ScheduledStopPointRef ref="ERP:ScheduledStopPoint:1"/>
+            </PointOnRoute>
+            <PointOnRoute id="ERP:PointOnRoute:2" version="1" order="2">
+              <ScheduledStopPointRef ref="ERP:ScheduledStopPoint:2"/>
+            </PointOnRoute>
+          </pointsInSequence>
+        </Route>
+      </routes>
+    </ServiceFrame>
+    <ServiceFrame id="ERP:ServiceFrame:OPTIONAL" version="1">
+      <routes>
+        <Route id="ERP:Route:1" version="2">
+          <Name>Main Route</Name>
+          <ShortName>MR</ShortName>
+          <Description>Main route description</Description>
+          <LineRef ref="ERP:Line:1"/>
+          <DirectionType>outbound</DirectionType>
+          <pointsInSequence>
+            <PointOnRoute id="ERP:PointOnRoute:1" version="2" order="1">
+              <ScheduledStopPointRef ref="ERP:ScheduledStopPoint:1"/>
+            </PointOnRoute>
+            <PointOnRoute id="ERP:PointOnRoute:2" version="2" order="2">
+              <ScheduledStopPointRef ref="ERP:ScheduledStopPoint:2"/>
+            </PointOnRoute>
+          </pointsInSequence>
+        </Route>
+      </routes>
+    </ServiceFrame>
+  </dataObjects>
+</PublicationDelivery>
+

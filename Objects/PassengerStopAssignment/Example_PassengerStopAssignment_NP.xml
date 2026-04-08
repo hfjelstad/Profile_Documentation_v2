@@ -1,9 +1,17 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <PublicationDelivery xmlns="http://www.netex.org.uk/netex" version="2.0">
   <PublicationTimestamp>2026-03-17T12:00:00Z</PublicationTimestamp>
   <ParticipantRef>EuPro</ParticipantRef>
   <dataObjects>
-    <ServiceFrame id="NSR:ServiceFrame:psa:1" version="1">
+    <ServiceFrame id="NP:ServiceFrame:MANDATORY" version="1">
+      <stopAssignments>
+        <PassengerStopAssignment order="1" version="1" id="NP:PassengerStopAssignment:10176612_1">
+          <ScheduledStopPointRef ref="NP:ScheduledStopPoint:10176612_1"/>
+          <QuayRef ref="NSR:Quay:43750"/>
+        </PassengerStopAssignment>
+      </stopAssignments>
+    </ServiceFrame>
+    <ServiceFrame id="NP:ServiceFrame:OPTIONAL" version="1">
       <stopAssignments>
         <PassengerStopAssignment order="1" version="1" id="NSR:PassengerStopAssignment:PS59977">
           <ValidBetween>
@@ -11,10 +19,7 @@
           </ValidBetween>
           <ScheduledStopPointRef ref="NSR:ScheduledStopPoint:S59977" versionRef="1"/>
           <StopPlaceRef ref="NSR:StopPlace:59977"/>
-        </PassengerStopAssignment>
-        <PassengerStopAssignment order="2" version="1" id="NP:PassengerStopAssignment:10176612_1">
-          <ScheduledStopPointRef ref="NP:ScheduledStopPoint:10176612_1"/>
-          <QuayRef ref="NSR:Quay:43750"/>
+          <QuayRef ref="NSR:Quay:107401"/>
         </PassengerStopAssignment>
       </stopAssignments>
     </ServiceFrame>

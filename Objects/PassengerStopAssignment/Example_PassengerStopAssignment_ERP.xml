@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<PublicationDelivery xmlns="http://www.netex.org.uk/netex" version="2.0">
+  <PublicationTimestamp>2026-04-08T12:00:00Z</PublicationTimestamp>
+  <ParticipantRef>EuPro</ParticipantRef>
+  <dataObjects>
+    <ServiceFrame id="ERP:ServiceFrame:MANDATORY" version="1">
+      <stopAssignments>
+        <PassengerStopAssignment id="ERP:PassengerStopAssignment:1" version="1" order="1">
+          <ScheduledStopPointRef ref="ERP:ScheduledStopPoint:1"/>
+          <QuayRef ref="ERP:Quay:1"/>
+        </PassengerStopAssignment>
+      </stopAssignments>
+    </ServiceFrame>
+    <ServiceFrame id="ERP:ServiceFrame:OPTIONAL" version="1">
+      <stopAssignments>
+        <PassengerStopAssignment id="ERP:PassengerStopAssignment:1" version="2" order="1">
+          <ScheduledStopPointRef ref="ERP:ScheduledStopPoint:1"/>
+          <StopPlaceRef ref="ERP:StopPlace:1"/>
+          <QuayRef ref="ERP:Quay:1"/>
+        </PassengerStopAssignment>
+      </stopAssignments>
+    </ServiceFrame>
+  </dataObjects>
+</PublicationDelivery>

@@ -14,12 +14,12 @@ GroupOfLines
 
 ## Table
 
-| Element | Type | Description | Path |
-|---------|------|-------------|------|
-| @id | ID | Unique identifier for the GroupOfLines | GroupOfLines/@id |
-| @version | String | Version label | GroupOfLines/@version |
-| Name | String | Public name of the group | GroupOfLines/Name |
-| ShortName | String | Short public name or label | GroupOfLines/ShortName |
-| Description | String | Description of purpose and content | GroupOfLines/Description |
-| PrivateCode | String | Private back-office code | GroupOfLines/PrivateCode |
-| [Line](../Line/Table_Line.md)@ref | Reference | Reference to a Line that is a member of this group | GroupOfLines/members/LineRef/@ref |
+| Element | Type | XSD | Description | Path |
+|---------|------|-----|-------------|------|
+| @id | ID | 1..1 | Unique identifier for the GroupOfLines | GroupOfLines/@id |
+| @version | String | 1..1 | Version label | GroupOfLines/@version |
+| Name | String | 0..1 | Public name of the group | GroupOfLines/Name |
+| ShortName | String | 0..1 | Short public name or label | GroupOfLines/ShortName |
+| Description | String | 0..1 | Description of purpose and content | GroupOfLines/Description |
+| PrivateCode | String | 0..1 | Private back-office code | GroupOfLines/PrivateCode |
+| [Line](../Line/Table_Line.md)@ref | Reference | 0..n | Reference to a Line that is a member of this group | GroupOfLines/members/LineRef/@ref |

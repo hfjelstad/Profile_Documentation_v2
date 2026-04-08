@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<PublicationDelivery xmlns="http://www.netex.org.uk/netex" version="2.0">
+  <PublicationTimestamp>2026-04-08T12:00:00Z</PublicationTimestamp>
+  <ParticipantRef>EuPro</ParticipantRef>
+  <dataObjects>
+    <ServiceCalendarFrame id="ERP:ServiceCalendarFrame:MANDATORY" version="1">
+      <dayTypes>
+        <DayType id="ERP:DayType:WEEKDAYS" version="1">
+          <Name>Weekdays</Name>
+        </DayType>
+      </dayTypes>
+    </ServiceCalendarFrame>
+    <ServiceCalendarFrame id="ERP:ServiceCalendarFrame:OPTIONAL" version="1">
+      <dayTypes>
+        <DayType id="ERP:DayType:WEEKDAYS" version="2">
+          <Name>Weekdays</Name>
+        </DayType>
+      </dayTypes>
+    </ServiceCalendarFrame>
+  </dataObjects>
+</PublicationDelivery>

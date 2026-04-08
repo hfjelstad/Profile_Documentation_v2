@@ -17,13 +17,13 @@ ResponsibilitySet
 
 ## Table
 
-| Element | Type | Description | Path |
-|---------|------|-------------|------|
-| @id | ID | Unique identifier for the ResponsibilitySet | ResponsibilitySet/@id |
-| @version | String | Version label | ResponsibilitySet/@version |
-| Name | String | Human-readable name of the responsibility set | ResponsibilitySet/Name |
-| ResponsibilityRoleAssignment/@id | ID | Unique identifier for the role assignment | ResponsibilitySet/roles/ResponsibilityRoleAssignment/@id |
-| ResponsibilityRoleAssignment/@version | String | Version label | ResponsibilitySet/roles/ResponsibilityRoleAssignment/@version |
-| [Authority](../Authority/Table_Authority.md)@ref | Reference | Reference to the responsible organisation | ResponsibilitySet/roles/ResponsibilityRoleAssignment/ResponsibleOrganisationRef/@ref |
-| TypeOfResponsibilityRoleRef/@ref | Reference | Reference to the role type qualifier | ResponsibilitySet/roles/ResponsibilityRoleAssignment/TypeOfResponsibilityRoleRef/@ref |
-| [Contract](../Contract/Table_Contract.md)@ref | Reference | Reference to the governing contract | ResponsibilitySet/roles/ResponsibilityRoleAssignment/AssociatedContract/ContractRef/@ref |
+| Element | Type | XSD | Description | Path |
+|---------|------|-----|-------------|------|
+| @id | ID | 1..1 | Unique identifier for the ResponsibilitySet | ResponsibilitySet/@id |
+| @version | String | 1..1 | Version label | ResponsibilitySet/@version |
+| Name | String | 0..1 | Human-readable name of the responsibility set | ResponsibilitySet/Name |
+| ResponsibilityRoleAssignment/@id | ID | 1..1 | Unique identifier for the role assignment | ResponsibilitySet/roles/ResponsibilityRoleAssignment/@id |
+| ResponsibilityRoleAssignment/@version | String | 1..1 | Version label | ResponsibilitySet/roles/ResponsibilityRoleAssignment/@version |
+| [Authority](../Authority/Table_Authority.md)@ref | Reference | 0..1 | Reference to the responsible organisation | ResponsibilitySet/roles/ResponsibilityRoleAssignment/ResponsibleOrganisationRef/@ref |
+| TypeOfResponsibilityRoleRef/@ref | Reference | 0..1 | Reference to the role type qualifier | ResponsibilitySet/roles/ResponsibilityRoleAssignment/TypeOfResponsibilityRoleRef/@ref |
+| [Contract](../Contract/Table_Contract.md)@ref | Reference | 0..1 | Reference to the governing contract | ResponsibilitySet/roles/ResponsibilityRoleAssignment/AssociatedContract/ContractRef/@ref |

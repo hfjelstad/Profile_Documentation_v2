@@ -3,32 +3,32 @@
   <PublicationTimestamp>2026-03-17T12:00:00Z</PublicationTimestamp>
   <ParticipantRef>EuPro</ParticipantRef>
   <dataObjects>
-    <CompositeFrame id="NP:CompositeFrame:dsj:1" version="1">
-      <frames>
-        <ServiceCalendarFrame id="NP:ServiceCalendarFrame:dsj:1" version="1">
-          <operatingDays>
-            <OperatingDay id="NP:OperatingDay:2026-06-01" version="1">
-              <CalendarDate>2026-06-01</CalendarDate>
-            </OperatingDay>
-          </operatingDays>
-        </ServiceCalendarFrame>
-        <TimetableFrame id="NP:TimetableFrame:dsj:1" version="1">
-          <vehicleJourneys>
-            <ServiceJourney id="NP:ServiceJourney:21_F6" version="0">
-              <Name>Line 21 weekday pattern</Name>
-            </ServiceJourney>
-            <DatedServiceJourney id="NP:DatedServiceJourney:21_2026-06-01" version="1">
-              <ServiceJourneyRef ref="NP:ServiceJourney:21_F6" version="0"/>
-              <OperatingDayRef ref="NP:OperatingDay:2026-06-01"/>
-            </DatedServiceJourney>
-            <DatedServiceJourney id="NP:DatedServiceJourney:21_2026-06-01_replaced" version="1">
-              <ServiceAlteration>replaced</ServiceAlteration>
-              <ServiceJourneyRef ref="NP:ServiceJourney:21_F6" version="0"/>
-              <OperatingDayRef ref="NP:OperatingDay:2026-06-01"/>
-            </DatedServiceJourney>
-          </vehicleJourneys>
-        </TimetableFrame>
-      </frames>
-    </CompositeFrame>
+    <TimetableFrame id="NP:TimetableFrame:MANDATORY" version="1">
+      <vehicleJourneys>
+        <ServiceJourney id="NP:ServiceJourney:21_F6" version="0">
+          <Name>Line 21 weekday pattern</Name>
+        </ServiceJourney>
+        <DatedServiceJourney id="NP:DatedServiceJourney:21_2026-06-01" version="1">
+          <ServiceJourneyRef ref="NP:ServiceJourney:21_F6" version="0"/>
+          <OperatingDayRef ref="NP:OperatingDay:2026-06-01"/>
+        </DatedServiceJourney>
+      </vehicleJourneys>
+    </TimetableFrame>
+    <TimetableFrame id="NP:TimetableFrame:OPTIONAL" version="1">
+      <vehicleJourneys>
+        <ServiceJourney id="NP:ServiceJourney:21_F6" version="1">
+          <Name>Line 21 weekday pattern</Name>
+        </ServiceJourney>
+        <DatedServiceJourney id="NP:DatedServiceJourney:21_2026-06-01" version="2">
+          <ServiceAlteration>replaced</ServiceAlteration>
+          <BlockRef ref="NP:Block:21_1"/>
+          <ServiceJourneyRef ref="NP:ServiceJourney:21_F6" version="1"/>
+          <replacedJourneys>
+            <DatedVehicleJourneyRef ref="NP:DatedServiceJourney:21_2026-05-31"/>
+          </replacedJourneys>
+          <OperatingDayRef ref="NP:OperatingDay:2026-06-01"/>
+        </DatedServiceJourney>
+      </vehicleJourneys>
+    </TimetableFrame>
   </dataObjects>
 </PublicationDelivery>
