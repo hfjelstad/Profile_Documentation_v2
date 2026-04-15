@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Example: Central Organisation Registry — Shared IDs Across Roles
+  
+  This example demonstrates how NeTEx deliveries can reference
+  organisations from an external central registry, where the same
+  organisation ID appears in both AuthorityRef and OperatorRef.
+  
+  Key points:
+  - No ResourceFrame with inline Authority/Operator objects
+  - The registry manages organisations as untyped entities
+  - The NeTEx element name (AuthorityRef / OperatorRef) defines the role
+  - XSD validation passes because @ref is just a string when no
+    inline objects are present to trigger keyref constraints
+-->
+<PublicationDelivery
+  xmlns="http://www.netex.org.uk/netex"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  version="2.0">
+
+  <PublicationTimestamp>2026-04-15T10:00:00Z</PublicationTimestamp>
+  <ParticipantRef>REG</ParticipantRef>
+
+  <dataObjects>
+    <CompositeFrame id="OPR:CompositeFrame:CentralRegistry" version="1">
+      <validityConditions>
+        <AvailabilityCondition id="OPR:AvailabilityCondition:2026" version="1">
+          <FromDate>2026-01-01T00:00:00</FromDate>
+          <ToDate>2026-12-31T23:59:59</ToDate>
+        </AvailabilityCondition>
+      </validityConditions>
+      <codespaces>
+        <Codespace id="opr">
+          <Xmlns>OPR</Xmlns>
+          <XmlnsUrl>http://www.example.org/opr</XmlnsUrl>
+        </Codespace>
+        <Codespace id="reg">
+          <Xmlns>REG</Xmlns>
+          <XmlnsUrl>http://www.example.org/registry</XmlnsUrl>
+        </Codespace>
+      </codespaces>
+      <FrameDefaults>
+        <DefaultCodespaceRef ref="opr"/>
+      </FrameDefaults>
+
+      <frames>
+
+        <!--
+          ============================================================
+          NOTE: No ResourceFrame with <organisations>.
+          All organisation references point to the external registry.
+          ============================================================
+        -->
+
+        <!-- === ServiceCalendarFrame === -->
+        <ServiceCalendarFrame id="OPR:ServiceCalendarFrame:1" version="1">
+          <dayTypes>
+            <DayType id="OPR:DayType:Weekdays" version="1">
+              <Name>Monday to Friday</Name>
+              <properties>
+                <PropertyOfDay>
+                  <DaysOfWeek>Monday Tuesday Wednesday Thursday Friday</DaysOfWeek>
+                </PropertyOfDay>
+              </properties>
+            </DayType>
+          </dayTypes>
+        </ServiceCalendarFrame>
+
+        <!-- === ServiceFrame === -->
+        <ServiceFrame id="OPR:ServiceFrame:1" version="1">
+
+          <Network id="OPR:Network:CityNet" version="1">
+            <Name>City Transit Network</Name>
+            <AuthorityRef ref="REG:Organisation:KommuneTransport"/>
+          </Network>
+
+          <routePoints>
+            <RoutePoint id="OPR:RoutePoint:A" version="1">
+              <Location>
+                <Longitude>10.7522</Longitude>
+                <Latitude>59.9139</Latitude>
+              </Location>
+            </RoutePoint>
+            <RoutePoint id="OPR:RoutePoint:B" version="1">
+              <Location>
+                <Longitude>10.7800</Longitude>
+                <Latitude>59.9200</Latitude>
+              </Location>
+            </RoutePoint>
+          </routePoints>
+
+          <routes>
+            <Route id="OPR:Route:1A" version="1">
+              <Name>Sentrum — Øst</Name>
+              <LineRef ref="OPR:Line:1"/>
+              <DirectionType>outbound</DirectionType>
+              <pointsInSequence>
+                <PointOnRoute id="OPR:PointOnRoute:1A-1" version="1" order="1">
+                  <RoutePointRef ref="OPR:RoutePoint:A" version="1"/>
+                </PointOnRoute>
+                <PointOnRoute id="OPR:PointOnRoute:1A-2" version="1" order="2">
+                  <RoutePointRef ref="OPR:RoutePoint:B" version="1"/>
+                </PointOnRoute>
+              </pointsInSequence>
+            </Route>
+            <Route id="OPR:Route:2A" version="1">
+              <Name>Sentrum — Nord</Name>
+              <LineRef ref="OPR:Line:2"/>
+              <DirectionType>outbound</DirectionType>
+              <pointsInSequence>
+                <PointOnRoute id="OPR:PointOnRoute:2A-1" version="1" order="1">
+                  <RoutePointRef ref="OPR:RoutePoint:A" version="1"/>
+                </PointOnRoute>
+                <PointOnRoute id="OPR:PointOnRoute:2A-2" version="1" order="2">
+                  <RoutePointRef ref="OPR:RoutePoint:B" version="1"/>
+                </PointOnRoute>
+              </pointsInSequence>
+            </Route>
+          </routes>
+
+          <lines>
+            <!--
+              PATTERN 1: Same organisation as both Authority and Operator.
+              KommuneTransport both plans and operates this city bus line.
+            -->
+            <Line id="OPR:Line:1" version="1">
+              <Name>Stadsbuss 1</Name>
+              <TransportMode>bus</TransportMode>
+              <AuthorityRef ref="REG:Organisation:KommuneTransport"/>
+              <OperatorRef ref="REG:Organisation:KommuneTransport"/>
+            </Line>
+
+            <!--
+              PATTERN 2: Different organisations per role.
+              Fylkeskommune commissions the service, PrivatBuss operates it.
+            -->
+            <Line id="OPR:Line:2" version="1">
+              <Name>Regionbuss 2</Name>
+              <TransportMode>bus</TransportMode>
+              <AuthorityRef ref="REG:Organisation:Fylkeskommune"/>
+              <OperatorRef ref="REG:Organisation:PrivatBuss"/>
+            </Line>
+          </lines>
+
+          <scheduledStopPoints>
+            <ScheduledStopPoint id="OPR:ScheduledStopPoint:A" version="1">
+              <Name>Sentrum</Name>
+            </ScheduledStopPoint>
+            <ScheduledStopPoint id="OPR:ScheduledStopPoint:B" version="1">
+              <Name>Øst terminal</Name>
+            </ScheduledStopPoint>
+          </scheduledStopPoints>
+
+          <journeyPatterns>
+            <JourneyPattern id="OPR:JourneyPattern:1A" version="1">
+              <Name>Stadsbuss 1 — utreise</Name>
+              <RouteRef ref="OPR:Route:1A"/>
+              <pointsInSequence>
+                <StopPointInJourneyPattern id="OPR:StopPointInJourneyPattern:1A-1" version="1" order="1">
+                  <ScheduledStopPointRef ref="OPR:ScheduledStopPoint:A"/>
+                  <ForAlighting>false</ForAlighting>
+                  <ForBoarding>true</ForBoarding>
+                </StopPointInJourneyPattern>
+                <StopPointInJourneyPattern id="OPR:StopPointInJourneyPattern:1A-2" version="1" order="2">
+                  <ScheduledStopPointRef ref="OPR:ScheduledStopPoint:B"/>
+                  <ForAlighting>true</ForAlighting>
+                  <ForBoarding>false</ForBoarding>
+                </StopPointInJourneyPattern>
+              </pointsInSequence>
+            </JourneyPattern>
+            <JourneyPattern id="OPR:JourneyPattern:2A" version="1">
+              <Name>Regionbuss 2 — utreise</Name>
+              <RouteRef ref="OPR:Route:2A"/>
+              <pointsInSequence>
+                <StopPointInJourneyPattern id="OPR:StopPointInJourneyPattern:2A-1" version="1" order="1">
+                  <ScheduledStopPointRef ref="OPR:ScheduledStopPoint:A"/>
+                  <ForAlighting>false</ForAlighting>
+                  <ForBoarding>true</ForBoarding>
+                </StopPointInJourneyPattern>
+                <StopPointInJourneyPattern id="OPR:StopPointInJourneyPattern:2A-2" version="1" order="2">
+                  <ScheduledStopPointRef ref="OPR:ScheduledStopPoint:B"/>
+                  <ForAlighting>true</ForAlighting>
+                  <ForBoarding>false</ForBoarding>
+                </StopPointInJourneyPattern>
+              </pointsInSequence>
+            </JourneyPattern>
+          </journeyPatterns>
+        </ServiceFrame>
+
+        <!-- === TimetableFrame === -->
+        <TimetableFrame id="OPR:TimetableFrame:1" version="1">
+          <vehicleJourneys>
+
+            <!-- Journey on Line 1 — same org is authority and operator -->
+            <ServiceJourney id="OPR:ServiceJourney:1001" version="1">
+              <dayTypes>
+                <DayTypeRef ref="OPR:DayType:Weekdays"/>
+              </dayTypes>
+              <JourneyPatternRef ref="OPR:JourneyPattern:1A"/>
+              <OperatorRef ref="REG:Organisation:KommuneTransport"/>
+              <passingTimes>
+                <TimetabledPassingTime id="OPR:TimetabledPassingTime:1001-1" version="1">
+                  <StopPointInJourneyPatternRef ref="OPR:StopPointInJourneyPattern:1A-1" version="1"/>
+                  <DepartureTime>07:00:00</DepartureTime>
+                </TimetabledPassingTime>
+                <TimetabledPassingTime id="OPR:TimetabledPassingTime:1001-2" version="1">
+                  <StopPointInJourneyPatternRef ref="OPR:StopPointInJourneyPattern:1A-2" version="1"/>
+                  <ArrivalTime>07:25:00</ArrivalTime>
+                </TimetabledPassingTime>
+              </passingTimes>
+            </ServiceJourney>
+
+            <!-- Journey on Line 2 — default operator is PrivatBuss -->
+            <ServiceJourney id="OPR:ServiceJourney:2001" version="1">
+              <dayTypes>
+                <DayTypeRef ref="OPR:DayType:Weekdays"/>
+              </dayTypes>
+              <JourneyPatternRef ref="OPR:JourneyPattern:2A"/>
+              <OperatorRef ref="REG:Organisation:PrivatBuss"/>
+              <passingTimes>
+                <TimetabledPassingTime id="OPR:TimetabledPassingTime:2001-1" version="1">
+                  <StopPointInJourneyPatternRef ref="OPR:StopPointInJourneyPattern:2A-1" version="1"/>
+                  <DepartureTime>08:00:00</DepartureTime>
+                </TimetabledPassingTime>
+                <TimetabledPassingTime id="OPR:TimetabledPassingTime:2001-2" version="1">
+                  <StopPointInJourneyPatternRef ref="OPR:StopPointInJourneyPattern:2A-2" version="1"/>
+                  <ArrivalTime>08:45:00</ArrivalTime>
+                </TimetabledPassingTime>
+              </passingTimes>
+            </ServiceJourney>
+
+            <!--
+              PATTERN 3: Operator override on a specific journey.
+              Line 2 default operator is PrivatBuss, but this journey is
+              operated by a substitute carrier (SubstituBuss).
+            -->
+            <ServiceJourney id="OPR:ServiceJourney:2002" version="1">
+              <dayTypes>
+                <DayTypeRef ref="OPR:DayType:Weekdays"/>
+              </dayTypes>
+              <JourneyPatternRef ref="OPR:JourneyPattern:2A"/>
+              <OperatorRef ref="REG:Organisation:SubstituBuss"/>
+              <passingTimes>
+                <TimetabledPassingTime id="OPR:TimetabledPassingTime:2002-1" version="1">
+                  <StopPointInJourneyPatternRef ref="OPR:StopPointInJourneyPattern:2A-1" version="1"/>
+                  <DepartureTime>09:00:00</DepartureTime>
+                </TimetabledPassingTime>
+                <TimetabledPassingTime id="OPR:TimetabledPassingTime:2002-2" version="1">
+                  <StopPointInJourneyPatternRef ref="OPR:StopPointInJourneyPattern:2A-2" version="1"/>
+                  <ArrivalTime>09:45:00</ArrivalTime>
+                </TimetabledPassingTime>
+              </passingTimes>
+            </ServiceJourney>
+
+          </vehicleJourneys>
+        </TimetableFrame>
+
+      </frames>
+    </CompositeFrame>
+  </dataObjects>
+</PublicationDelivery>
