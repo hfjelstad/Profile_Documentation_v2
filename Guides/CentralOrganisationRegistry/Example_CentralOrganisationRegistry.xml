@@ -1,6 +1,6 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <!--
-  Example: Central Organisation Registry — Shared IDs Across Roles
+  Example: Central Organisation Registry â€” Shared IDs Across Roles
   
   This example demonstrates how NeTEx deliveries can reference
   organisations from an external central registry, where the same
@@ -71,7 +71,7 @@
 
           <Network id="OPR:Network:CityNet" version="1">
             <Name>City Transit Network</Name>
-            <AuthorityRef ref="REG:Organisation:KommuneTransport"/>
+            <AuthorityRef ref="REG:GeneralOrganisation:KommuneTransport"/>
           </Network>
 
           <routePoints>
@@ -91,7 +91,7 @@
 
           <routes>
             <Route id="OPR:Route:1A" version="1">
-              <Name>Sentrum — Øst</Name>
+              <Name>Sentrum â€” Ã˜st</Name>
               <LineRef ref="OPR:Line:1"/>
               <DirectionType>outbound</DirectionType>
               <pointsInSequence>
@@ -104,7 +104,7 @@
               </pointsInSequence>
             </Route>
             <Route id="OPR:Route:2A" version="1">
-              <Name>Sentrum — Nord</Name>
+              <Name>Sentrum â€” Nord</Name>
               <LineRef ref="OPR:Line:2"/>
               <DirectionType>outbound</DirectionType>
               <pointsInSequence>
@@ -126,8 +126,8 @@
             <Line id="OPR:Line:1" version="1">
               <Name>Stadsbuss 1</Name>
               <TransportMode>bus</TransportMode>
-              <AuthorityRef ref="REG:Organisation:KommuneTransport"/>
-              <OperatorRef ref="REG:Organisation:KommuneTransport"/>
+              <AuthorityRef ref="REG:GeneralOrganisation:KommuneTransport"/>
+              <OperatorRef ref="REG:GeneralOrganisation:KommuneTransport"/>
             </Line>
 
             <!--
@@ -137,8 +137,8 @@
             <Line id="OPR:Line:2" version="1">
               <Name>Regionbuss 2</Name>
               <TransportMode>bus</TransportMode>
-              <AuthorityRef ref="REG:Organisation:Fylkeskommune"/>
-              <OperatorRef ref="REG:Organisation:PrivatBuss"/>
+              <AuthorityRef ref="REG:GeneralOrganisation:Fylkeskommune"/>
+              <OperatorRef ref="REG:GeneralOrganisation:PrivatBuss"/>
             </Line>
           </lines>
 
@@ -147,13 +147,13 @@
               <Name>Sentrum</Name>
             </ScheduledStopPoint>
             <ScheduledStopPoint id="OPR:ScheduledStopPoint:B" version="1">
-              <Name>Øst terminal</Name>
+              <Name>Ã˜st terminal</Name>
             </ScheduledStopPoint>
           </scheduledStopPoints>
 
           <journeyPatterns>
             <JourneyPattern id="OPR:JourneyPattern:1A" version="1">
-              <Name>Stadsbuss 1 — utreise</Name>
+              <Name>Stadsbuss 1 â€” utreise</Name>
               <RouteRef ref="OPR:Route:1A"/>
               <pointsInSequence>
                 <StopPointInJourneyPattern id="OPR:StopPointInJourneyPattern:1A-1" version="1" order="1">
@@ -169,7 +169,7 @@
               </pointsInSequence>
             </JourneyPattern>
             <JourneyPattern id="OPR:JourneyPattern:2A" version="1">
-              <Name>Regionbuss 2 — utreise</Name>
+              <Name>Regionbuss 2 â€” utreise</Name>
               <RouteRef ref="OPR:Route:2A"/>
               <pointsInSequence>
                 <StopPointInJourneyPattern id="OPR:StopPointInJourneyPattern:2A-1" version="1" order="1">
@@ -191,13 +191,13 @@
         <TimetableFrame id="OPR:TimetableFrame:1" version="1">
           <vehicleJourneys>
 
-            <!-- Journey on Line 1 — same org is authority and operator -->
+            <!-- Journey on Line 1 â€” same org is authority and operator -->
             <ServiceJourney id="OPR:ServiceJourney:1001" version="1">
               <dayTypes>
                 <DayTypeRef ref="OPR:DayType:Weekdays"/>
               </dayTypes>
               <JourneyPatternRef ref="OPR:JourneyPattern:1A"/>
-              <OperatorRef ref="REG:Organisation:KommuneTransport"/>
+              <OperatorRef ref="REG:GeneralOrganisation:KommuneTransport"/>
               <passingTimes>
                 <TimetabledPassingTime id="OPR:TimetabledPassingTime:1001-1" version="1">
                   <StopPointInJourneyPatternRef ref="OPR:StopPointInJourneyPattern:1A-1" version="1"/>
@@ -210,13 +210,13 @@
               </passingTimes>
             </ServiceJourney>
 
-            <!-- Journey on Line 2 — default operator is PrivatBuss -->
+            <!-- Journey on Line 2 â€” default operator is PrivatBuss -->
             <ServiceJourney id="OPR:ServiceJourney:2001" version="1">
               <dayTypes>
                 <DayTypeRef ref="OPR:DayType:Weekdays"/>
               </dayTypes>
               <JourneyPatternRef ref="OPR:JourneyPattern:2A"/>
-              <OperatorRef ref="REG:Organisation:PrivatBuss"/>
+              <OperatorRef ref="REG:GeneralOrganisation:PrivatBuss"/>
               <passingTimes>
                 <TimetabledPassingTime id="OPR:TimetabledPassingTime:2001-1" version="1">
                   <StopPointInJourneyPatternRef ref="OPR:StopPointInJourneyPattern:2A-1" version="1"/>
@@ -239,7 +239,7 @@
                 <DayTypeRef ref="OPR:DayType:Weekdays"/>
               </dayTypes>
               <JourneyPatternRef ref="OPR:JourneyPattern:2A"/>
-              <OperatorRef ref="REG:Organisation:SubstituBuss"/>
+              <OperatorRef ref="REG:GeneralOrganisation:SubstituBuss"/>
               <passingTimes>
                 <TimetabledPassingTime id="OPR:TimetabledPassingTime:2002-1" version="1">
                   <StopPointInJourneyPatternRef ref="OPR:StopPointInJourneyPattern:2A-1" version="1"/>

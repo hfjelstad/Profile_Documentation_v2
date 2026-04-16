@@ -9,9 +9,10 @@ This creates an interesting modelling pattern: the **same identifier** can appea
 In this guide you will learn:
 - 🏢 How a central organisation registry differs from inline NeTEx objects
 - 🔄 Why the same ID can be used in `AuthorityRef` and `OperatorRef`
-- 📐 What the XSD allows and what it constrains
+- 📐 What the XSD allows — including full `NeTEx_publication.xsd` validation
+- 🏗️ Using `GeneralOrganisation` as the registry's NeTEx export type
 - 🧩 How to model an organisation that fills multiple roles
-- ✅ A validating XML example
+- ✅ Two validating XML examples (registry file + delivery file)
 
 ---
 
@@ -34,21 +35,27 @@ Line
 
 With this model, a single organisation **cannot** share an ID across both roles, because `Authority` and `Operator` coexist in `<organisations>` and share the `OrganisationIdType` namespace.
 
-### Registry Model (external)
+### Registry Model (GeneralOrganisation)
 
-Organisations are **not defined** in the delivery. They exist in an external registry. The delivery only carries `@ref` strings — no inline objects to validate against.
+Organisations are defined in a **separate registry file** as `GeneralOrganisation` — a role-neutral NeTEx type. Consuming deliveries reference these using `AuthorityRef` / `OperatorRef`, where the **element name defines the role**.
 
 ```text
-Central Registry (external)
- └── Organisation id="REG:Organisation:Ruter"    ← untyped, role-neutral
+Registry file (ResourceFrame)
+ └── organisations
+      ├── GeneralOrganisation id="REG:GeneralOrganisation:Ruter"
+      ├── GeneralOrganisation id="REG:GeneralOrganisation:Vy"
+      └── GeneralOrganisation id="REG:GeneralOrganisation:Unibuss"
 
-NeTEx delivery (no ResourceFrame organisations)
+Delivery file (no ResourceFrame organisations)
 Line
- ├── AuthorityRef ref="REG:Organisation:Ruter"   ← "Ruter as authority"
- └── OperatorRef  ref="REG:Organisation:Ruter"   ← "Ruter as operator"
+ ├── AuthorityRef ref="REG:GeneralOrganisation:Ruter"   ← "Ruter as authority"
+ └── OperatorRef  ref="REG:GeneralOrganisation:Ruter"   ← "Ruter as operator"
 ```
 
-The **element name is the role**. The registry doesn't need to know about NeTEx types — the context in the delivery defines the relationship.
+The **element name is the role**. The registry doesn't need to distinguish Authority from Operator — the NeTEx context in each delivery defines the relationship.
+
+> [!TIP]
+> Both files validate independently against the **full** `NeTEx_publication.xsd` (with all key/keyref constraints). No need for the NoConstraint schema.
 
 ---
 
@@ -80,13 +87,33 @@ ObjectIdType (xsd:normalizedString)
            └── AuthorityIdType       ← no pattern constraint
 ```
 
-### When Validation Applies
+### Why It Validates Against Full XSD
 
-| Scenario | Ref validated? | Reason |
-|----------|---------------|--------|
-| Inline objects in `<organisations>` | **Yes** | XSD keyref constraints match `@ref` to `@id` on typed elements |
-| No inline objects (external registry) | **No** | No `@id` to validate against — `@ref` is just a string |
-| Mixed (some inline, some external) | **Partial** | Only inline objects trigger keyref validation |
+The `NeTEx_publication.xsd` defines key/keyref constraints with **two** fields:
+
+```xml
+<xsd:key name="Operator_AnyVersionedKey">
+  <xsd:selector xpath=".//netex:Operator"/>
+  <xsd:field xpath="@id"/>
+  <xsd:field xpath="@version"/>      ← field 2
+</xsd:key>
+
+<xsd:keyref name="Operator_KeyRef" refer="Operator_AnyVersionedKey">
+  <xsd:selector xpath=".//netex:OperatorRef"/>
+  <xsd:field xpath="@ref"/>
+  <xsd:field xpath="@version"/>      ← field 2
+</xsd:keyref>
+```
+
+Per the XSD specification: *if any keyref field evaluates to an empty node-set (i.e. the attribute is absent), the constraint is **not violated**.* Since our `OperatorRef` and `AuthorityRef` elements omit `@version`, the keyref tuple is incomplete and the validator skips the check.
+
+| File | Keyref triggered? | Reason |
+|------|-------------------|--------|
+| **Registry** | No refs at all | No `OperatorRef` / `AuthorityRef` present |
+| **Delivery** | Refs exist, but no `@version` | Keyref tuple incomplete → constraint not applied |
+
+> [!NOTE]
+> This is not a workaround — it is intentional XSD design. Omitting `@version` on refs to external objects is standard practice in NeTEx, allowing cross-file references without breaking validation.
 
 ### Line XSD — Both Refs Accepted
 
@@ -112,8 +139,8 @@ The simplest case: an organisation is both the authority (bestiller) and the ope
 <Line id="OPR:Line:1" version="1">
   <Name>Linje 1</Name>
   <TransportMode>bus</TransportMode>
-  <AuthorityRef ref="REG:Organisation:Ruter"/>
-  <OperatorRef ref="REG:Organisation:Ruter"/>
+  <AuthorityRef ref="REG:GeneralOrganisation:Ruter"/>
+  <OperatorRef ref="REG:GeneralOrganisation:Ruter"/>
 </Line>
 ```
 
@@ -128,8 +155,8 @@ The standard case: a transit authority commissions services from a separate oper
 <Line id="OPR:Line:2" version="1">
   <Name>Linje 2</Name>
   <TransportMode>bus</TransportMode>
-  <AuthorityRef ref="REG:Organisation:Ruter"/>
-  <OperatorRef ref="REG:Organisation:Vy"/>
+  <AuthorityRef ref="REG:GeneralOrganisation:Ruter"/>
+  <OperatorRef ref="REG:GeneralOrganisation:Vy"/>
 </Line>
 ```
 
@@ -141,13 +168,13 @@ A line is commissioned by one authority and operated by one default operator, bu
 <Line id="OPR:Line:3" version="1">
   <Name>Linje 3</Name>
   <TransportMode>rail</TransportMode>
-  <AuthorityRef ref="REG:Organisation:Jernbanedirektoratet"/>
-  <OperatorRef ref="REG:Organisation:Vy"/>
+  <AuthorityRef ref="REG:GeneralOrganisation:Jernbanedirektoratet"/>
+  <OperatorRef ref="REG:GeneralOrganisation:Vy"/>
 </Line>
 
 <!-- A specific journey on Line 3, operated by SJ instead of Vy -->
 <ServiceJourney id="OPR:ServiceJourney:3001" version="1">
-  <OperatorRef ref="REG:Organisation:SJ"/>
+  <OperatorRef ref="REG:GeneralOrganisation:SJ"/>
   <JourneyPatternRef ref="OPR:JourneyPattern:3A"/>
   ...
 </ServiceJourney>
@@ -158,32 +185,66 @@ A line is commissioned by one authority and operated by one default operator, bu
 
 ---
 
-## 5. ✅ Validating Example
+## 5. ✅ Validating Examples
 
-The following complete XML validates against the NeTEx XSD. It demonstrates:
-- No `ResourceFrame` with inline organisations (external registry)
-- Same `@ref` used in both `AuthorityRef` and `OperatorRef` on a Line
-- Different organisations on different Lines
-- Operator override on a ServiceJourney
+Two files, both validate against the **full** `NeTEx_publication.xsd` (with all key/keyref constraints).
 
-See [Example_CentralOrganisationRegistry.xml](Example_CentralOrganisationRegistry.xml) for the full file.
+### File 1 — Registry Export
+
+The registry publishes its organisations as `GeneralOrganisation` — role-neutral, with contact details.
+
+See [Example_Registry_GeneralOrganisation.xml](Example_Registry_GeneralOrganisation.xml).
+
+```xml
+<ResourceFrame id="REG:ResourceFrame:Registry" version="1">
+  <organisations>
+    <GeneralOrganisation id="REG:GeneralOrganisation:KommuneTransport" version="1">
+      <Name>KommuneTransport AS</Name>
+      <ContactDetails>
+        <Url>https://www.kommunetransport.example.no</Url>
+      </ContactDetails>
+    </GeneralOrganisation>
+    <GeneralOrganisation id="REG:GeneralOrganisation:Fylkeskommune" version="1">
+      <Name>Fylkeskommune Mobilitet</Name>
+    </GeneralOrganisation>
+    <GeneralOrganisation id="REG:GeneralOrganisation:PrivatBuss" version="1">
+      <Name>PrivatBuss Norge AS</Name>
+    </GeneralOrganisation>
+  </organisations>
+</ResourceFrame>
+```
+
+### File 2 — Operator Delivery
+
+The delivery references registry organisations via `AuthorityRef` and `OperatorRef` — **without `@version`** on the refs, so keyref constraints are not triggered.
+
+See [Example_CentralOrganisationRegistry.xml](Example_CentralOrganisationRegistry.xml).
 
 ```xml
 <Line id="OPR:Line:1" version="1">
   <Name>Stadsbuss 1</Name>
   <TransportMode>bus</TransportMode>
   <!-- Same org is both authority and operator -->
-  <AuthorityRef ref="REG:Organisation:KommuneTransport"/>
-  <OperatorRef ref="REG:Organisation:KommuneTransport"/>
+  <AuthorityRef ref="REG:GeneralOrganisation:KommuneTransport"/>
+  <OperatorRef ref="REG:GeneralOrganisation:KommuneTransport"/>
 </Line>
 
 <Line id="OPR:Line:2" version="1">
   <Name>Regionbuss 2</Name>
   <TransportMode>bus</TransportMode>
   <!-- Different orgs per role -->
-  <AuthorityRef ref="REG:Organisation:Fylkeskommune"/>
-  <OperatorRef ref="REG:Organisation:PrivatBuss"/>
+  <AuthorityRef ref="REG:GeneralOrganisation:Fylkeskommune"/>
+  <OperatorRef ref="REG:GeneralOrganisation:PrivatBuss"/>
 </Line>
+```
+
+### Validation Proof
+
+Both files validated against `NeTEx_publication.xsd` (full constraints):
+
+```text
+Example_Registry_GeneralOrganisation.xml: VALID
+Example_CentralOrganisationRegistry.xml:  VALID
 ```
 
 ---
@@ -194,7 +255,8 @@ See [Example_CentralOrganisationRegistry.xml](Example_CentralOrganisationRegistr
 
 | Concern | Guidance |
 |---------|----------|
-| **ID format** | Use the registry's codespace consistently (`REG:Organisation:xxx`) |
+| **ID format** | Use the registry's codespace consistently (e.g. `REG:GeneralOrganisation:xxx`) |
+| **Omit `@version` on refs** | This prevents keyref validation from failing against external objects |
 | **No inline objects needed** | The delivery does not need to re-define organisations from the registry |
 | **Element = role** | `AuthorityRef` means "this org acts as authority here", `OperatorRef` means "this org operates here" |
 | **SIRI compatibility** | SIRI-ET and SIRI-VM use `OperatorRef` — the same registry ID works |
@@ -204,7 +266,7 @@ See [Example_CentralOrganisationRegistry.xml](Example_CentralOrganisationRegistr
 | Concern | Guidance |
 |---------|----------|
 | **Resolving refs** | Look up the organisation in the central registry, not in the NeTEx file |
-| **Building full NeTEx** | If you need to produce a complete document with inline objects, you must choose one NeTEx type per organisation per `<organisations>` block |
+| **Building full NeTEx** | If you need inline objects, use `GeneralOrganisation` as the role-neutral type in `<organisations>` |
 | **Same ID, different roles** | Do not assume `AuthorityRef="X"` and `OperatorRef="X"` are errors — they indicate dual-role |
 
 ### For Registry Operators
@@ -212,7 +274,7 @@ See [Example_CentralOrganisationRegistry.xml](Example_CentralOrganisationRegistr
 | Concern | Guidance |
 |---------|----------|
 | **Stable IDs** | Organisation IDs must be stable — they are cached in timetable datasets across systems |
-| **Role-neutral** | The registry does not need to distinguish Authority from Operator — NeTEx context handles that |
+| **Export as GeneralOrganisation** | Use `GeneralOrganisation` as the NeTEx type — it is role-neutral and the file validates against the full XSD |
 | **Codespace** | Assign a dedicated codespace (e.g. `REG`) for registry-managed identifiers |
 
 ---

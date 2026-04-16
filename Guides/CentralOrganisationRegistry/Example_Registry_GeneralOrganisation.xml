@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Central Organisation Registry — exported as NeTEx GeneralOrganisation
+  
+  This file represents the registry's own data export. Organisations are
+  modelled as GeneralOrganisation — role-neutral entities. The NeTEx type
+  is irrelevant to the registry; roles are assigned in consuming deliveries
+  via AuthorityRef / OperatorRef.
+-->
+<PublicationDelivery
+  xmlns="http://www.netex.org.uk/netex"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  version="2.0">
+
+  <PublicationTimestamp>2026-04-16T08:00:00Z</PublicationTimestamp>
+  <ParticipantRef>REG</ParticipantRef>
+
+  <dataObjects>
+    <ResourceFrame id="REG:ResourceFrame:Registry" version="1">
+      <codespaces>
+        <Codespace id="reg">
+          <Xmlns>REG</Xmlns>
+          <XmlnsUrl>http://www.example.org/registry</XmlnsUrl>
+        </Codespace>
+      </codespaces>
+      <FrameDefaults>
+        <DefaultCodespaceRef ref="reg"/>
+      </FrameDefaults>
+
+      <organisations>
+        <GeneralOrganisation id="REG:GeneralOrganisation:KommuneTransport" version="1">
+          <Name>KommuneTransport AS</Name>
+          <ContactDetails>
+            <Url>https://www.kommunetransport.example.no</Url>
+          </ContactDetails>
+        </GeneralOrganisation>
+
+        <GeneralOrganisation id="REG:GeneralOrganisation:Fylkeskommune" version="1">
+          <Name>Fylkeskommune Mobilitet</Name>
+          <ContactDetails>
+            <Url>https://www.fylkesmobilitet.example.no</Url>
+          </ContactDetails>
+        </GeneralOrganisation>
+
+        <GeneralOrganisation id="REG:GeneralOrganisation:PrivatBuss" version="1">
+          <Name>PrivatBuss Norge AS</Name>
+          <ContactDetails>
+            <Phone>+47 22 33 44 55</Phone>
+            <Url>https://www.privatbuss.example.no</Url>
+          </ContactDetails>
+        </GeneralOrganisation>
+
+        <GeneralOrganisation id="REG:GeneralOrganisation:SubstituBuss" version="1">
+          <Name>SubstituBuss AS</Name>
+          <ContactDetails>
+            <Phone>+47 22 99 88 77</Phone>
+          </ContactDetails>
+        </GeneralOrganisation>
+      </organisations>
+    </ResourceFrame>
+  </dataObjects>
+</PublicationDelivery>
