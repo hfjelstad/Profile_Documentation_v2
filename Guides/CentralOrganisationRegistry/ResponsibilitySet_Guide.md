@@ -78,22 +78,21 @@ When using a central organisation registry, there is a natural separation:
 | Codespace | Owns | Concern |
 |-----------|------|---------|
 | **ENT** | Everything in the delivery: `ResponsibilitySet`, `Line`, `ServiceJourney`, etc. | The delivery — what is operated and who fills which role |
-| **REG** | Only appears on `ResponsibleOrganisationRef` | External reference to the registry — who the organisations **are** |
+| **REG** | Only appears on `ResponsibleOrganisationRef` and `OrganisationRef` in contracts | External reference to the organisation registry |
+| **CON** | Only appears on `ContractRef` | External reference to the contract registry |
 
-The registry doesn't need to know that KommuneTransport is both planner and operator for Line 1 — that's the delivery's concern. The registry only publishes **who** the organisations are.
+The registries don't need to know which lines or journeys a contract applies to — that's the delivery's concern. The registries only publish **who** the organisations are and **what** contracts exist between them.
 
 ```text
-ENT (Delivery)                              REG (External registry)
-┌───────────────────────────────────────┐     ┌──────────────────┐
-│ ResponsibilitySet: SelfOperated      │     │ GeneralOrg:      │
-│   planning  → REG:KommuneTransport  │────►│  KommuneTransport│
-│   operation → REG:KommuneTransport  │     │  Fylkeskommune   │
-│                                       │     │  PrivatBuss      │
-│ Line: Stadsbuss 1                     │     │  SubstituBuss    │
-│   responsibilitySetRef=SelfOperated   │     └──────────────────┘
-│                                       │
-│ ServiceJourney: 1002                  │
-│   responsibilitySetRef=SubstitutOper  │
+ENT (Delivery)                              REG (Org registry)   CON (Contract registry)
+┌───────────────────────────────────────┐     ┌──────────────────┐ ┌──────────────────┐
+│ ResponsibilitySet: FylkePrivat      │     │ GeneralOrg:      │ │ Contract:        │
+│   planning  → REG:Fylkeskommune   │────►│  Fylkeskommune   │ │  FK-PB-2026      │
+│   operation → REG:PrivatBuss       │     │  PrivatBuss      │ │  FK-SB-2026      │
+│   contract  → CON:FK-PB-2026      │────►│  ...             │ │  KT-SelfOp-2026  │
+│                                       │     └──────────────────┘ └──────────────────┘
+│ Line: Regionbuss 2                    │
+│   responsibilitySetRef=FylkePrivat   │
 └───────────────────────────────────────┘
 ```
 
@@ -174,7 +173,7 @@ An organisation that both plans and operates a line. Each role gets its own assi
 
 ### Pattern 2 — Split Authority and Operator
 
-A transit authority commissions services from a separate operator:
+A transit authority commissions services from a separate operator, linked to an external contract:
 
 ```xml
 <ResponsibilitySet id="ENT:ResponsibilitySet:Line2" version="1">
@@ -183,10 +182,16 @@ A transit authority commissions services from a separate operator:
     <ResponsibilityRoleAssignment id="ENT:ResponsibilityRoleAssignment:L2-Auth" version="1">
       <StakeholderRoleType>planning</StakeholderRoleType>
       <ResponsibleOrganisationRef ref="REG:GeneralOrganisation:Fylkeskommune"/>
+      <AssociatedContract>
+        <ContractRef ref="CON:Contract:FK-PB-2026"/>
+      </AssociatedContract>
     </ResponsibilityRoleAssignment>
     <ResponsibilityRoleAssignment id="ENT:ResponsibilityRoleAssignment:L2-Oper" version="1">
       <StakeholderRoleType>operation</StakeholderRoleType>
       <ResponsibleOrganisationRef ref="REG:GeneralOrganisation:PrivatBuss"/>
+      <AssociatedContract>
+        <ContractRef ref="CON:Contract:FK-PB-2026"/>
+      </AssociatedContract>
     </ResponsibilityRoleAssignment>
   </roles>
 </ResponsibilitySet>
@@ -325,10 +330,78 @@ The same two-field tuple mechanism applies: if `@version` is omitted on `Respons
 | `responsibilitySetRef` (attribute on Line etc.) | **No** — not matched by keyref selector | No — attribute is unconstrained |
 | `ResponsibleOrganisationRef` (element in role assignment) | **Yes** — Organisation_AnyKeyRef | Yes — omit to skip keyref |
 | `ResponsibilitySetRef` (element, e.g. in role assignment) | **Yes** — ResponsibilitySet_AnyKeyRef | Yes — omit to skip keyref |
+| `ContractRef` (element in AssociatedContract) | **Yes** — Contract_AnyKeyRef | Yes — omit to skip keyref |
+| `OrganisationRef` (element in contractees/contractors) | **Yes** — Organisation_AnyKeyRef | Yes — omit to skip keyref |
 
 ---
 
-## 7. ⚖️ Comparison: ResponsibilitySet vs Direct Refs
+## 7. 📝 Contract Integration
+
+### Contract as External Registry Object
+
+`Contract` (v2.0) represents an agreement between organisations. When managed in a **contract registry**, it follows the same external-reference pattern as organisations:
+
+| Codespace | Object | Concern |
+|-----------|--------|---------|
+| **CON** | `Contract` | Who pays whom — the contractual relationship |
+| **REG** | `GeneralOrganisation` | Who the parties are |
+| **ENT** | `ResponsibilitySet` | What roles they play on which lines/journeys |
+
+### AssociatedContract in ResponsibilityRoleAssignment
+
+Each role assignment can reference an external contract via `AssociatedContract` > `ContractRef`:
+
+```xml
+<ResponsibilityRoleAssignment id="ENT:ResponsibilityRoleAssignment:FP-Oper" version="1">
+  <StakeholderRoleType>operation</StakeholderRoleType>
+  <ResponsibleOrganisationRef ref="REG:GeneralOrganisation:PrivatBuss"/>
+  <AssociatedContract>
+    <ContractRef ref="CON:Contract:FK-PB-2026"/>
+  </AssociatedContract>
+</ResponsibilityRoleAssignment>
+```
+
+### Contract Structure
+
+`Contract` is a `DataManagedObject` with:
+
+| Element | Description |
+|---------|-------------|
+| `Name` | Human-readable name |
+| `ContractType` | `formal`, `informal`, `written`, `oral`, `plainUnderstood` |
+| `LegalStatus` | `binding`, `nonBinding` |
+| `contractees` | The commissioning party (`OrganisationRef` list) |
+| `contractors` | The delivering party (`OrganisationRef` list) |
+| `contractDocuments` | External links (PDFs etc.) |
+
+### What Contract Provides vs What ResponsibilitySet Provides
+
+| Concern | Contract | ResponsibilitySet |
+|---------|----------|--------------------|
+| **Who are the parties?** | ✅ contractees + contractors | ✅ ResponsibleOrganisationRef |
+| **What is the legal basis?** | ✅ ContractType, LegalStatus | ❌ |
+| **What role does each party play?** | ❌ (only contractee/contractor) | ✅ StakeholderRoleType (14+ roles) |
+| **Which NeTEx objects does it apply to?** | ❌ | ✅ via `responsibilitySetRef` on Line, ServiceJourney, etc. |
+
+Contract and ResponsibilitySet are **complementary** — Contract captures the legal relationship, ResponsibilitySet binds it to specific operational objects.
+
+### Keyref for ContractRef
+
+`ContractRef` follows the same two-field keyref pattern:
+
+```xml
+<xsd:keyref name="Contract_AnyKeyRef" refer="netex:Contract_AnyVersionedKey">
+  <xsd:selector xpath=".//netex:ContractRef | .//netex:SupplyContractRef"/>
+  <xsd:field xpath="@ref"/>
+  <xsd:field xpath="@version"/>
+</xsd:keyref>
+```
+
+Omitting `@version` on `ContractRef` skips the keyref — same mechanism as `ResponsibleOrganisationRef`.
+
+---
+
+## 8. ⚖️ Comparison: ResponsibilitySet vs Direct Refs
 
 | Aspect | Direct Refs (`AuthorityRef`/`OperatorRef`) | `ResponsibilitySet` |
 |--------|-------------------------------------------|---------------------|
@@ -358,16 +431,17 @@ This means NeTEx acknowledges `ResponsibilitySet` as a valid mechanism but recom
 
 ---
 
-## 8. ✅ Validating Example
+## 9. ✅ Validating Example
 
 See [Example_ResponsibilitySet.xml](Example_ResponsibilitySet.xml) for the full validating file.
 
 The example demonstrates:
-- `GeneralOrganisation` objects under `REG:` codespace (external registry)
+- `GeneralOrganisation` objects under `REG:` codespace (external org registry)
+- `Contract` objects under `CON:` codespace (external contract registry)
 - All delivery objects under `ENT:` codespace — single codespace for the entire delivery
-- `ResponsibleOrganisationRef` is the only element referencing `REG:` (cross-codespace)
+- `ContractRef` in `AssociatedContract` linking role assignments to external contracts
 - Each role as its own `ResponsibilityRoleAssignment` — even when same org fills both
-- `ResponsibleOrganisationRef` without `@version` (cross-file ref, keyref skipped)
+- `ResponsibleOrganisationRef` and `ContractRef` without `@version` (cross-codespace refs, keyref skipped)
 - `responsibilitySetRef` attribute on `Line` and `ServiceJourney`
 - Journey-level operator override via separate `ResponsibilitySet`
 - Full validation against `NeTEx_publication.xsd`
@@ -402,7 +476,7 @@ The example demonstrates:
 
 ---
 
-## 9. 🔗 Related Resources
+## 10. 🔗 Related Resources
 
 ### Guides in This Folder
 - [Central Organisation Registry](CentralOrganisationRegistry_Guide.md) — Using `AuthorityRef`/`OperatorRef` with shared IDs from a central registry

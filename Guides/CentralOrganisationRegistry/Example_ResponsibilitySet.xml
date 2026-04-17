@@ -31,6 +31,10 @@
           <Xmlns>REG</Xmlns>
           <XmlnsUrl>https://registry.example.org/netex</XmlnsUrl>
         </Codespace>
+        <Codespace id="con">
+          <Xmlns>CON</Xmlns>
+          <XmlnsUrl>https://contracts.example.org/netex</XmlnsUrl>
+        </Codespace>
         <Codespace id="ent">
           <Xmlns>ENT</Xmlns>
           <XmlnsUrl>https://entransit.example.org/netex</XmlnsUrl>
@@ -54,10 +58,16 @@
                 <ResponsibilityRoleAssignment id="ENT:ResponsibilityRoleAssignment:SO-Auth" version="1">
                   <StakeholderRoleType>planning</StakeholderRoleType>
                   <ResponsibleOrganisationRef ref="REG:GeneralOrganisation:KommuneTransport"/>
+                  <AssociatedContract>
+                    <ContractRef ref="CON:Contract:KT-SelfOp-2026"/>
+                  </AssociatedContract>
                 </ResponsibilityRoleAssignment>
                 <ResponsibilityRoleAssignment id="ENT:ResponsibilityRoleAssignment:SO-Oper" version="1">
                   <StakeholderRoleType>operation</StakeholderRoleType>
                   <ResponsibleOrganisationRef ref="REG:GeneralOrganisation:KommuneTransport"/>
+                  <AssociatedContract>
+                    <ContractRef ref="CON:Contract:KT-SelfOp-2026"/>
+                  </AssociatedContract>
                 </ResponsibilityRoleAssignment>
               </roles>
             </ResponsibilitySet>
@@ -69,10 +79,16 @@
                 <ResponsibilityRoleAssignment id="ENT:ResponsibilityRoleAssignment:FP-Auth" version="1">
                   <StakeholderRoleType>planning</StakeholderRoleType>
                   <ResponsibleOrganisationRef ref="REG:GeneralOrganisation:Fylkeskommune"/>
+                  <AssociatedContract>
+                    <ContractRef ref="CON:Contract:FK-PB-2026"/>
+                  </AssociatedContract>
                 </ResponsibilityRoleAssignment>
                 <ResponsibilityRoleAssignment id="ENT:ResponsibilityRoleAssignment:FP-Oper" version="1">
                   <StakeholderRoleType>operation</StakeholderRoleType>
                   <ResponsibleOrganisationRef ref="REG:GeneralOrganisation:PrivatBuss"/>
+                  <AssociatedContract>
+                    <ContractRef ref="CON:Contract:FK-PB-2026"/>
+                  </AssociatedContract>
                 </ResponsibilityRoleAssignment>
               </roles>
             </ResponsibilitySet>
@@ -84,11 +100,51 @@
                 <ResponsibilityRoleAssignment id="ENT:ResponsibilityRoleAssignment:Sub-Oper" version="1">
                   <StakeholderRoleType>operation</StakeholderRoleType>
                   <ResponsibleOrganisationRef ref="REG:GeneralOrganisation:SubstituBuss"/>
+                  <AssociatedContract>
+                    <ContractRef ref="CON:Contract:FK-SB-2026"/>
+                  </AssociatedContract>
                 </ResponsibilityRoleAssignment>
               </roles>
             </ResponsibilitySet>
 
           </responsibilitySets>
+
+          <!-- Contracts from external contract registry (CON codespace) -->
+          <contracts>
+            <Contract id="CON:Contract:KT-SelfOp-2026" version="1">
+              <Name>KommuneTransport self-operation agreement 2026</Name>
+              <ContractType>formal</ContractType>
+              <LegalStatus>binding</LegalStatus>
+              <contractees>
+                <OrganisationRef ref="REG:GeneralOrganisation:KommuneTransport"/>
+              </contractees>
+              <contractors>
+                <OrganisationRef ref="REG:GeneralOrganisation:KommuneTransport"/>
+              </contractors>
+            </Contract>
+            <Contract id="CON:Contract:FK-PB-2026" version="1">
+              <Name>Fylkeskommune - PrivatBuss operating contract 2026</Name>
+              <ContractType>formal</ContractType>
+              <LegalStatus>binding</LegalStatus>
+              <contractees>
+                <OrganisationRef ref="REG:GeneralOrganisation:Fylkeskommune"/>
+              </contractees>
+              <contractors>
+                <OrganisationRef ref="REG:GeneralOrganisation:PrivatBuss"/>
+              </contractors>
+            </Contract>
+            <Contract id="CON:Contract:FK-SB-2026" version="1">
+              <Name>Fylkeskommune - SubstituBuss substitute contract 2026</Name>
+              <ContractType>formal</ContractType>
+              <LegalStatus>binding</LegalStatus>
+              <contractees>
+                <OrganisationRef ref="REG:GeneralOrganisation:Fylkeskommune"/>
+              </contractees>
+              <contractors>
+                <OrganisationRef ref="REG:GeneralOrganisation:SubstituBuss"/>
+              </contractors>
+            </Contract>
+          </contracts>
 
           <!-- Organisations as GeneralOrganisation (role-neutral) -->
           <organisations>
