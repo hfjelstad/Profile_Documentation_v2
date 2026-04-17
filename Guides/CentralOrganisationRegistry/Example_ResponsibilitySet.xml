@@ -31,6 +31,10 @@
           <Xmlns>REG</Xmlns>
           <XmlnsUrl>https://registry.example.org/netex</XmlnsUrl>
         </Codespace>
+        <Codespace id="ent">
+          <Xmlns>ENT</Xmlns>
+          <XmlnsUrl>https://entransit.example.org/netex</XmlnsUrl>
+        </Codespace>
         <Codespace id="opr">
           <Xmlns>OPR</Xmlns>
           <XmlnsUrl>https://operator.example.org/netex</XmlnsUrl>
@@ -44,42 +48,46 @@
         <!-- ============================================================ -->
         <ResourceFrame id="REG:ResourceFrame:Registry" version="1">
 
-          <!-- ResponsibilitySets defining role assignments (must precede organisations in XSD sequence) -->
+          <!-- ResponsibilitySets: role assignments owned by ENT (delivery concern) -->
           <responsibilitySets>
 
             <!-- Pattern 1: Same org is both planner and operator -->
-            <ResponsibilitySet id="REG:ResponsibilitySet:SelfOperated" version="1">
+            <ResponsibilitySet id="ENT:ResponsibilitySet:SelfOperated" version="1">
               <Name>Self-operated (planning + operation)</Name>
               <roles>
-                <ResponsibilityRoleAssignment id="REG:ResponsibilityRoleAssignment:SO-1" version="1">
-                  <StakeholderRoleType>planning operation</StakeholderRoleType>
-                  <ResponsibleOrganisationRef ref="REG:GeneralOrganisation:KommuneTransport" version="1"/>
+                <ResponsibilityRoleAssignment id="ENT:ResponsibilityRoleAssignment:SO-Auth" version="1">
+                  <StakeholderRoleType>planning</StakeholderRoleType>
+                  <ResponsibleOrganisationRef ref="REG:GeneralOrganisation:KommuneTransport"/>
+                </ResponsibilityRoleAssignment>
+                <ResponsibilityRoleAssignment id="ENT:ResponsibilityRoleAssignment:SO-Oper" version="1">
+                  <StakeholderRoleType>operation</StakeholderRoleType>
+                  <ResponsibleOrganisationRef ref="REG:GeneralOrganisation:KommuneTransport"/>
                 </ResponsibilityRoleAssignment>
               </roles>
             </ResponsibilitySet>
 
             <!-- Pattern 2: Split authority (planning) and operator -->
-            <ResponsibilitySet id="REG:ResponsibilitySet:FylkePrivat" version="1">
+            <ResponsibilitySet id="ENT:ResponsibilitySet:FylkePrivat" version="1">
               <Name>Fylke-commissioned, privately operated</Name>
               <roles>
-                <ResponsibilityRoleAssignment id="REG:ResponsibilityRoleAssignment:FP-Auth" version="1">
+                <ResponsibilityRoleAssignment id="ENT:ResponsibilityRoleAssignment:FP-Auth" version="1">
                   <StakeholderRoleType>planning</StakeholderRoleType>
-                  <ResponsibleOrganisationRef ref="REG:GeneralOrganisation:Fylkeskommune" version="1"/>
+                  <ResponsibleOrganisationRef ref="REG:GeneralOrganisation:Fylkeskommune"/>
                 </ResponsibilityRoleAssignment>
-                <ResponsibilityRoleAssignment id="REG:ResponsibilityRoleAssignment:FP-Oper" version="1">
+                <ResponsibilityRoleAssignment id="ENT:ResponsibilityRoleAssignment:FP-Oper" version="1">
                   <StakeholderRoleType>operation</StakeholderRoleType>
-                  <ResponsibleOrganisationRef ref="REG:GeneralOrganisation:PrivatBuss" version="1"/>
+                  <ResponsibleOrganisationRef ref="REG:GeneralOrganisation:PrivatBuss"/>
                 </ResponsibilityRoleAssignment>
               </roles>
             </ResponsibilitySet>
 
-            <!-- Pattern 5: Substitute operator for specific journeys -->
-            <ResponsibilitySet id="REG:ResponsibilitySet:SubstitutOper" version="1">
+            <!-- Pattern 3: Substitute operator for specific journeys -->
+            <ResponsibilitySet id="ENT:ResponsibilitySet:SubstitutOper" version="1">
               <Name>Substitute operator</Name>
               <roles>
-                <ResponsibilityRoleAssignment id="REG:ResponsibilityRoleAssignment:Sub-Oper" version="1">
+                <ResponsibilityRoleAssignment id="ENT:ResponsibilityRoleAssignment:Sub-Oper" version="1">
                   <StakeholderRoleType>operation</StakeholderRoleType>
-                  <ResponsibleOrganisationRef ref="REG:GeneralOrganisation:SubstituBuss" version="1"/>
+                  <ResponsibleOrganisationRef ref="REG:GeneralOrganisation:SubstituBuss"/>
                 </ResponsibilityRoleAssignment>
               </roles>
             </ResponsibilitySet>
@@ -167,14 +175,14 @@
           <lines>
             <!-- Line 1: Self-operated (KommuneTransport plans AND operates) -->
             <Line id="OPR:Line:1" version="1"
-                  responsibilitySetRef="REG:ResponsibilitySet:SelfOperated">
+                  responsibilitySetRef="ENT:ResponsibilitySet:SelfOperated">
               <Name>Stadsbuss 1</Name>
               <TransportMode>bus</TransportMode>
             </Line>
 
             <!-- Line 2: Split roles (Fylkeskommune plans, PrivatBuss operates) -->
             <Line id="OPR:Line:2" version="1"
-                  responsibilitySetRef="REG:ResponsibilitySet:FylkePrivat">
+                  responsibilitySetRef="ENT:ResponsibilitySet:FylkePrivat">
               <Name>Regionbuss 2</Name>
               <TransportMode>bus</TransportMode>
             </Line>
@@ -231,7 +239,7 @@
 
             <!-- Substitute journey — overrides operator via separate ResponsibilitySet -->
             <ServiceJourney id="OPR:ServiceJourney:1002" version="1"
-                            responsibilitySetRef="REG:ResponsibilitySet:SubstitutOper">
+                            responsibilitySetRef="ENT:ResponsibilitySet:SubstitutOper">
               <dayTypes>
                 <DayTypeRef ref="OPR:DayType:Weekdays" version="1"/>
               </dayTypes>

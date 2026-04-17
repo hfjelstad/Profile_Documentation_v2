@@ -16,6 +16,7 @@ This guide explores using `ResponsibilitySet` as the **primary** mechanism for o
 In this guide you will learn:
 - 📋 What `ResponsibilitySet` is and how it works in the XSD
 - 🧩 How stakeholder roles map to the Authority/Operator concept
+- 🔀 Separation of concerns: registry owns orgs, delivery owns role assignments
 - 🏗️ How to model organisation responsibilities using `ResponsibilitySet`
 - ⚖️ Trade-offs compared to the direct-ref model
 - ✅ A validating XML example
@@ -46,7 +47,7 @@ ResponsibilitySet
 Every `DataManagedObject` inherits a `responsibilitySetRef` **attribute** (not a child element):
 
 ```xml
-<Line id="OPR:Line:1" version="1" responsibilitySetRef="REG:ResponsibilitySet:Line1">
+<Line id="OPR:Line:1" version="1" responsibilitySetRef="ENT:ResponsibilitySet:Line1">
   <Name>Linje 1</Name>
   <TransportMode>bus</TransportMode>
 </Line>
@@ -59,9 +60,9 @@ This attribute is available on `Line`, `ServiceJourney`, `StopPlace`, `Route`, `
 `ResponsibilitySet` objects are defined in the `ResourceFrame`:
 
 ```xml
-<ResourceFrame id="REG:ResourceFrame:Responsibilities" version="1">
+<ResourceFrame id="ENT:ResourceFrame:Responsibilities" version="1">
   <responsibilitySets>
-    <ResponsibilitySet id="REG:ResponsibilitySet:Line1" version="1">
+    <ResponsibilitySet id="ENT:ResponsibilitySet:Line1" version="1">
       ...
     </ResponsibilitySet>
   </responsibilitySets>
@@ -70,7 +71,36 @@ This attribute is available on `Line`, `ServiceJourney`, `StopPlace`, `Route`, `
 
 ---
 
-## 3. 🧩 Stakeholder Role Types
+## 3. 🔀 Separation of Concerns
+
+When using a central organisation registry, there is a natural separation:
+
+| Codespace | Owns | Concern |
+|-----------|------|---------|
+| **REG** | `GeneralOrganisation` objects | Who the organisations **are** (identity, contact details) |
+| **ENT** | `ResponsibilitySet` + role assignments | What **roles** those organisations play in this delivery |
+| **OPR** | `Line`, `ServiceJourney`, etc. | The operational data |
+
+The registry doesn't need to know that KommuneTransport is both planner and operator for Line 1 — that's the delivery's concern. The registry only publishes **who** the organisations are.
+
+```text
+REG (Registry)            ENT (Delivery roles)         OPR (Operations)
+┌──────────────────┐    ┌──────────────────────┐    ┌───────────────────┐
+│ GeneralOrg:      │    │ ResponsibilitySet:   │    │ Line:             │
+│  KommuneTransport│◄───│  SelfOperated        │◄───│  Stadsbuss 1      │
+│  Fylkeskommune   │    │   planning → REG:KT  │    │  (responsibilty   │
+│  PrivatBuss      │    │   operation → REG:KT  │    │   SetRef=ENT:SO)  │
+│  SubstituBuss    │    │  FylkePrivat         │    │  Regionbuss 2     │
+└──────────────────┘    │   planning → REG:FK  │    │  (→ ENT:FP)       │
+                        │   operation → REG:PB  │    └───────────────────┘
+                        └──────────────────────┘
+```
+
+Each role is modelled as a **separate** `ResponsibilityRoleAssignment` — even when the same organisation fills both roles. This keeps the structure consistent and each assignment independently updatable.
+
+---
+
+## 4. 🧩 Stakeholder Role Types
 
 The `StakeholderRoleTypeEnumeration` provides a rich vocabulary for describing organisational roles:
 
@@ -111,52 +141,56 @@ In addition to stakeholder roles, each assignment can carry a `DataRoleType` des
 
 ---
 
-## 4. 🏗️ Modelling Patterns
+## 5. 🏗️ Modelling Patterns
 
 ### Pattern 1 — Same Organisation, Both Roles
 
-An organisation that both plans and operates a line:
+An organisation that both plans and operates a line. Each role gets its own assignment:
 
 ```xml
-<ResponsibilitySet id="REG:ResponsibilitySet:SelfOperated" version="1">
+<ResponsibilitySet id="ENT:ResponsibilitySet:SelfOperated" version="1">
   <Name>Self-operated line</Name>
   <roles>
-    <ResponsibilityRoleAssignment id="REG:ResponsibilityRoleAssignment:SO-1" version="1">
-      <StakeholderRoleType>planning operation</StakeholderRoleType>
+    <ResponsibilityRoleAssignment id="ENT:ResponsibilityRoleAssignment:SO-Auth" version="1">
+      <StakeholderRoleType>planning</StakeholderRoleType>
+      <ResponsibleOrganisationRef ref="REG:GeneralOrganisation:KommuneTransport"/>
+    </ResponsibilityRoleAssignment>
+    <ResponsibilityRoleAssignment id="ENT:ResponsibilityRoleAssignment:SO-Oper" version="1">
+      <StakeholderRoleType>operation</StakeholderRoleType>
       <ResponsibleOrganisationRef ref="REG:GeneralOrganisation:KommuneTransport"/>
     </ResponsibilityRoleAssignment>
   </roles>
 </ResponsibilitySet>
 
-<Line id="OPR:Line:1" version="1" responsibilitySetRef="REG:ResponsibilitySet:SelfOperated">
+<Line id="OPR:Line:1" version="1" responsibilitySetRef="ENT:ResponsibilitySet:SelfOperated">
   <Name>Stadsbuss 1</Name>
   <TransportMode>bus</TransportMode>
 </Line>
 ```
 
 > [!TIP]
-> Since `StakeholderRoleType` is a list, both roles can be in a single assignment when the same organisation fills them.
+> Always use separate assignments per role — even for the same organisation. This keeps the structure consistent and each assignment independently updatable.
 
 ### Pattern 2 — Split Authority and Operator
 
 A transit authority commissions services from a separate operator:
 
 ```xml
-<ResponsibilitySet id="REG:ResponsibilitySet:Line2" version="1">
+<ResponsibilitySet id="ENT:ResponsibilitySet:Line2" version="1">
   <Name>Fylke-commissioned, privately operated</Name>
   <roles>
-    <ResponsibilityRoleAssignment id="REG:ResponsibilityRoleAssignment:L2-Auth" version="1">
+    <ResponsibilityRoleAssignment id="ENT:ResponsibilityRoleAssignment:L2-Auth" version="1">
       <StakeholderRoleType>planning</StakeholderRoleType>
       <ResponsibleOrganisationRef ref="REG:GeneralOrganisation:Fylkeskommune"/>
     </ResponsibilityRoleAssignment>
-    <ResponsibilityRoleAssignment id="REG:ResponsibilityRoleAssignment:L2-Oper" version="1">
+    <ResponsibilityRoleAssignment id="ENT:ResponsibilityRoleAssignment:L2-Oper" version="1">
       <StakeholderRoleType>operation</StakeholderRoleType>
       <ResponsibleOrganisationRef ref="REG:GeneralOrganisation:PrivatBuss"/>
     </ResponsibilityRoleAssignment>
   </roles>
 </ResponsibilitySet>
 
-<Line id="OPR:Line:2" version="1" responsibilitySetRef="REG:ResponsibilitySet:Line2">
+<Line id="OPR:Line:2" version="1" responsibilitySetRef="ENT:ResponsibilitySet:Line2">
   <Name>Regionbuss 2</Name>
   <TransportMode>bus</TransportMode>
 </Line>
@@ -167,22 +201,22 @@ A transit authority commissions services from a separate operator:
 `ResponsibilitySet` can express relationships that the direct-ref model cannot:
 
 ```xml
-<ResponsibilitySet id="REG:ResponsibilitySet:Line3" version="1">
+<ResponsibilitySet id="ENT:ResponsibilitySet:Line3" version="1">
   <Name>Complex rail line</Name>
   <roles>
-    <ResponsibilityRoleAssignment id="REG:ResponsibilityRoleAssignment:L3-Plan" version="1">
+    <ResponsibilityRoleAssignment id="ENT:ResponsibilityRoleAssignment:L3-Plan" version="1">
       <StakeholderRoleType>planning</StakeholderRoleType>
       <ResponsibleOrganisationRef ref="REG:GeneralOrganisation:Jernbanedirektoratet"/>
     </ResponsibilityRoleAssignment>
-    <ResponsibilityRoleAssignment id="REG:ResponsibilityRoleAssignment:L3-Oper" version="1">
+    <ResponsibilityRoleAssignment id="ENT:ResponsibilityRoleAssignment:L3-Oper" version="1">
       <StakeholderRoleType>operation</StakeholderRoleType>
       <ResponsibleOrganisationRef ref="REG:GeneralOrganisation:Vy"/>
     </ResponsibilityRoleAssignment>
-    <ResponsibilityRoleAssignment id="REG:ResponsibilityRoleAssignment:L3-Infra" version="1">
+    <ResponsibilityRoleAssignment id="ENT:ResponsibilityRoleAssignment:L3-Infra" version="1">
       <StakeholderRoleType>entityLegalOwnership</StakeholderRoleType>
       <ResponsibleOrganisationRef ref="REG:GeneralOrganisation:BaneNOR"/>
     </ResponsibilityRoleAssignment>
-    <ResponsibilityRoleAssignment id="REG:ResponsibilityRoleAssignment:L3-Fare" version="1">
+    <ResponsibilityRoleAssignment id="ENT:ResponsibilityRoleAssignment:L3-Fare" version="1">
       <StakeholderRoleType>fareManagement</StakeholderRoleType>
       <ResponsibleOrganisationRef ref="REG:GeneralOrganisation:Entur"/>
     </ResponsibilityRoleAssignment>
@@ -197,14 +231,14 @@ This captures four distinct organisational responsibilities on a single line —
 A single `ResponsibilitySet` can be referenced by multiple objects:
 
 ```xml
-<ResponsibilitySet id="REG:ResponsibilitySet:FylkesBuss" version="1">
+<ResponsibilitySet id="ENT:ResponsibilitySet:FylkesBuss" version="1">
   <Name>All Fylke bus lines</Name>
   <roles>
-    <ResponsibilityRoleAssignment id="REG:ResponsibilityRoleAssignment:FB-Auth" version="1">
+    <ResponsibilityRoleAssignment id="ENT:ResponsibilityRoleAssignment:FB-Auth" version="1">
       <StakeholderRoleType>planning</StakeholderRoleType>
       <ResponsibleOrganisationRef ref="REG:GeneralOrganisation:Fylkeskommune"/>
     </ResponsibilityRoleAssignment>
-    <ResponsibilityRoleAssignment id="REG:ResponsibilityRoleAssignment:FB-Oper" version="1">
+    <ResponsibilityRoleAssignment id="ENT:ResponsibilityRoleAssignment:FB-Oper" version="1">
       <StakeholderRoleType>operation</StakeholderRoleType>
       <ResponsibleOrganisationRef ref="REG:GeneralOrganisation:PrivatBuss"/>
     </ResponsibilityRoleAssignment>
@@ -212,12 +246,12 @@ A single `ResponsibilitySet` can be referenced by multiple objects:
 </ResponsibilitySet>
 
 <!-- Multiple lines share the same responsibility set -->
-<Line id="OPR:Line:10" version="1" responsibilitySetRef="REG:ResponsibilitySet:FylkesBuss">
+<Line id="OPR:Line:10" version="1" responsibilitySetRef="ENT:ResponsibilitySet:FylkesBuss">
   <Name>Rute 10</Name>
   <TransportMode>bus</TransportMode>
 </Line>
 
-<Line id="OPR:Line:11" version="1" responsibilitySetRef="REG:ResponsibilitySet:FylkesBuss">
+<Line id="OPR:Line:11" version="1" responsibilitySetRef="ENT:ResponsibilitySet:FylkesBuss">
   <Name>Rute 11</Name>
   <TransportMode>bus</TransportMode>
 </Line>
@@ -228,10 +262,10 @@ A single `ResponsibilitySet` can be referenced by multiple objects:
 A `ServiceJourney` can reference a different `ResponsibilitySet` than its parent `Line`, enabling operator override at the journey level:
 
 ```xml
-<ResponsibilitySet id="REG:ResponsibilitySet:SubstitutOper" version="1">
+<ResponsibilitySet id="ENT:ResponsibilitySet:SubstitutOper" version="1">
   <Name>Substitute operator for specific journeys</Name>
   <roles>
-    <ResponsibilityRoleAssignment id="REG:ResponsibilityRoleAssignment:Sub-Oper" version="1">
+    <ResponsibilityRoleAssignment id="ENT:ResponsibilityRoleAssignment:Sub-Oper" version="1">
       <StakeholderRoleType>operation</StakeholderRoleType>
       <ResponsibleOrganisationRef ref="REG:GeneralOrganisation:SubstituBuss"/>
     </ResponsibilityRoleAssignment>
@@ -239,7 +273,7 @@ A `ServiceJourney` can reference a different `ResponsibilitySet` than its parent
 </ResponsibilitySet>
 
 <ServiceJourney id="OPR:ServiceJourney:1001" version="1"
-                responsibilitySetRef="REG:ResponsibilitySet:SubstitutOper">
+                responsibilitySetRef="ENT:ResponsibilitySet:SubstitutOper">
   <JourneyPatternRef ref="OPR:JourneyPattern:1A"/>
   ...
 </ServiceJourney>
@@ -247,7 +281,7 @@ A `ServiceJourney` can reference a different `ResponsibilitySet` than its parent
 
 ---
 
-## 5. 📐 XSD Validation Analysis
+## 6. 📐 XSD Validation Analysis
 
 ### The `responsibilitySetRef` Attribute
 
@@ -293,7 +327,7 @@ The same two-field tuple mechanism applies: if `@version` is omitted on `Respons
 
 ---
 
-## 6. ⚖️ Comparison: ResponsibilitySet vs Direct Refs
+## 7. ⚖️ Comparison: ResponsibilitySet vs Direct Refs
 
 | Aspect | Direct Refs (`AuthorityRef`/`OperatorRef`) | `ResponsibilitySet` |
 |--------|-------------------------------------------|---------------------|
@@ -323,37 +357,42 @@ This means NeTEx acknowledges `ResponsibilitySet` as a valid mechanism but recom
 
 ---
 
-## 7. ✅ Validating Example
+## 8. ✅ Validating Example
 
 See [Example_ResponsibilitySet.xml](Example_ResponsibilitySet.xml) for the full validating file.
 
 The example demonstrates:
-- `ResponsibilitySet` definitions in `ResourceFrame` with `GeneralOrganisation` objects
-- Multiple stakeholder roles per line (planning, operation, entityLegalOwnership)
+- `GeneralOrganisation` objects under `REG:` codespace (registry concern)
+- `ResponsibilitySet` definitions under `ENT:` codespace (delivery concern)
+- Each role as its own `ResponsibilityRoleAssignment` — even when same org fills both
+- `ResponsibleOrganisationRef` without `@version` (cross-file ref, keyref skipped)
 - `responsibilitySetRef` attribute on `Line` and `ServiceJourney`
-- Shared `ResponsibilitySet` across multiple lines
 - Journey-level operator override via separate `ResponsibilitySet`
 - Full validation against `NeTEx_publication.xsd`
 
 ```xml
-<!-- Registry organisations as GeneralOrganisation -->
+<!-- Registry organisations as GeneralOrganisation (REG codespace) -->
 <GeneralOrganisation id="REG:GeneralOrganisation:KommuneTransport" version="1">
   <Name>KommuneTransport AS</Name>
 </GeneralOrganisation>
 
-<!-- ResponsibilitySet: self-operated line -->
-<ResponsibilitySet id="REG:ResponsibilitySet:SelfOperated" version="1">
+<!-- ResponsibilitySet: self-operated line (ENT codespace) -->
+<ResponsibilitySet id="ENT:ResponsibilitySet:SelfOperated" version="1">
   <Name>Self-operated (planning + operation)</Name>
   <roles>
-    <ResponsibilityRoleAssignment id="REG:ResponsibilityRoleAssignment:SO-1" version="1">
-      <StakeholderRoleType>planning operation</StakeholderRoleType>
-      <ResponsibleOrganisationRef ref="REG:GeneralOrganisation:KommuneTransport" version="1"/>
+    <ResponsibilityRoleAssignment id="ENT:ResponsibilityRoleAssignment:SO-Auth" version="1">
+      <StakeholderRoleType>planning</StakeholderRoleType>
+      <ResponsibleOrganisationRef ref="REG:GeneralOrganisation:KommuneTransport"/>
+    </ResponsibilityRoleAssignment>
+    <ResponsibilityRoleAssignment id="ENT:ResponsibilityRoleAssignment:SO-Oper" version="1">
+      <StakeholderRoleType>operation</StakeholderRoleType>
+      <ResponsibleOrganisationRef ref="REG:GeneralOrganisation:KommuneTransport"/>
     </ResponsibilityRoleAssignment>
   </roles>
 </ResponsibilitySet>
 
-<!-- Line using responsibilitySetRef attribute -->
-<Line id="OPR:Line:1" version="1" responsibilitySetRef="REG:ResponsibilitySet:SelfOperated">
+<!-- Line using responsibilitySetRef attribute (OPR codespace) -->
+<Line id="OPR:Line:1" version="1" responsibilitySetRef="ENT:ResponsibilitySet:SelfOperated">
   <Name>Stadsbuss 1</Name>
   <TransportMode>bus</TransportMode>
 </Line>
@@ -361,7 +400,7 @@ The example demonstrates:
 
 ---
 
-## 8. 🔗 Related Resources
+## 9. 🔗 Related Resources
 
 ### Guides in This Folder
 - [Central Organisation Registry](CentralOrganisationRegistry_Guide.md) — Using `AuthorityRef`/`OperatorRef` with shared IDs from a central registry
