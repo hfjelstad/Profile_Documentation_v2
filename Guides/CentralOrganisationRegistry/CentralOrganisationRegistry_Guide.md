@@ -282,6 +282,7 @@ Example_CentralOrganisationRegistry.xml:  VALID
 ## 7. 🔗 Related Resources
 
 ### Guides in This Repository
+- [ResponsibilitySet as Role-Assignment Model](ResponsibilitySet_Guide.md) — Alternative approach using `ResponsibilitySet` instead of direct `AuthorityRef`/`OperatorRef`
 - [Organisational Governance](../OrganisationalGovernance/OrganisationalGovernance_Guide.md) — Authority, Operator, Contract, and ResponsibilitySet (inline model)
 - [Separation of Concerns](../SeparationOfConcerns/SeparationOfConcerns.md) — Data ownership and cross-frame patterns
 - [IT Architecture](../ITArchitecture/ITArchitecture_Guide.md) — Data exchange architecture and actor roles
