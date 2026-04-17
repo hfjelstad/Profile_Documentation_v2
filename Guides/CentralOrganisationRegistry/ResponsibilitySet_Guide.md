@@ -47,7 +47,7 @@ ResponsibilitySet
 Every `DataManagedObject` inherits a `responsibilitySetRef` **attribute** (not a child element):
 
 ```xml
-<Line id="OPR:Line:1" version="1" responsibilitySetRef="ENT:ResponsibilitySet:Line1">
+<Line id="ENT:Line:1" version="1" responsibilitySetRef="ENT:ResponsibilitySet:Line1">
   <Name>Linje 1</Name>
   <TransportMode>bus</TransportMode>
 </Line>
@@ -77,23 +77,24 @@ When using a central organisation registry, there is a natural separation:
 
 | Codespace | Owns | Concern |
 |-----------|------|---------|
-| **REG** | `GeneralOrganisation` objects | Who the organisations **are** (identity, contact details) |
-| **ENT** | `ResponsibilitySet` + role assignments | What **roles** those organisations play in this delivery |
-| **OPR** | `Line`, `ServiceJourney`, etc. | The operational data |
+| **ENT** | Everything in the delivery: `ResponsibilitySet`, `Line`, `ServiceJourney`, etc. | The delivery — what is operated and who fills which role |
+| **REG** | Only appears on `ResponsibleOrganisationRef` | External reference to the registry — who the organisations **are** |
 
 The registry doesn't need to know that KommuneTransport is both planner and operator for Line 1 — that's the delivery's concern. The registry only publishes **who** the organisations are.
 
 ```text
-REG (Registry)            ENT (Delivery roles)         OPR (Operations)
-┌──────────────────┐    ┌──────────────────────┐    ┌───────────────────┐
-│ GeneralOrg:      │    │ ResponsibilitySet:   │    │ Line:             │
-│  KommuneTransport│◄───│  SelfOperated        │◄───│  Stadsbuss 1      │
-│  Fylkeskommune   │    │   planning → REG:KT  │    │  (responsibilty   │
-│  PrivatBuss      │    │   operation → REG:KT  │    │   SetRef=ENT:SO)  │
-│  SubstituBuss    │    │  FylkePrivat         │    │  Regionbuss 2     │
-└──────────────────┘    │   planning → REG:FK  │    │  (→ ENT:FP)       │
-                        │   operation → REG:PB  │    └───────────────────┘
-                        └──────────────────────┘
+ENT (Delivery)                              REG (External registry)
+┌───────────────────────────────────────┐     ┌──────────────────┐
+│ ResponsibilitySet: SelfOperated      │     │ GeneralOrg:      │
+│   planning  → REG:KommuneTransport  │────►│  KommuneTransport│
+│   operation → REG:KommuneTransport  │     │  Fylkeskommune   │
+│                                       │     │  PrivatBuss      │
+│ Line: Stadsbuss 1                     │     │  SubstituBuss    │
+│   responsibilitySetRef=SelfOperated   │     └──────────────────┘
+│                                       │
+│ ServiceJourney: 1002                  │
+│   responsibilitySetRef=SubstitutOper  │
+└───────────────────────────────────────┘
 ```
 
 Each role is modelled as a **separate** `ResponsibilityRoleAssignment` — even when the same organisation fills both roles. This keeps the structure consistent and each assignment independently updatable.
@@ -162,7 +163,7 @@ An organisation that both plans and operates a line. Each role gets its own assi
   </roles>
 </ResponsibilitySet>
 
-<Line id="OPR:Line:1" version="1" responsibilitySetRef="ENT:ResponsibilitySet:SelfOperated">
+<Line id="ENT:Line:1" version="1" responsibilitySetRef="ENT:ResponsibilitySet:SelfOperated">
   <Name>Stadsbuss 1</Name>
   <TransportMode>bus</TransportMode>
 </Line>
@@ -190,7 +191,7 @@ A transit authority commissions services from a separate operator:
   </roles>
 </ResponsibilitySet>
 
-<Line id="OPR:Line:2" version="1" responsibilitySetRef="ENT:ResponsibilitySet:Line2">
+<Line id="ENT:Line:2" version="1" responsibilitySetRef="ENT:ResponsibilitySet:Line2">
   <Name>Regionbuss 2</Name>
   <TransportMode>bus</TransportMode>
 </Line>
@@ -246,12 +247,12 @@ A single `ResponsibilitySet` can be referenced by multiple objects:
 </ResponsibilitySet>
 
 <!-- Multiple lines share the same responsibility set -->
-<Line id="OPR:Line:10" version="1" responsibilitySetRef="ENT:ResponsibilitySet:FylkesBuss">
+<Line id="ENT:Line:10" version="1" responsibilitySetRef="ENT:ResponsibilitySet:FylkesBuss">
   <Name>Rute 10</Name>
   <TransportMode>bus</TransportMode>
 </Line>
 
-<Line id="OPR:Line:11" version="1" responsibilitySetRef="ENT:ResponsibilitySet:FylkesBuss">
+<Line id="ENT:Line:11" version="1" responsibilitySetRef="ENT:ResponsibilitySet:FylkesBuss">
   <Name>Rute 11</Name>
   <TransportMode>bus</TransportMode>
 </Line>
@@ -272,9 +273,9 @@ A `ServiceJourney` can reference a different `ResponsibilitySet` than its parent
   </roles>
 </ResponsibilitySet>
 
-<ServiceJourney id="OPR:ServiceJourney:1001" version="1"
+<ServiceJourney id="ENT:ServiceJourney:1001" version="1"
                 responsibilitySetRef="ENT:ResponsibilitySet:SubstitutOper">
-  <JourneyPatternRef ref="OPR:JourneyPattern:1A"/>
+  <JourneyPatternRef ref="ENT:JourneyPattern:1A"/>
   ...
 </ServiceJourney>
 ```
@@ -362,8 +363,9 @@ This means NeTEx acknowledges `ResponsibilitySet` as a valid mechanism but recom
 See [Example_ResponsibilitySet.xml](Example_ResponsibilitySet.xml) for the full validating file.
 
 The example demonstrates:
-- `GeneralOrganisation` objects under `REG:` codespace (registry concern)
-- `ResponsibilitySet` definitions under `ENT:` codespace (delivery concern)
+- `GeneralOrganisation` objects under `REG:` codespace (external registry)
+- All delivery objects under `ENT:` codespace — single codespace for the entire delivery
+- `ResponsibleOrganisationRef` is the only element referencing `REG:` (cross-codespace)
 - Each role as its own `ResponsibilityRoleAssignment` — even when same org fills both
 - `ResponsibleOrganisationRef` without `@version` (cross-file ref, keyref skipped)
 - `responsibilitySetRef` attribute on `Line` and `ServiceJourney`
@@ -371,12 +373,12 @@ The example demonstrates:
 - Full validation against `NeTEx_publication.xsd`
 
 ```xml
-<!-- Registry organisations as GeneralOrganisation (REG codespace) -->
+<!-- Registry organisations as GeneralOrganisation (REG codespace — external) -->
 <GeneralOrganisation id="REG:GeneralOrganisation:KommuneTransport" version="1">
   <Name>KommuneTransport AS</Name>
 </GeneralOrganisation>
 
-<!-- ResponsibilitySet: self-operated line (ENT codespace) -->
+<!-- ResponsibilitySet (ENT codespace — delivery concern) -->
 <ResponsibilitySet id="ENT:ResponsibilitySet:SelfOperated" version="1">
   <Name>Self-operated (planning + operation)</Name>
   <roles>
@@ -391,8 +393,8 @@ The example demonstrates:
   </roles>
 </ResponsibilitySet>
 
-<!-- Line using responsibilitySetRef attribute (OPR codespace) -->
-<Line id="OPR:Line:1" version="1" responsibilitySetRef="ENT:ResponsibilitySet:SelfOperated">
+<!-- Line using responsibilitySetRef attribute (ENT codespace) -->
+<Line id="ENT:Line:1" version="1" responsibilitySetRef="ENT:ResponsibilitySet:SelfOperated">
   <Name>Stadsbuss 1</Name>
   <TransportMode>bus</TransportMode>
 </Line>
