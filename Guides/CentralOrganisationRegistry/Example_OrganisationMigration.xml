@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Example: Organisation Migration — Typed Objects with Registry Traceability
+  
+  Demonstrates the short-term migration pattern where deliveries keep
+  typed Authority/Operator objects for backward compatibility, but link
+  them to the central registry via derivedFromObjectRef.
+  
+  Key points:
+  - Authority and Operator objects are local (ENT codespace)
+  - derivedFromObjectRef points to the registry GeneralOrganisation ID
+  - Lines use standard AuthorityRef/OperatorRef with @version (keyref validated)
+  - KommuneTransport appears as BOTH Authority and Operator (dual-role)
+  - Both typed objects share the same derivedFromObjectRef value
+  
+  Validates against: NeTEx_publication.xsd (full key/keyref constraints)
+-->
+<PublicationDelivery xmlns="http://www.netex.org.uk/netex"
+                     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                     xsi:schemaLocation="http://www.netex.org.uk/netex NeTEx_publication.xsd"
+                     version="1.0">
+  <PublicationTimestamp>2026-04-17T14:00:00</PublicationTimestamp>
+  <ParticipantRef>ENT</ParticipantRef>
+
+  <dataObjects>
+    <CompositeFrame id="ENT:CompositeFrame:MigrationExample" version="1">
+      <validityConditions>
+        <AvailabilityCondition id="ENT:AvailabilityCondition:1" version="1">
+          <FromDate>2026-01-01T00:00:00</FromDate>
+          <ToDate>2026-12-31T23:59:59</ToDate>
+        </AvailabilityCondition>
+      </validityConditions>
+      <codespaces>
+        <Codespace id="ent">
+          <Xmlns>ENT</Xmlns>
+          <XmlnsUrl>https://entransit.example.org/netex</XmlnsUrl>
+        </Codespace>
+      </codespaces>
+
+      <frames>
+
+        <!-- ============================================================ -->
+        <!-- ResourceFrame: Typed organisation objects with registry link  -->
+        <!-- ============================================================ -->
+        <ResourceFrame id="ENT:ResourceFrame:Organisations" version="1">
+          <organisations>
+
+            <!--
+              KommuneTransport acts as BOTH authority and operator.
+              Two typed objects, same derivedFromObjectRef.
+            -->
+            <Authority id="ENT:Authority:KommuneTransport" version="1"
+                       derivedFromObjectRef="REG:GeneralOrganisation:KommuneTransport">
+              <Name>KommuneTransport AS</Name>
+              <ContactDetails>
+                <Url>https://www.kommunetransport.example.no</Url>
+              </ContactDetails>
+            </Authority>
+
+            <Operator id="ENT:Operator:KommuneTransport" version="1"
+                      derivedFromObjectRef="REG:GeneralOrganisation:KommuneTransport">
+              <Name>KommuneTransport AS</Name>
+              <OperatorActivities>passenger</OperatorActivities>
+            </Operator>
+
+            <!--
+              Fylkeskommune — authority only
+            -->
+            <Authority id="ENT:Authority:Fylkeskommune" version="1"
+                       derivedFromObjectRef="REG:GeneralOrganisation:Fylkeskommune">
+              <Name>Fylkeskommune Mobilitet</Name>
+            </Authority>
+
+            <!--
+              PrivatBuss — operator only
+            -->
+            <Operator id="ENT:Operator:PrivatBuss" version="1"
+                      derivedFromObjectRef="REG:GeneralOrganisation:PrivatBuss">
+              <Name>PrivatBuss Norge AS</Name>
+              <OperatorActivities>passenger</OperatorActivities>
+            </Operator>
+
+            <!--
+              SubstituBuss — substitute operator (used on specific journeys)
+            -->
+            <Operator id="ENT:Operator:SubstituBuss" version="1"
+                      derivedFromObjectRef="REG:GeneralOrganisation:SubstituBuss">
+              <Name>SubstituBuss AS</Name>
+              <OperatorActivities>passenger</OperatorActivities>
+            </Operator>
+
+          </organisations>
+        </ResourceFrame>
+
+        <!-- ============================================================ -->
+        <!-- ServiceCalendarFrame                                         -->
+        <!-- ============================================================ -->
+        <ServiceCalendarFrame id="ENT:ServiceCalendarFrame:1" version="1">
+          <dayTypes>
+            <DayType id="ENT:DayType:Weekdays" version="1">
+              <Name>Monday to Friday</Name>
+              <properties>
+                <PropertyOfDay>
+                  <DaysOfWeek>Monday Tuesday Wednesday Thursday Friday</DaysOfWeek>
+                </PropertyOfDay>
+              </properties>
+            </DayType>
+          </dayTypes>
+        </ServiceCalendarFrame>
+
+        <!-- ============================================================ -->
+        <!-- ServiceFrame: Lines with AuthorityRef / OperatorRef          -->
+        <!-- ============================================================ -->
+        <ServiceFrame id="ENT:ServiceFrame:1" version="1">
+
+          <Network id="ENT:Network:1" version="1">
+            <Name>Eksempelnett</Name>
+            <AuthorityRef ref="ENT:Authority:Fylkeskommune" version="1"/>
+          </Network>
+
+          <routePoints>
+            <RoutePoint id="ENT:RoutePoint:A" version="1">
+              <projections>
+                <PointProjection id="ENT:PointProjection:A" version="1">
+                  <ProjectedPointRef ref="ENT:ScheduledStopPoint:A" version="1"/>
+                </PointProjection>
+              </projections>
+            </RoutePoint>
+            <RoutePoint id="ENT:RoutePoint:B" version="1">
+              <projections>
+                <PointProjection id="ENT:PointProjection:B" version="1">
+                  <ProjectedPointRef ref="ENT:ScheduledStopPoint:B" version="1"/>
+                </PointProjection>
+              </projections>
+            </RoutePoint>
+          </routePoints>
+
+          <routes>
+            <Route id="ENT:Route:1" version="1">
+              <Name>Stadsbuss-rute</Name>
+              <LineRef ref="ENT:Line:1" version="1"/>
+              <DirectionType>outbound</DirectionType>
+              <pointsInSequence>
+                <PointOnRoute id="ENT:PointOnRoute:1-A" version="1" order="1">
+                  <RoutePointRef ref="ENT:RoutePoint:A" version="1"/>
+                </PointOnRoute>
+                <PointOnRoute id="ENT:PointOnRoute:1-B" version="1" order="2">
+                  <RoutePointRef ref="ENT:RoutePoint:B" version="1"/>
+                </PointOnRoute>
+              </pointsInSequence>
+            </Route>
+            <Route id="ENT:Route:2" version="1">
+              <Name>Regionbuss-rute</Name>
+              <LineRef ref="ENT:Line:2" version="1"/>
+              <DirectionType>outbound</DirectionType>
+              <pointsInSequence>
+                <PointOnRoute id="ENT:PointOnRoute:2-A" version="1" order="1">
+                  <RoutePointRef ref="ENT:RoutePoint:A" version="1"/>
+                </PointOnRoute>
+                <PointOnRoute id="ENT:PointOnRoute:2-B" version="1" order="2">
+                  <RoutePointRef ref="ENT:RoutePoint:B" version="1"/>
+                </PointOnRoute>
+              </pointsInSequence>
+            </Route>
+          </routes>
+
+          <lines>
+            <!-- Line 1: KommuneTransport is both authority and operator (dual-role) -->
+            <Line id="ENT:Line:1" version="1">
+              <Name>Stadsbuss 1</Name>
+              <TransportMode>bus</TransportMode>
+              <AuthorityRef ref="ENT:Authority:KommuneTransport" version="1"/>
+              <OperatorRef ref="ENT:Operator:KommuneTransport" version="1"/>
+            </Line>
+
+            <!-- Line 2: Fylkeskommune commissions, PrivatBuss operates -->
+            <Line id="ENT:Line:2" version="1">
+              <Name>Regionbuss 2</Name>
+              <TransportMode>bus</TransportMode>
+              <AuthorityRef ref="ENT:Authority:Fylkeskommune" version="1"/>
+              <OperatorRef ref="ENT:Operator:PrivatBuss" version="1"/>
+            </Line>
+          </lines>
+
+          <scheduledStopPoints>
+            <ScheduledStopPoint id="ENT:ScheduledStopPoint:A" version="1">
+              <Name>Sentrum</Name>
+            </ScheduledStopPoint>
+            <ScheduledStopPoint id="ENT:ScheduledStopPoint:B" version="1">
+              <Name>Utkanten</Name>
+            </ScheduledStopPoint>
+          </scheduledStopPoints>
+
+          <journeyPatterns>
+            <JourneyPattern id="ENT:JourneyPattern:1" version="1">
+              <Name>Stadsbuss-mønster</Name>
+              <RouteRef ref="ENT:Route:1" version="1"/>
+              <pointsInSequence>
+                <StopPointInJourneyPattern id="ENT:StopPointInJourneyPattern:1-A" version="1" order="1">
+                  <ScheduledStopPointRef ref="ENT:ScheduledStopPoint:A" version="1"/>
+                  <ForAlighting>false</ForAlighting>
+                </StopPointInJourneyPattern>
+                <StopPointInJourneyPattern id="ENT:StopPointInJourneyPattern:1-B" version="1" order="2">
+                  <ScheduledStopPointRef ref="ENT:ScheduledStopPoint:B" version="1"/>
+                  <ForBoarding>false</ForBoarding>
+                </StopPointInJourneyPattern>
+              </pointsInSequence>
+            </JourneyPattern>
+            <JourneyPattern id="ENT:JourneyPattern:2" version="1">
+              <Name>Regionbuss-mønster</Name>
+              <RouteRef ref="ENT:Route:2" version="1"/>
+              <pointsInSequence>
+                <StopPointInJourneyPattern id="ENT:StopPointInJourneyPattern:2-A" version="1" order="1">
+                  <ScheduledStopPointRef ref="ENT:ScheduledStopPoint:A" version="1"/>
+                  <ForAlighting>false</ForAlighting>
+                </StopPointInJourneyPattern>
+                <StopPointInJourneyPattern id="ENT:StopPointInJourneyPattern:2-B" version="1" order="2">
+                  <ScheduledStopPointRef ref="ENT:ScheduledStopPoint:B" version="1"/>
+                  <ForBoarding>false</ForBoarding>
+                </StopPointInJourneyPattern>
+              </pointsInSequence>
+            </JourneyPattern>
+          </journeyPatterns>
+
+        </ServiceFrame>
+
+        <!-- ============================================================ -->
+        <!-- TimetableFrame: ServiceJourneys using OperatorRef            -->
+        <!-- ============================================================ -->
+        <TimetableFrame id="ENT:TimetableFrame:1" version="1">
+          <vehicleJourneys>
+
+            <!-- Journey on Line 1: default operator (KommuneTransport) -->
+            <ServiceJourney id="ENT:ServiceJourney:1001" version="1">
+              <dayTypes>
+                <DayTypeRef ref="ENT:DayType:Weekdays" version="1"/>
+              </dayTypes>
+              <JourneyPatternRef ref="ENT:JourneyPattern:1" version="1"/>
+              <OperatorRef ref="ENT:Operator:KommuneTransport" version="1"/>
+              <passingTimes>
+                <TimetabledPassingTime id="ENT:TimetabledPassingTime:1001-A" version="1">
+                  <StopPointInJourneyPatternRef ref="ENT:StopPointInJourneyPattern:1-A" version="1"/>
+                  <DepartureTime>07:00:00</DepartureTime>
+                </TimetabledPassingTime>
+                <TimetabledPassingTime id="ENT:TimetabledPassingTime:1001-B" version="1">
+                  <StopPointInJourneyPatternRef ref="ENT:StopPointInJourneyPattern:1-B" version="1"/>
+                  <ArrivalTime>07:15:00</ArrivalTime>
+                </TimetabledPassingTime>
+              </passingTimes>
+            </ServiceJourney>
+
+            <!-- Journey on Line 2: default operator (PrivatBuss) -->
+            <ServiceJourney id="ENT:ServiceJourney:2001" version="1">
+              <dayTypes>
+                <DayTypeRef ref="ENT:DayType:Weekdays" version="1"/>
+              </dayTypes>
+              <JourneyPatternRef ref="ENT:JourneyPattern:2" version="1"/>
+              <OperatorRef ref="ENT:Operator:PrivatBuss" version="1"/>
+              <passingTimes>
+                <TimetabledPassingTime id="ENT:TimetabledPassingTime:2001-A" version="1">
+                  <StopPointInJourneyPatternRef ref="ENT:StopPointInJourneyPattern:2-A" version="1"/>
+                  <DepartureTime>08:00:00</DepartureTime>
+                </TimetabledPassingTime>
+                <TimetabledPassingTime id="ENT:TimetabledPassingTime:2001-B" version="1">
+                  <StopPointInJourneyPatternRef ref="ENT:StopPointInJourneyPattern:2-B" version="1"/>
+                  <ArrivalTime>08:30:00</ArrivalTime>
+                </TimetabledPassingTime>
+              </passingTimes>
+            </ServiceJourney>
+
+            <!-- Journey on Line 2: substitute operator (SubstituBuss) -->
+            <ServiceJourney id="ENT:ServiceJourney:2002" version="1">
+              <dayTypes>
+                <DayTypeRef ref="ENT:DayType:Weekdays" version="1"/>
+              </dayTypes>
+              <JourneyPatternRef ref="ENT:JourneyPattern:2" version="1"/>
+              <OperatorRef ref="ENT:Operator:SubstituBuss" version="1"/>
+              <passingTimes>
+                <TimetabledPassingTime id="ENT:TimetabledPassingTime:2002-A" version="1">
+                  <StopPointInJourneyPatternRef ref="ENT:StopPointInJourneyPattern:2-A" version="1"/>
+                  <DepartureTime>09:00:00</DepartureTime>
+                </TimetabledPassingTime>
+                <TimetabledPassingTime id="ENT:TimetabledPassingTime:2002-B" version="1">
+                  <StopPointInJourneyPatternRef ref="ENT:StopPointInJourneyPattern:2-B" version="1"/>
+                  <ArrivalTime>09:30:00</ArrivalTime>
+                </TimetabledPassingTime>
+              </passingTimes>
+            </ServiceJourney>
+
+          </vehicleJourneys>
+        </TimetableFrame>
+
+      </frames>
+    </CompositeFrame>
+  </dataObjects>
+</PublicationDelivery>

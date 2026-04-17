@@ -26,6 +26,7 @@
   - [Transport Modes](/Guides/TransportModes/TransportModes_Guide.md)
   - [IT Architecture](/Guides/ITArchitecture/ITArchitecture_Guide.md)
   - [Central Organisation Registry](/Guides/CentralOrganisationRegistry/CentralOrganisationRegistry_Guide.md)
+  - [Organisation Migration](/Guides/CentralOrganisationRegistry/OrganisationMigration_Guide.md)
   - [ResponsibilitySet Role Model](/Guides/CentralOrganisationRegistry/ResponsibilitySet_Guide.md)
   - [Agent Helpdesk](/Guides/AgentHelpdesk/AgentHelpdesk_Guide.md)
   - [Slovenian Profile](/Guides/SlovenianProfile/SlovenianProfile_Analysis.md)
