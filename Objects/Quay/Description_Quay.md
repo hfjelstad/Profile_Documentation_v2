@@ -69,4 +69,4 @@ Quay
 > - **Coordinate precision loss**: Using too few decimal places (e.g., 59.91 instead of 59.9127) reduces accuracy for accessibility routing and vehicle docking; recommendation is 4–6 decimal places.
 
 ## 6. Additional Information
-See [Table_Quay.md](Table_Quay.md) for detailed property specifications and cardinality constraints. See [Example_Quay.xml](Example_Quay.xml) for a complete, validated XML instance embedded within a StopPlace container.
+See [Table_Quay.md](Table_Quay.md) for detailed property specifications and cardinality constraints. See [Example_Quay.xml](Example_Quay_ERP.xml) for a complete, validated XML instance embedded within a StopPlace container.

@@ -52,4 +52,4 @@ A **ScheduledStopPoint** represents a logical stopping point in the timetable, u
 
 See [Table_ScheduledStopPoint.md](Table_ScheduledStopPoint.md) for detailed attribute specifications.
 
-Example XML: [Example_ScheduledStopPoint.xml](Example_ScheduledStopPoint.xml)
+Example XML: [Example_ScheduledStopPoint.xml](Example_ScheduledStopPoint_ERP.xml)

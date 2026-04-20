@@ -1,0 +1,18 @@
+name: PR → review — NeTEx XML Validation
+
+on:
+  pull_request:
+    branches: [review]
+    paths:
+      - "**/*.xml"
+
+jobs:
+  validate:
+    uses: hfjelstad/Profile_Documentation_v2/.github/workflows/INT_NeTEx_Validator.yml@main
+    with:
+      mode: pr
+      checkout_ref: ${{ github.head.sha }}   # PR HEAD-commit
+      base_ref: ${{ github.base_ref }}       # 'review'
+      schema_path: "XSD 2.0/xsd/NeTEx_publication.xsd"
+      exclude_prefix: "XSD 2.0/"
+      fail_fast: false

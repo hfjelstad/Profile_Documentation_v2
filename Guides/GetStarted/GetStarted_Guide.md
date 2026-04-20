@@ -275,7 +275,7 @@ You now have the foundation — here's where to go depending on what you need.
 - [NeTEx Conventions](../NeTExConventions/NeTEx_Conventions.md) — casing, IDs, versioning
 - [Separation of Concerns](../SeparationOfConcerns/SeparationOfConcerns.md) — how domains stay independent
 - [Calendar Guide](../Calendar/Calendar_Guide.md) — DayType, OperatingDay, exceptions
-- [Table of Contents](../../LLM/Tables/TableOfContent.md) — browse all frames and objects
+- [Table of Contents](../../LLM/Indexes/TableOfContent.md) — browse all frames and objects
 
 **Start working:**
 

@@ -55,4 +55,4 @@ TariffZone
 
 See [Table_TariffZone.md](Table_TariffZone.md) for detailed attribute specifications.
 
-Example XML: [TariffZone.xml](TariffZone.xml)
+Example XML: [TariffZone.xml](Example_TariffZone_ERP.xml)

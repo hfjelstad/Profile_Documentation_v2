@@ -1,9 +1,11 @@
-# Pages-specific files — always keep EnSide version during merges
-index.html merge=ours
-.nojekyll merge=ours
-_sidebar.md merge=ours
+#Protect XSD folder
+"XSD 2.0" merge=ours
+"XSD 2.0/" merge=ours
+"XSD 2.0/*" merge=ours
 
-# Files with Pages-adapted links — keep EnSide version
-README.md merge=ours
-LLM/Tables/TableOfContent.md merge=ours
-LLM/README.md merge=ours
+#Safeguard important tables
+LLM/TableOfContents.md merge=union
+LLM/TableOfExamples.md merge=union
+
+#Make XML pretty again
+*.xml diff=xml

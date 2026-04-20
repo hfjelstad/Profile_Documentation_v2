@@ -54,4 +54,4 @@ A **PassengerStopAssignment** links a logical ScheduledStopPoint to a physical Q
 
 See [Table_PassengerStopAssignment.md](Table_PassengerStopAssignment.md) for detailed attribute specifications.
 
-Example XML: [Example_PassengerStopAssignment.xml](Example_PassengerStopAssignment.xml)
+Example XML: [Example_PassengerStopAssignment.xml](Example_PassengerStopAssignment_ERP.xml)

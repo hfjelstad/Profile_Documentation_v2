@@ -52,4 +52,4 @@ The **WaitingRoomEquipment** describes enclosed indoor waiting room facilities a
 
 See [Table_WaitingRoomEquipment.md](Table_WaitingRoomEquipment.md) for detailed attribute specifications.
 
-Example XML: [WaitingRoomEquipment.xml](WaitingRoomEquipment.xml)
+Example XML: [WaitingRoomEquipment.xml](Example_WaitingRoomEquipment_ERP.xml)

@@ -56,4 +56,4 @@ The **TicketingEquipment** describes ticket machines, validators, or other ticke
 
 See [Table_TicketingEquipment.md](Table_TicketingEquipment.md) for detailed attribute specifications.
 
-Example XML: [TicketingEquipment.xml](TicketingEquipment.xml)
+Example XML: [TicketingEquipment.xml](Example_TicketingEquipment_ERP.xml)

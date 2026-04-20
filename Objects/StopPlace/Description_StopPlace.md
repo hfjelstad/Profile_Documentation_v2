@@ -83,4 +83,4 @@ StopPlace (Multimodal Parent)
 > **Centroid positioning**: For monomodal stops, place the Centroid centrally between all serving Quays. For multimodal parents, position it at the hub center — not at a single Quay.
 
 ## 6. Additional Information
-See [Table_StopPlace.md](Table_StopPlace.md) for detailed attribute specifications, cardinality rules, and the complete element structure. See [Example_StopPlace.xml](Example_StopPlace.xml) for examples of monomodal and multimodal StopPlace configurations with embedded Quays.
+See [Table_StopPlace.md](Table_StopPlace.md) for detailed attribute specifications, cardinality rules, and the complete element structure. See [Example_StopPlace.xml](Example_StopPlace_ERP.xml) for examples of monomodal and multimodal StopPlace configurations with embedded Quays.

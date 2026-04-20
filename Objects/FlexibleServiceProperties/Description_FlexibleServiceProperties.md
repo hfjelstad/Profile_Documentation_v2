@@ -52,4 +52,4 @@ The **FlexibleServiceProperties** defines the scheduling and operational charact
 
 See [Table_FlexibleServiceProperties.md](Table_FlexibleServiceProperties.md) for detailed attribute specifications.
 
-Example XML: [FlexibleServiceProperties.xml](FlexibleServiceProperties.xml)
+Example XML: [FlexibleServiceProperties.xml](Example_FlexibleServiceProperties_ERP.xml)

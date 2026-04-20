@@ -52,4 +52,4 @@ The **SanitaryEquipment** describes sanitary facilities (toilets, washrooms) ava
 
 See [Table_SanitaryEquipment.md](Table_SanitaryEquipment.md) for detailed attribute specifications.
 
-Example XML: [SanitaryEquipment.xml](SanitaryEquipment.xml)
+Example XML: [SanitaryEquipment.xml](Example_SanitaryEquipment_ERP.xml)

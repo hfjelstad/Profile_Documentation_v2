@@ -62,5 +62,5 @@ Authority
 
 For a complete list of all elements, attributes, cardinalities, and data types, see [Table — Authority](Table_Authority.md).
 
-Example XML: [Example_Authority.xml](Example_Authority.xml)
+Example XML: [Example_Authority.xml](Example_Authority_ERP.xml)
 

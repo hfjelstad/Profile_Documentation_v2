@@ -60,4 +60,4 @@ TopographicPlace
 
 See [Table_TopographicPlace.md](Table_TopographicPlace.md) for detailed attribute specifications.
 
-Example XML: [TopographicPlace.xml](TopographicPlace.xml)
+Example XML: [TopographicPlace.xml](Example_TopographicPlace_ERP.xml)

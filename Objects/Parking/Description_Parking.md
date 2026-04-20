@@ -69,4 +69,4 @@ Parking
 
 See [Table_Parking.md](Table_Parking.md) for detailed attribute specifications.
 
-Example XML: [Parking.xml](Parking.xml)
+Example XML: [Parking.xml](Example_Parking_ERP.xml)

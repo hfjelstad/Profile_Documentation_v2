@@ -48,4 +48,4 @@ The **AlternativeName** provides additional name variants for a NeTEx object, su
 
 See [Table_AlternativeName.md](Table_AlternativeName.md) for detailed attribute specifications.
 
-Example XML: [AlternativeName.xml](AlternativeName.xml)
+Example XML: [AlternativeName.xml](Example_AlternativeName_ERP.xml)

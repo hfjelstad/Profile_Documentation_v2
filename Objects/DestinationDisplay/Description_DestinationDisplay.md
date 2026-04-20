@@ -53,4 +53,4 @@ DestinationDisplay
 
 See [Table_DestinationDisplay.md](Table_DestinationDisplay.md) for detailed attribute specifications.
 
-Example XML: [DestinationDisplay.xml](DestinationDisplay.xml)
+Example XML: [DestinationDisplay.xml](Example_DestinationDisplay_ERP.xml)

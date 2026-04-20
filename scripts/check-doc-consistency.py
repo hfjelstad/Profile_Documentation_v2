@@ -364,6 +364,40 @@ def run_desc_checks(
 # CLI
 # ──────────────────────────────────────────────────────────────────────────────
 
+# ──────────────────────────────────────────────────────────────────────────────
+# Check 4: Sidebar completeness
+# ──────────────────────────────────────────────────────────────────────────────
+
+def run_sidebar_checks(errors: List[str]) -> None:
+    """Verify every documented Object/Frame/Guide folder is linked in _sidebar.md."""
+    sidebar_path = WORKSPACE / "_sidebar.md"
+    if not sidebar_path.exists():
+        errors.append("[SETUP] _sidebar.md not found")
+        return
+
+    sidebar = sidebar_path.read_text(encoding="utf-8")
+
+    for section, pattern in [
+        ("Guides", "*_Guide.md"),
+        ("Guides", "*.md"),
+        ("Objects", "Description_*.md"),
+        ("Frames", "Description_*.md"),
+    ]:
+        section_root = WORKSPACE / section
+        if not section_root.exists():
+            continue
+        for folder in sorted(section_root.iterdir()):
+            if not folder.is_dir():
+                continue
+            if not list(folder.glob(pattern)):
+                continue
+            if folder.name not in sidebar:
+                errors.append(
+                    f"[SIDEBAR MISSING] {section}/{folder.name} has docs "
+                    f"but is not linked in _sidebar.md"
+                )
+
+
 def main() -> None:
     # Ensure UTF-8 output on Windows consoles
     if hasattr(sys.stdout, "reconfigure"):
@@ -380,13 +414,16 @@ def main() -> None:
         "--desc-only", action="store_true", help="Only Description-vs-Table check"
     )
     parser.add_argument(
+        "--sidebar-only", action="store_true", help="Only sidebar completeness check"
+    )
+    parser.add_argument(
         "--target",
         metavar="PATH",
         help="Scope checks to a subdirectory (e.g. Frames/ServiceFrame)",
     )
     args = parser.parse_args()
 
-    run_all = not (args.xsd_only or args.order_only or args.desc_only)
+    run_all = not (args.xsd_only or args.order_only or args.desc_only or args.sidebar_only)
     target = (WORKSPACE / args.target) if args.target else None
 
     errors: List[str] = []
@@ -409,7 +446,11 @@ def main() -> None:
         before = len(errors)
         run_desc_checks(target, errors, warnings)
         print(f"  {len(errors) - before} error(s)")
-
+    if run_all or args.sidebar_only:
+        print("\u25b6 Sidebar completeness check \u2026")
+        before = len(errors)
+        run_sidebar_checks(errors)
+        print(f"  {len(errors) - before} error(s)")
     if warnings:
         print(f"\n⚠  Warnings ({len(warnings)}):")
         for w in warnings:

@@ -16,7 +16,7 @@ A practical reference, learning resource, and example library for working with [
 
 Whether you're new to NeTEx or looking to structure transport data for exchange, start with the [**Get Started guide**](Guides/GetStarted/GetStarted_Guide.md) — it introduces the core concepts, explains how frames and objects fit together, and walks you through a real NeTEx document step by step.
 
-Already familiar with NeTEx? Jump straight to the [**Table of Contents**](LLM/Tables/TableOfContent.md) to find the frame, object, or guide you need.
+Already familiar with NeTEx? Jump straight to the [**Table of Contents**](LLM/Indexes/TableOfContent.md) to find the frame, object, or guide you need.
 
 ---
 
