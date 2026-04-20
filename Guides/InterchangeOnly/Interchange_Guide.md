@@ -117,7 +117,7 @@ The simplest valid interchange — just two journey references:
 </TimetableFrame>
 ```
 
-> 📄 **Full example:** [Example_Interchange_MIN.xml](../../Objects/Interchange/Example_Interchange_MIN.xml)
+> 📄 **Full example:** [Example_Interchange_ERP.xml](../../Objects/Interchange/Example_Interchange_ERP.xml)
 
 ### 4b. Guaranteed Interchange with Timing (NP profile)
 

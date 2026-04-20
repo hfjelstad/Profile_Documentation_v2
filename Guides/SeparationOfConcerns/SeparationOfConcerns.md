@@ -266,7 +266,7 @@ The PDF reference material captures several important design principles:
 ## 8. 🔗 Related Resources
 
 ### Guides
-- [Frames Overview](../FramesOverview/FramesOverview.md) – How NeTEx frames organize data across domains
+- [CompositeFrame](../../Frames/CompositeFrame/Description_CompositeFrame.md) – How NeTEx frames organize data across domains
 - [Get Started](../GetStarted/GetStarted_Guide.md) – Introduction to NeTEx basics
 
 ### Frames

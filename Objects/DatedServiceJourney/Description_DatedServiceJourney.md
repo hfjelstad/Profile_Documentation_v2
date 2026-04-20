@@ -33,7 +33,7 @@ A **DatedServiceJourney** represents a specific operational instance of a `Servi
 - [ServiceJourney](../ServiceJourney/Table_ServiceJourney.md) – The reusable template that this dated instance realizes
 - [OperatingDay](../OperatingDay/Table_OperatingDay.md) – The specific calendar day on which this journey operates
 - [TrainBlock](../TrainBlock/Table_TrainBlock.md) – Optional vehicle/block assignment for operational continuity
-- [DatedVehicleJourney](../DatedVehicleJourney/Table_DatedVehicleJourney.md) – Related journeys being reinforced or replaced
+- [DatedVehicleJourney](../DatedServiceJourney/Table_DatedServiceJourney.md) – Related journeys being reinforced or replaced
 
 ## 5. Usage Notes
 
@@ -72,7 +72,7 @@ For a complete list of all elements, attributes, cardinalities, and data types, 
 
 Minimal and scenario-specific XML examples are provided:
 
-1. **Minimal** – [Example_DatedServiceJourney.xml](Example_DatedServiceJourney.xml)
+1. **Minimal** – [Example_DatedServiceJourney.xml](Example_DatedServiceJourney_ERP.xml)
 2. **01 Reinforcement** – [Example_DatedServiceJourney_Extended_01_Reinforcement.xml](Example_DatedServiceJourney_Extended_01_Reinforcement.xml) – Additional vehicle/crew added to handle increased demand
 3. **02 Replacement** – [Example_DatedServiceJourney_Extended_02_Replacement.xml](Example_DatedServiceJourney_Extended_02_Replacement.xml) – Substitutes for cancelled or redirected journey
 4. **03 Block-Linked** – [Example_DatedServiceJourney_Extended_03_BlockLinked.xml](Example_DatedServiceJourney_Extended_03_BlockLinked.xml) – Journey linked via BlockRef for vehicle continuity

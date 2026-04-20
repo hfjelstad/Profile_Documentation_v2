@@ -59,4 +59,4 @@ An **Interchange** (modelled as `ServiceJourneyInterchange` in XML) represents a
 
 See [Table_Interchange.md](Table_Interchange.md) for detailed attribute specifications.
 
-Example XML: [Example_Interchange.xml](Example_Interchange.xml)
+Example XML: [Example_Interchange.xml](Example_Interchange_ERP.xml)

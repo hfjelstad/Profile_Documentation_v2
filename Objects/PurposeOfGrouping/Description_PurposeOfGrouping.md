@@ -49,4 +49,4 @@ The **PurposeOfGrouping** classifies the reason why NeTEx objects are grouped to
 
 See [Table_PurposeOfGrouping.md](Table_PurposeOfGrouping.md) for detailed attribute specifications.
 
-Example XML: [PurposeOfGrouping.xml](PurposeOfGrouping.xml)
+Example XML: [PurposeOfGrouping.xml](Example_PurposeOfGrouping_ERP.xml)

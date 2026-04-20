@@ -86,7 +86,7 @@ See [Table_Line.md](Table_Line.md) for detailed attribute specifications, cardin
 </Line>
 ```
 
-→ [Full file](Example_Line_MIN.xml)
+→ [Full file](Example_Line_ERP.xml)
 
 #### **NP (Nordic)**
 

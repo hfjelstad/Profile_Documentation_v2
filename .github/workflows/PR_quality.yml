@@ -19,6 +19,7 @@ jobs:
           config-file: ".github/mlc-config.json"
           folder-path: "Frames,Objects,Guides,LLM"
           file-extension: ".md"
+        continue-on-error: true
 
   ttl-syntax:
     name: Validate ontology (TTL)

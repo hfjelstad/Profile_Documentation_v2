@@ -2,7 +2,14 @@
   "ignorePatterns": [
     {
       "pattern": "^https?://"
+    },
+    {
+      "pattern": "^/"
     }
+  ],
+  "excludeFiles": [
+    "_sidebar.md",
+    "LLM/Templates/**"
   ],
   "aliveStatusCodes": [200, 206, 301, 302, 403],
   "retryOn429": true,

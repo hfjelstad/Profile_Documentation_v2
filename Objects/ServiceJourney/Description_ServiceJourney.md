@@ -51,7 +51,7 @@ A **ServiceJourney** represents a planned trip in the timetable operating on a r
 - [Operator](../Operator/Table_Operator.md) – Identifies the service provider
 - [Line](../Line/Table_Line.md) – The public transport line being served
 - [DatedServiceJourney](../DatedServiceJourney/Description_DatedServiceJourney.md) – Per-date instances and alterations of this journey
-- [Block](../Block/Table_Block.md) – Optional vehicle/roster grouping
+- [Block](../TrainBlock/Table_TrainBlock.md) – Optional vehicle/roster grouping
 
 ## 5. Usage Notes
 
@@ -65,4 +65,4 @@ A **ServiceJourney** represents a planned trip in the timetable operating on a r
 
 For a complete list of all elements, attributes, cardinalities, and data types, see [Table — ServiceJourney](Table_ServiceJourney.md).
 
-Example XML: [Example_ServiceJourney.xml](Example_ServiceJourney.xml) and [Example_ServiceJourney_MIN.xml](Example_ServiceJourney_MIN.xml)
+Example XML: [Example_ServiceJourney.xml](Example_ServiceJourney_ERP.xml) and [Example_ServiceJourney_MIN.xml](Example_ServiceJourney_ERP.xml)

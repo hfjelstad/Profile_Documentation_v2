@@ -59,5 +59,5 @@ Operator
 > - **Duplicate Operators for same service**: Creating separate Operators for the same entity (e.g., one for commute services, one for leisure) breaks referential integrity. Use a single Operator with multiple Lines instead.
 
 ## 6. Additional Information
-See [Table_Operator.md](Table_Operator.md) for detailed attribute specifications and [Example_Operator.xml](Example_Operator.xml) for a complete XML instance based on the ERP profile.
+See [Table_Operator.md](Table_Operator.md) for detailed attribute specifications and [Example_Operator.xml](Example_Operator_ERP.xml) for a complete XML instance based on the ERP profile.
 
