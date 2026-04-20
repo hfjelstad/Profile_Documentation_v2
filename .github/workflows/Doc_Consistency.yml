@@ -5,18 +5,17 @@ on:
     branches: [EnStandardBranch, main]
     paths:
       - "Frames/**"
+      - "Objects/**"
       - "scripts/check-doc-consistency.py"
   pull_request:
     paths:
       - "Frames/**"
+      - "Objects/**"
       - "scripts/check-doc-consistency.py"
-
-# Initial scope: Frames/ only (all clean).
-# Expand to Objects/ once Object description mismatches are resolved.
 
 jobs:
   consistency:
-    name: Check Frames doc consistency
+    name: Check doc consistency
     runs-on: ubuntu-latest
 
     steps:
@@ -36,3 +35,9 @@ jobs:
 
       - name: Description-vs-Table check (Frames)
         run: python scripts/check-doc-consistency.py --desc-only --target Frames
+
+      - name: Table-vs-XML order check (Objects)
+        run: python scripts/check-doc-consistency.py --order-only --target Objects
+
+      - name: Description-vs-Table check (Objects)
+        run: python scripts/check-doc-consistency.py --desc-only --target Objects

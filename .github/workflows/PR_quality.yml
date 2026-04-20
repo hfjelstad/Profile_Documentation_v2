@@ -1,0 +1,63 @@
+name: PR → review — Quality Checks
+
+on:
+  pull_request:
+    branches: [review]
+
+jobs:
+  markdown-links:
+    name: Check markdown links
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Markdown link check
+        uses: gaurav-nelson/github-action-markdown-link-check@v1
+        with:
+          use-quiet-mode: "yes"
+          config-file: ".github/mlc-config.json"
+          folder-path: "Frames,Objects,Guides,LLM"
+          file-extension: ".md"
+
+  ttl-syntax:
+    name: Validate ontology (TTL)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install rdflib
+        run: pip install rdflib
+
+      - name: Parse TTL files
+        run: |
+          python -c "
+          import sys, glob
+          from rdflib import Graph
+
+          files = glob.glob('LLM/**/*.ttl', recursive=True)
+          if not files:
+              print('No .ttl files found')
+              sys.exit(0)
+
+          errors = 0
+          for f in sorted(files):
+              try:
+                  g = Graph()
+                  g.parse(f, format='turtle')
+                  print(f'OK: {f} ({len(g)} triples)')
+              except Exception as e:
+                  print(f'FAIL: {f} — {e}')
+                  errors += 1
+
+          if errors:
+              print(f'\n{errors} file(s) failed.')
+              sys.exit(1)
+          print(f'\nAll {len(files)} file(s) valid.')
+          "
