@@ -38,6 +38,7 @@ The agent must always consult this folder when reading, validating, or generatin
 
 **Essential Index Files:**
 
+- [netex-ontology.ttl](netex-ontology.ttl) – RDF/OWL ontology of the NeTEx data model (primary machine-readable entry point — supersedes TableOfContent.md for LLM agents)
 - [TableOfContent.md](Tables/TableOfContent.md) – Complete index of all Objects, Frames, and Guides with descriptions
 - [TableOfExamples.md](Tables/TableOfExamples.md) – Searchable list of all XML examples with brief descriptions
 
