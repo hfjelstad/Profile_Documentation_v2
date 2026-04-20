@@ -2,6 +2,8 @@
 
 - **Guides**
   - [Get Started](/Guides/GetStarted/GetStarted_Guide.md)
+  - [FAQ](/Guides/FAQ/FAQ.md)
+  - [Developer Quickstart](/Guides/DeveloperQuickstart/DeveloperQuickstart_Guide.md)
   - [NeTEx Conventions](/Guides/NeTExConventions/NeTEx_Conventions.md)
   - [Glossary](/Guides/Glossary/Glossary.md)
   - [Tools](/Guides/Tools/Tools_Guide.md)
@@ -21,6 +23,7 @@
   - [Fare Modelling](/Guides/FareModelling/FareModelling_Guide.md)
   - [Decision Makers](/Guides/DecisionMakers/DecisionMakers_Guide.md)
   - [Regulatory Compliance](/Guides/RegulatoryCompliance/RegulatoryCompliance_Guide.md)
+  - [MMTIS Control Authority Kit](/Guides/MMTISControlKit/MMTISControlKit_Guide.md)
   - [MaaS Consumers](/Guides/MaaSConsumers/MaaSConsumers_Guide.md)
 
 <details>
