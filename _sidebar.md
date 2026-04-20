@@ -85,5 +85,5 @@
 </details>
 
 - **Reference**
-  - [Table of Contents](/LLM/Tables/TableOfContent.md)
-  - [Table of Examples](/LLM/Tables/TableOfExamples.md)
+  - [Table of Contents](/LLM/Indexes/TableOfContent.md)
+  - [Table of Examples](/LLM/Indexes/TableOfExamples.md)

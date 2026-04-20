@@ -456,6 +456,11 @@ netex:ServiceJourney a owl:Class ;
     doc:table "Objects/ServiceJourney/Table_ServiceJourney.md" ;
     netex:inFrame netex:TimetableFrame .
 
+netex:TimetabledPassingTime a owl:Class ;
+    rdfs:label "TimetabledPassingTime" ;
+    skos:definition "Arrival/departure time at a stop point within a ServiceJourney" ;
+    netex:childOf netex:ServiceJourney .
+
 netex:DatedServiceJourney a owl:Class ;
     rdfs:label "DatedServiceJourney" ;
     skos:definition "A concrete journey instance on a specific date, possibly with alterations" ;
