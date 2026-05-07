@@ -1,11 +1,11 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <!-- 
-  Rolling Stock Example â€” Train 60 Bergen â†’ Oslo S (Bergensbanen)
+  Rolling Stock Example — Train 60 Bergen → Oslo S (Bergensbanen)
   Based on Vy (VYG) real data, simplified for documentation purposes.
   
   Demonstrates the full chain:
-    ServiceJourney â†’ DatedServiceJourney â†’ TrainBlock â†’ TrainBlockPart 
-    â†’ CompoundTrain â†’ Train â†’ TrainElement
+    ServiceJourney → DatedServiceJourney → TrainBlock → TrainBlockPart 
+    → CompoundTrain → Train → TrainElement
     
   Validates against NeTEx 2.0 XSD (NeTEx_publication.xsd)
 -->
@@ -47,7 +47,7 @@
       
       <frames>
         <!-- ================================================================ -->
-        <!-- RESOURCE FRAME â€” Operator, Train formations, TrainElements       -->
+        <!-- RESOURCE FRAME — Operator, Train formations, TrainElements       -->
         <!-- ================================================================ -->
         <ResourceFrame version="1" id="VYG:ResourceFrame:RollingStock">
           <organisations>
@@ -178,7 +178,7 @@
         </ResourceFrame>
         
         <!-- ================================================================ -->
-        <!-- SERVICE FRAME â€” Line, Route, JourneyPattern, ScheduledStopPoints -->
+        <!-- SERVICE FRAME — Line, Route, JourneyPattern, ScheduledStopPoints -->
         <!-- ================================================================ -->
         <ServiceFrame version="1" id="VYG:ServiceFrame:F4">
           <Network version="1" id="VYG:Network:VYT">
@@ -196,7 +196,7 @@
               <Name>Myrdal</Name>
             </RoutePoint>
             <RoutePoint version="1" id="VYG:RoutePoint:HON">
-              <Name>HÃ¸nefoss</Name>
+              <Name>Hønefoss</Name>
             </RoutePoint>
             <RoutePoint version="1" id="VYG:RoutePoint:DRM">
               <Name>Drammen</Name>
@@ -257,7 +257,7 @@
               <Name>Myrdal</Name>
             </ScheduledStopPoint>
             <ScheduledStopPoint version="1" id="VYG:ScheduledStopPoint:HON">
-              <Name>HÃ¸nefoss</Name>
+              <Name>Hønefoss</Name>
             </ScheduledStopPoint>
             <ScheduledStopPoint version="1" id="VYG:ScheduledStopPoint:DRM">
               <Name>Drammen</Name>
@@ -269,7 +269,7 @@
           
           <journeyPatterns>
             <JourneyPattern version="1" id="VYG:JourneyPattern:F4-East">
-              <Name>Bergen - Oslo S via Myrdal, HÃ¸nefoss</Name>
+              <Name>Bergen - Oslo S via Myrdal, Hønefoss</Name>
               <RouteRef ref="VYG:Route:F4-East" version="1"/>
               <pointsInSequence>
                 <StopPointInJourneyPattern order="1" version="1" id="VYG:StopPointInJourneyPattern:F4-E-1">
@@ -308,7 +308,7 @@
         </ServiceFrame>
         
         <!-- ================================================================ -->
-        <!-- SERVICE CALENDAR FRAME â€” Operating day                           -->
+        <!-- SERVICE CALENDAR FRAME — Operating day                           -->
         <!-- ================================================================ -->
         <ServiceCalendarFrame version="1" id="VYG:ServiceCalendarFrame:RS_Example">
           <operatingDays>
@@ -319,7 +319,7 @@
         </ServiceCalendarFrame>
         
         <!-- ================================================================ -->
-        <!-- TIMETABLE FRAME â€” ServiceJourney, DatedServiceJourney, TrainNumber -->
+        <!-- TIMETABLE FRAME - ServiceJourney, DatedServiceJourney             -->
         <!-- ================================================================ -->
         <TimetableFrame version="1" id="VYG:TimetableFrame:F4">
           <vehicleJourneys>
@@ -328,12 +328,12 @@
             <ServiceJourney version="1" id="VYG:ServiceJourney:60-BRG_East">
               <Name>60</Name>
               <Description>Tog 60 Bergen - Oslo S (Bergensbanen)</Description>
-              <PrivateCode>60</PrivateCode>
               <TransportMode>rail</TransportMode>
               <TransportSubmode>
                 <RailSubmode>longDistance</RailSubmode>
               </TransportSubmode>
               <JourneyPatternRef ref="VYG:JourneyPattern:F4-East" version="1"/>
+              <PublicCode>60</PublicCode>
               <OperatorRef ref="VYG:Operator:VYT"/>
               <LineRef ref="VYG:Line:F4" version="1"/>
               <passingTimes>
@@ -366,12 +366,11 @@
                   <ArrivalTime>13:05:00</ArrivalTime>
                 </TimetabledPassingTime>
               </passingTimes>
-              <!-- JourneyPart links to TrainNumber for the commercial/operational number -->
+              <!-- JourneyPart defines the segment scope for this journey -->
               <parts>
                 <JourneyPart version="1" id="VYG:JourneyPart:60_BRG-OSL">
                   <Description>Bergen - Oslo S</Description>
                   <MainPartRef ref="VYG:JourneyPart:60_BRG-OSL" version="1"/>
-                  <TrainNumberRef ref="VYG:TrainNumber:60" version="1"/>
                   <FromStopPointRef ref="VYG:ScheduledStopPoint:BRG"/>
                   <ToStopPointRef ref="VYG:ScheduledStopPoint:OSL"/>
                   <StartTime>06:19:00</StartTime>
@@ -389,19 +388,10 @@
             </DatedServiceJourney>
             
           </vehicleJourneys>
-          
-          <!-- === TrainNumber: commercial and operational identity === -->
-          <trainNumbers>
-            <TrainNumber version="1" id="VYG:TrainNumber:60">
-              <Description>Bergen - Oslo S (Bergensbanen)</Description>
-              <ForAdvertisement>60</ForAdvertisement>
-              <ForProduction>60</ForProduction>
-            </TrainNumber>
-          </trainNumbers>
         </TimetableFrame>
         
         <!-- ================================================================ -->
-        <!-- VEHICLE SCHEDULE FRAME â€” TrainBlock with formation assignment     -->
+        <!-- VEHICLE SCHEDULE FRAME — TrainBlock with formation assignment     -->
         <!-- ================================================================ -->
         <VehicleScheduleFrame version="1" id="VYG:VehicleScheduleFrame:F4">
           <blocks>
@@ -415,6 +405,10 @@
               <blockParts>
                 <!-- Single TrainBlockPart because formation is constant for the whole journey -->
                 <TrainBlockPart order="1" version="1" id="VYG:TrainBlockPart:60_BRG-OSL_20260414_1">
+                  <!-- Operational train number for this segment/date -->
+                  <privateCodes>
+                    <PrivateCode type="OperationalTrainNumber">4060</PrivateCode>
+                  </privateCodes>
                   <!-- CompoundTrainRef links to the full consist (El 18 + 8 wagons) -->
                   <CompoundTrainRef ref="VYG:CompoundTrain:60_BRG-OSL" version="1"/>
                   <journeyParts>

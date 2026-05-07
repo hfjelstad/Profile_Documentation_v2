@@ -14,7 +14,7 @@ In this guide you will learn:
 - 🔗 The full linking chain from ServiceJourney to physical rolling stock
 - 🚃 How Train, CompoundTrain, and TrainElement model formations
 - 📦 How TrainBlock and TrainBlockPart assign formations to journeys
-- 🎫 The role of TrainNumber (commercial vs operational)
+- 🎫 Train identity: PublicCode vs Operational Train Number
 - 📋 A complete validated XML example based on real Norwegian rail data
 
 ---
@@ -29,8 +29,6 @@ graph TD
   subgraph TimetableFrame["🕐 TimetableFrame"]
     SJ["<b>ServiceJourney</b><br/><i>Train 60 BRG→OSL</i><br/>pattern + times"]
     DSJ["<b>DatedServiceJourney</b><br/><i>Train 60 on 2026-04-14</i>"]
-    JP["JourneyPart"]
-    TN["<b>TrainNumber</b><br/>ForAdvertisement: 60<br/>ForProduction: 60"]
   end
 
   %% ── VehicleScheduleFrame ────────────────────────────────────
@@ -52,8 +50,6 @@ graph TD
   %% ── Links ──────────────────────────────────────────────────
   DSJ -->|ServiceJourneyRef| SJ
   DSJ -->|"<b>TrainBlockRef</b>"| TB
-  SJ -->|parts| JP
-  JP -->|TrainNumberRef| TN
   TB -->|blockParts| TBP
   TBP -->|"<b>CompoundTrainRef</b>"| CT
   CT -->|"order=1"| T1
@@ -77,7 +73,6 @@ graph TD
 | **CompoundTrain** | ResourceFrame | Full train consist | components/TrainInCompoundTrain |
 | **Train** | ResourceFrame | Logical sub-unit (e.g. coach set) | components/TrainComponent |
 | **TrainElement** | ResourceFrame (vehicles/) | Single physical wagon/engine | TrainElementType |
-| **TrainNumber** | TimetableFrame | Commercial + operational number | ForAdvertisement, ForProduction |
 
 ---
 
@@ -186,25 +181,43 @@ Block for train 601 (Oslo → Bergen):
 
 ---
 
-## 5. 🎫 TrainNumber — Commercial vs Operational Identity
+## 5. 🎫 Train Identity — Commercial vs Operational
 
-The **TrainNumber** object captures the "identity" of a train service — both what the public sees and what operations use internally:
+A train has two identities:
+
+| Identity | What | Where | Owner |
+|----------|------|-------|-------|
+| **Commercial** (passenger-facing) | "Tog 60" | `PublicCode` on ServiceJourney | Timetable team |
+| **Operational** (dispatch/infra) | "4060" | `privateCodes/PrivateCode type="OperationalTrainNumber"` on TrainBlockPart | Operations team |
+
+The operational train number (OTN) belongs on **TrainBlockPart** because:
+- It can vary per **segment** (infrastructure boundaries, crew handover)
+- It can vary per **date** (TrainBlock is day-specific)
+- It is **operational data** (VehicleScheduleFrame), not public timetable data
+- It binds naturally to the physical movement: "this formation, on this segment, on this day, is known as 4060"
 
 ```xml
-<TrainNumber version="0" id="VYG:TrainNumber:F4-1">
-  <Description>BRG - OSL</Description>
-  <ForAdvertisement>60</ForAdvertisement>   <!-- Commercial: what passengers see -->
-  <ForProduction>60</ForProduction>         <!-- Operational: what crew/dispatch use -->
-</TrainNumber>
+<!-- TimetableFrame: passenger-facing identity -->
+<ServiceJourney version="1" id="VYG:ServiceJourney:60-BRG_East">
+  <Name>Tog 60</Name>
+  <PublicCode>60</PublicCode>
+  ...
+</ServiceJourney>
+
+<!-- VehicleScheduleFrame: operational identity per segment -->
+<TrainBlockPart order="1" version="1" id="VYG:TrainBlockPart:60_BRG-OSL_20260414_1">
+  <privateCodes>
+    <PrivateCode type="OperationalTrainNumber">4060</PrivateCode>
+  </privateCodes>
+  <CompoundTrainRef ref="VYG:CompoundTrain:60_BRG-OSL" version="1"/>
+  <journeyParts>
+    <JourneyPartRef ref="VYG:JourneyPart:60_BRG-OSL" version="1"/>
+  </journeyParts>
+</TrainBlockPart>
 ```
 
-In Norway:
-- **ForAdvertisement** (PublicCode equivalent) = the number shown to passengers
-- **ForProduction** (PrivateCode equivalent) = the operational train number
-
-These may differ, for example when bus-for-rail replacements carry a `BUS-60` code operationally while passengers still know it as train 60.
-
-The ServiceJourney links to its TrainNumber via `parts/JourneyPart/TrainNumberRef`.
+> [!NOTE]
+> The NeTEx XSD also provides a dedicated `TrainNumber` object with `ForAdvertisement`/`ForProduction`. This adds indirection without value — `PublicCode` on ServiceJourney and `privateCodes` on TrainBlockPart cover both needs natively, at the correct ownership level, without coupling operational data into the public timetable.
 
 ---
 
@@ -233,7 +246,7 @@ TrainElement        ← single physical wagon/engine
 
 The **DatedServiceJourney** is the key linking object. Its `id` represents the unique combination of:
 - **Operator** (via ServiceJourney → OperatorRef)
-- **Train number** (via ServiceJourney → parts/JourneyPart/TrainNumberRef)
+- **Service identity** (via ServiceJourney → PublicCode)
 - **Departure date** (via OperatingDayRef)
 
 ---
